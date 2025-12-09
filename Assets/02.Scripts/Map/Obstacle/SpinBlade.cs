@@ -16,8 +16,6 @@ public class SpinBlade : MonoBehaviour
         transform.position = transform.parent.position - new Vector3(railLength/2, 0.5f, 0);
         startPos = transform.position;
         endPos = transform.position + new Vector3(railLength, 0, 0);
-        Debug.Log(transform.parent.position);
-        Debug.Log(transform.position);
     }
 
     void Update()
@@ -45,13 +43,22 @@ public class SpinBlade : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //닿을 시 플레이어에 데미지 입히기
-        //if (other.CompareTag("Player"))
-        //{
-        //    Player player = other.GetComponent<Player>();
-        //    if (player.hp != null)
-        //    {
-        //        player.TakeDamage(50);
-        //    }
-        //}
+        if (other.CompareTag("Player"))
+        {
+            Player player = other.GetComponent<Player>();
+            MeshRenderer mr = player.GetComponent<MeshRenderer>();
+            if (player.hp != null)
+            {
+                player.TakeDamage(50);
+                mr.material.color = Color.red;
+                StartCoroutine(ResetColor(mr));
+            }
+        }
+    }
+
+    IEnumerator ResetColor(MeshRenderer mr)
+    {
+        yield return new WaitForSeconds(0.2f);
+        mr.material.color = Color.white;
     }
 }
