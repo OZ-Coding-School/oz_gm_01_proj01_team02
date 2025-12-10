@@ -28,11 +28,14 @@ public class PoolManager : MonoBehaviour
 
         string key = prefab.name;
         if (pools.ContainsKey(key)) return;
+        pools.Add(key, new ObjectPool<T>(prefab, initCount, parent));
     }
 
     public T GetFromPool<T>(T prefab) where T : MonoBehaviour
     {
-        if(!pools.TryGetValue(prefab.name, out var box))
+        if (prefab == null) return null;
+
+        if (!pools.TryGetValue(prefab.name, out var box))
         {
             return null;
         }
