@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> where T : MonoBehaviour 
+public class ObjectPool<T> where T : MonoBehaviour
 {
     private T prefab;
     private Queue<T> pool = new Queue<T>();
@@ -12,17 +12,19 @@ public class ObjectPool<T> where T : MonoBehaviour
     public ObjectPool(T prefab, int initCount, Transform parent = null)
     {
         this.prefab = prefab;
-        Root = new GameObject($"{prefab.name}_pool").transform;
-        if(parent!=null) Root.SetParent(parent,false);
+        if (parent != null) Root = parent;
+        else Root = new GameObject($"{prefab.name}_pool").transform;
 
-        for(int i = 0; i < initCount; i++)
-        {
-            var inst = Object.Instantiate(prefab, Root);
-            inst.name = prefab.name;
-            inst.gameObject.SetActive(false);
-            pool.Enqueue(inst);
-        }
+        Root.SetParent(parent,false);
+        for (int i = 0; i < initCount; i++)
+            {
+                var inst = Object.Instantiate(prefab, Root);
+                inst.name = prefab.name;
+                inst.gameObject.SetActive(false);
+                pool.Enqueue(inst);
+            }
     }
+
 
     public T Dequeue()
     {
