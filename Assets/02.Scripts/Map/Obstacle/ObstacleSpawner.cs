@@ -16,8 +16,10 @@ public class ObstacleSpawner : MonoBehaviour
     bool canSpawn;
     Transform spawnpoint;
     public bool alreadySpawned;
+    ObstacleSpawnPoint[] obstacleSpawnPoints;
     private void Start()
     {
+        obstacleSpawnPoints = FindObjectsOfType<ObstacleSpawnPoint>();
         var gmInit = GameManager.Pool.transform;
         var parent = new GameObject("Obstacle_Pool").transform;
         parent.SetParent(gmInit, false);
@@ -31,7 +33,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void Update()
     {
-        foreach(var point in FindObjectsOfType<ObstacleSpawnPoint>())
+        foreach(var point in obstacleSpawnPoints) //find -> update에서 사용 금지
         {
             var current = point.transform;
             if(spawnpoint==null) { spawnpoint = current; continue; }
