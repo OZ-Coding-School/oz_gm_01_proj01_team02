@@ -12,6 +12,7 @@ public class StageSpawner : MonoBehaviour
 
     [Header("Next_Stage")]
     SpawnPoint[] SpawnPoint;
+    ObstacleSpawner obstSpawner;
     
 
     private void Start()
@@ -19,8 +20,7 @@ public class StageSpawner : MonoBehaviour
         SpawnPoint = FindObjectsOfType<SpawnPoint>();
         fadeIn = FindObjectOfType<FadeIn>(true);
         cg = fadeIn.GetComponent<CanvasGroup>();
-        Debug.Log(fadeIn is null);
-        Debug.Log(cg is not null);
+        obstSpawner = FindObjectOfType<ObstacleSpawner>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,6 +28,12 @@ public class StageSpawner : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("충돌감지");
+            foreach(var obst in FindObjectsOfType<Obstacle>())
+            {
+                if(obst.isActiveAndEnabled) obst.ReturnPool();
+            }
+            obstSpawner.alreadySpawned = false;
+
             int rand = Random.Range(0, SpawnPoint.Length);
             other.transform.position = SpawnPoint[rand].transform.position;
             StartCoroutine(FadeIn());

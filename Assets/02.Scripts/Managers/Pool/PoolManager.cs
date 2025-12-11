@@ -5,15 +5,15 @@ using UnityEngine.Pool;
 
 public class PoolManager : MonoBehaviour
 {
-    public static PoolManager instance { get; private set; }
+    public static PoolManager pool_instance { get; private set; }
 
-    private Dictionary<string, object> pools = new Dictionary<string, object>();
+    public Dictionary<string, object> pools = new Dictionary<string, object>();
 
     private void Awake()
     {
-        if(instance == null)
+        if(pool_instance == null)
         {
-            instance = this;
+            pool_instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -30,6 +30,7 @@ public class PoolManager : MonoBehaviour
         if (pools.ContainsKey(key)) return;
         pools.Add(key, new ObjectPool<T>(prefab, initCount, parent));
     }
+
 
     public T GetFromPool<T>(T prefab) where T : MonoBehaviour
     {
