@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9d99a809e8b2f0f4ea2b7c25be44df4d
+guid: b7f1071e14f9747e5bb46af0438d5a94
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -16,8 +16,7 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: "Invalid Avatar Rig Configuration. Missing or invalid transform:\n\tRequired
-      human bone 'Hips' not found\n"
+    rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
@@ -25,18 +24,47 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: mixamo.com
+      internalID: -203655887218126122
+      firstFrame: 0
+      lastFrame: 59
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 100
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -83,17 +111,7 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton:
-    - name: TZ02(Clone)
-      parentName: 
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: TZ02_0
-      parentName: TZ02(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+    skeleton: []
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -101,16 +119,16 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 100
     rootMotionBoneName: 
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
