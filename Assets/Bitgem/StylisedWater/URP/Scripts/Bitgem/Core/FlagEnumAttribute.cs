@@ -1,13 +1,13 @@
-﻿#region Using statements
+﻿// #region Using statements
 
-using System;
-using UnityEngine;
+// using System;
+// using UnityEngine;
 
-#endregion
+// #endregion
 
-namespace Bitgem.Core
-{
-    public class FlagEnumAttribute : PropertyAttribute
-    {
-    }
-}
+// namespace Bitgem.Core
+// {
+//     public class FlagEnumAttribute : PropertyAttribute
+//     {
+//     }
+// }
