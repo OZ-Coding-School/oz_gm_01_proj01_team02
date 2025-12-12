@@ -6,18 +6,22 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private JoyStick joystick;
 
     private Rigidbody rb;
+    private PlayerEnemySearch enemySearch;
+
+    private Vector3 enemyDir;
+
+    public Vector3 EnemyDir => enemyDir;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        enemySearch = GetComponent<PlayerEnemySearch>();
     }
 
     private void FixedUpdate()
     {
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
-
-        //rb.velocity = new Vector3(moveX * moveSpeed, rb.velocity.y, moveZ * moveSpeed);
 
         if (joystick.JoyVector.x != 0 || joystick.JoyVector.y != 0)
         {
@@ -29,6 +33,12 @@ public class PlayerMove : MonoBehaviour
         else 
         {
             rb.velocity = Vector3.zero;
+
+            if (enemySearch.CloseEnemy != null)
+            {
+                enemyDir = (enemySearch.CloseEnemy.transform.position - transform.position).normalized;
+                transform.forward = enemyDir;
+            }
         }
     }
 }
