@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+
 public class ScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Scrollbar scrollbar;
     public Slider tabSlider;
+    public GameObject[] panels;
+    public GameObject closePanel;
 
     public RectTransform[] BtnRect, BtnImageRect;
     const int Size = 4;
@@ -90,5 +93,6 @@ public class ScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         targetPos = pos[n];
     }
 
+   
     
 }
