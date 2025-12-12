@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Obstacle
+  - Ground
+  - FxTemporaire
+  - Obstcales
+  - LongRange
+  - ShortRange
+  - RandomRange
   layers:
   - Default
   - TransparentFX
@@ -12,9 +19,9 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - 
-  - 
-  - 
+  - LongRangeEnemySpawnPoint
+  - ShortRangeEnemySpawnPoint
+  - RandomRangeEnemySpawnPoint
   - 
   - 
   - 
