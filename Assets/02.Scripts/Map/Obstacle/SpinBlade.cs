@@ -4,54 +4,59 @@ using UnityEngine;
 
 public class SpinBlade : MonoBehaviour
 {
-    private float railLength;
     [SerializeField] GameObject rail;
-    [SerializeField] float rotateSpeed = 5f;
+    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] int damage = 50;
+
+    // 로컬 좌표 기준의 시작점과 끝점
     private Vector3 startPos;
     private Vector3 endPos;
+    private Vector3 currentTarget;
 
     void Start()
     {
-        railLength = rail.transform.localScale.x;
-        transform.position = transform.parent.position - new Vector3(railLength/2, 0.5f, 0);
-        startPos = transform.position;
-        endPos = transform.position + new Vector3(railLength, 0, 0);
+        float railLength = rail.transform.localScale.x;
+        float halfLength = railLength / 2f;
+
+        startPos = new Vector3(-halfLength, -0.5f, 0);
+        endPos = new Vector3(halfLength, -0.5f, 0);
+
+        transform.localPosition = startPos; 
+        currentTarget = endPos;            
     }
 
     void Update()
     {
-        Rotate();
-        if (Vector3.Distance(transform.position, endPos) < 0.1f || Vector3.Distance(transform.position, startPos) < 0.1f)
-        {
-            rotateSpeed = -rotateSpeed;
-        }
-        if(transform.position.x - endPos.x > 0.5f)
-        {
-            transform.position = endPos;
-        }
-        if (Mathf.Abs(transform.position.x) - Mathf.Abs(startPos.x) > 0.5f)
-        {
-            transform.position = startPos;
-        }
+        MoveBlade();
     }
 
-    private void Rotate()
+    private void MoveBlade()
     {
-        transform.Translate(Vector3.right * rotateSpeed * Time.deltaTime, Space.World);
+        transform.localPosition = Vector3.MoveTowards(transform.localPosition, currentTarget, moveSpeed * Time.deltaTime);
+        
+        if (Vector3.Distance(transform.localPosition, currentTarget) < 0.01f)
+        {
+            
+            if (currentTarget == endPos) currentTarget = startPos;
+            else currentTarget = endPos;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        //닿을 시 플레이어에 데미지 입히기
         if (other.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
-            MeshRenderer mr = player.GetComponent<MeshRenderer>();
-            if (player.hp != null)
+            if (player != null && player.hp != null) 
             {
-                player.TakeDamage(50);
-                mr.material.color = Color.red;
-                StartCoroutine(ResetColor(mr));
+                player.TakeDamage(damage);
+
+                MeshRenderer mr = player.GetComponent<MeshRenderer>();
+                if (mr != null)
+                {
+                    mr.material.color = Color.red;
+                    StartCoroutine(ResetColor(mr));
+                }
             }
         }
     }
@@ -59,6 +64,6 @@ public class SpinBlade : MonoBehaviour
     IEnumerator ResetColor(MeshRenderer mr)
     {
         yield return new WaitForSeconds(0.2f);
-        mr.material.color = Color.white;
+        if (mr != null) mr.material.color = Color.white;
     }
 }
