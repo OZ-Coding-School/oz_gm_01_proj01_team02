@@ -10,7 +10,7 @@
 //    private Transform[] shortRangeEnemySpawnPoint;
 //    private Transform[] RandomRangeEnemySpawnPoint;
 //    [SerializeField] LayerMask[] layerMasks;
-//    string[] tagNames = {"LongRange", "ShortRange", "RandomRange" };
+//    string[] tagNames = { "LongRange", "ShortRange", "RandomRange" };
 
 //    [Header("Enemy Spawn Point Explore Setting")]
 //    [SerializeField] private GameObject player;
@@ -30,8 +30,6 @@
 //        {
 //            GameManager.Pool.CreatePool(prefab, 7, parent);
 //        }
-
-//        longRangeEnemySpawnPoint = GetTransformsByTag(tagNames[0]).GetComponentsinChildrens<>();
 
 //        var child = GameManager.Pool.GetComponentsInChildren<Enemy>(true);
 //        foreach (var prefab in child)
