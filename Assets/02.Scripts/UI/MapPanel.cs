@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapPanelManager : MonoBehaviour
+public class MapPanel : MonoBehaviour
 {
     public GameObject mapSelectPanel;
+    public GameObject tab;
     public GameObject[] otherPanels;
 
 
@@ -15,6 +16,7 @@ public class MapPanelManager : MonoBehaviour
         panel.SetActive(false);
 
         mapSelectPanel.SetActive(true);
+        tab.SetActive(false);
     }
 
    
