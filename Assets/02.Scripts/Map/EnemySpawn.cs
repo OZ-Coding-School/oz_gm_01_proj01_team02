@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using static UnityEditor.PlayerSettings;
 
 public enum EnemyType
@@ -100,6 +101,7 @@ public class EnemySpawn : MonoBehaviour
     {
         if (count >= max) return;
         Enemy enemy = null;
+
         switch (type)
         {
             case EnemyType.Short:
@@ -113,10 +115,21 @@ public class EnemySpawn : MonoBehaviour
                 break;
         }
         if (enemy == null) return;
-        
-        enemy.transform.SetPositionAndRotation(pos, Quaternion.identity);
-        Debug.Log($"적 {count + 1}기 가야할 위치 : {pos}");
-        Debug.Log($"적 {count + 1}기 현재 위치 : {enemy.transform.position}");
+
+        NavMeshAgent enemyAgent = enemy.GetComponent<NavMeshAgent>();
+        enemyAgent.enabled = false;
+        Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
+        enemy.transform.SetPositionAndRotation(newPos, Quaternion.identity);
+        enemyAgent.enabled = true;
+
+        if (!enemyAgent.isOnNavMesh) // navmesh 위가 아니면 재배치
+        {
+            NavMeshHit hit;
+            if(NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
+            {
+                enemyAgent.Warp(newPos);
+            }
+        }
         count++;
     }
 

@@ -22,7 +22,13 @@ public class Enemy : MonoBehaviour
 
         Debug.Log(agent.Warp(transform.position));
     }
-    
+
+    private void Update()
+    {
+        if (!agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
+        agent.SetDestination(target.transform.position);
+    }
+
 
     public void ReturnPool()
     {
