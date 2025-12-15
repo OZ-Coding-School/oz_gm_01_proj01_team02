@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - ShortRange
+  - LongRange
+  - RandomRange
   layers:
   - Default
   - TransparentFX
@@ -13,11 +16,11 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - 
-  - 
-  - 
-  - 
-  - 
+  - longRangeEnemySpawnPoint
+  - shortRangeEnemySpawnPoint
+  - RandomRangeEnemySpawnPoint
+  - Long
+  - Short
   - 
   - 
   - 

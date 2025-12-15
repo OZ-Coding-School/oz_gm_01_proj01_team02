@@ -13,7 +13,8 @@ public class StageSpawner : MonoBehaviour
     [Header("Next_Stage")]
     SpawnPoint[] SpawnPoint;
     ObstacleSpawner obstSpawner;
-    
+    EnemySpawn enemySpawn;
+
 
     private void Start()
     {
@@ -21,6 +22,7 @@ public class StageSpawner : MonoBehaviour
         fadeIn = FindObjectOfType<FadeIn>(true);
         cg = fadeIn.GetComponent<CanvasGroup>();
         obstSpawner = FindObjectOfType<ObstacleSpawner>();
+        enemySpawn = FindObjectOfType<EnemySpawn>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,7 +30,9 @@ public class StageSpawner : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log("충돌감지");
-            foreach(var obst in FindObjectsOfType<Obstacle>())
+            enemySpawn.count = 0;
+            enemySpawn.Spawn();
+            foreach (var obst in FindObjectsOfType<Obstacle>())
             {
                 if(obst.isActiveAndEnabled) obst.ReturnPool();
             }

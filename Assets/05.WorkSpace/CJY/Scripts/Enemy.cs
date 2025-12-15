@@ -8,19 +8,31 @@ public class Enemy : MonoBehaviour
 {
     private Player target;
     NavMeshAgent agent;
+    Vector3 startPos;
 
+    private void OnEnable()
+    {
+        startPos = transform.position;
+        StartCoroutine(Die());
+    }
     private void Start()
     {
         target = FindObjectOfType<Player>();
         agent = GetComponent<NavMeshAgent>();
 
         Debug.Log(agent.Warp(transform.position));
-        
     }
-    private void Update()
+    
+
+    public void ReturnPool()
     {
-        
-        agent.SetDestination(target.transform.position);
-        
+        if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
+    }
+
+    IEnumerator Die()
+    {
+        yield return new WaitForSeconds(2);
+        transform.position = startPos;
+        ReturnPool();
     }
 }

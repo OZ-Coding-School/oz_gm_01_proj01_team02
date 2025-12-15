@@ -101,3 +101,5 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 *.exe
 *.exe.meta
+
+Assets\Import
