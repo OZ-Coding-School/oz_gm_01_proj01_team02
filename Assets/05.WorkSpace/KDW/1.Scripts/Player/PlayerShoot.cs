@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlayerShoot : MonoBehaviour
 {
     [Header("프리팹/생성위치")]
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private TestBullet bulletPrefab;
     [SerializeField] private Transform bulletPos;
 
     private PlayerEnemySearch enemySearch;
@@ -14,6 +14,8 @@ public class PlayerShoot : MonoBehaviour
 
     private Vector3 playerVec;
 
+    private float spawnTime = 0.2f;
+
     private void Awake()
     {
         enemySearch = GetComponent<PlayerEnemySearch>();
@@ -21,16 +23,28 @@ public class PlayerShoot : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
     }
+    private void Start()
+    {
+        GameManager.Pool.CreatePool(bulletPrefab, 50);
+    }
     private void Update()
     {
-        ShootBullet();
+        spawnTime += Time.deltaTime;
+
+        if (spawnTime >= 0.2f)
+        {
+            ShootBullet();
+            spawnTime = 0.0f;
+        }
     }
 
     public void ShootBullet()
     {
         if (enemySearch.CloseEnemy != null && rb.velocity.sqrMagnitude < 0.0001f)
         {
-            GameObject bullet = Instantiate(bulletPrefab, bulletPos.position, Quaternion.identity);
+            //GameObject bullet = Instantiate(bulletPrefab, bulletPos.position, Quaternion.identity);
+            TestBullet bullet = GameManager.Pool.GetFromPool(bulletPrefab);
+            bullet.transform.SetLocalPositionAndRotation(bulletPos.position, Quaternion.identity);
             bullet.transform.forward = player.EnemyDir;
         }
     }

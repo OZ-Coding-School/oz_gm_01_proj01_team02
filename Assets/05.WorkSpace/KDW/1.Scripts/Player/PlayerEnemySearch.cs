@@ -53,17 +53,6 @@ public class PlayerEnemySearch : MonoBehaviour
             }
         }
         closeEnemy = nearEnemy;
-
-        //EnemyLook(closeEnemy);
-
-        if (closeEnemy != null)
-        {
-            //Shoot();
-        }
-    }
-    private void Shoot()
-    {
-        Debug.Log(closeEnemy.name);
     }
     private void OnDrawGizmosSelected()
     {
