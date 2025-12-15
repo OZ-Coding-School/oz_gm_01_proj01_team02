@@ -15,7 +15,6 @@ public class StageSpawner : MonoBehaviour
     ObstacleSpawner obstSpawner;
     EnemySpawn enemySpawn;
 
-
     private void Start()
     {
         SpawnPoint = FindObjectsOfType<SpawnPoint>();
@@ -29,7 +28,6 @@ public class StageSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("충돌감지");
             enemySpawn.count = 0;
             enemySpawn.Spawn();
             foreach (var obst in FindObjectsOfType<Obstacle>())
@@ -55,6 +53,5 @@ public class StageSpawner : MonoBehaviour
         cg.alpha = 1f;
         fadeIn.gameObject.SetActive(false);
     }
-
 
 }

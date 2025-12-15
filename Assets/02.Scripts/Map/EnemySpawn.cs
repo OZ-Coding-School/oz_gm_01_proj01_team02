@@ -16,14 +16,12 @@ public class EnemySpawn : MonoBehaviour
     [Header("Enemy Spawn Setting")]
     [SerializeField] private List<Enemy> enemyPrefab;
     [SerializeField] LayerMask[] layerMasks;
-    private Dictionary<string, Enemy> enemies;
 
     [Header("Enemy Spawn Point Explore Setting")]
     [SerializeField] private GameObject player;
     private float distanceToStandard = 15f;
     ObstacleSpawnPoint[] obstacleSpawnPoints;
     Transform exploredPoint;
-    Transform[] searched;
 
     [Header("Spawning Setting")]
     bool canSpawn;

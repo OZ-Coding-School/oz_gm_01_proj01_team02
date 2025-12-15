@@ -10,6 +10,8 @@ public class Portal : MonoBehaviour
     Material[] mr_materials;
     [SerializeField] Material[] materials;
 
+    public bool isStageClear { get; set; }
+
     private void Start()
     {
         mr = GetComponent<MeshRenderer>();
