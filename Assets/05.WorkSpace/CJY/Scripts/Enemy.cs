@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     private Player target;
     NavMeshAgent agent;
     Vector3 startPos;
-    Portal portal;
+    //Portal portal;
 
     private void OnEnable()
     {
@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour
     {
         target = FindObjectOfType<Player>();
         agent = GetComponent<NavMeshAgent>();
-        portal = GetComponents<Portal>();
+        //portal = GetComponents<Portal>();
         Debug.Log(agent.Warp(transform.position));
     }
 

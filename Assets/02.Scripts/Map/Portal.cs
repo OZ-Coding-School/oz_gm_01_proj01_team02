@@ -1,33 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class Portal : MonoBehaviour
-{
-    MeshRenderer mr;
-    [SerializeField] GameObject endPoint;
+//public class Portal : MonoBehaviour
+//{
+//    MeshRenderer mr;
+//    [SerializeField] GameObject endPoint;
 
-    Material[] mr_materials;
-    [SerializeField] Material[] materials;
+//    Material[] mr_materials;
+//    [SerializeField] Material[] materials;
 
-    public bool isStageClear { get; set; }
+//    public bool isStageClear { get; set; }
 
-    private void Start()
-    {
-        mr = GetComponent<MeshRenderer>();
-        endPoint.SetActive(false);
-        mr_materials = mr.materials;
-    }
+//    private void Start()
+//    {
+//        mr = GetComponent<MeshRenderer>();
+//        endPoint.SetActive(false);
+//        mr_materials = mr.materials;
+//    }
 
-    public void OpenPortal()
-    {
-        endPoint.SetActive(true);
-        mr_materials[0] = materials[1];
-    }
+//    public void OpenPortal()
+//    {
+//        endPoint.SetActive(true);
+//        mr_materials[0] = materials[1];
+//    }
 
-    public void ClosePortal()
-    {
-        endPoint.SetActive(false);
-        mr_materials[0] = materials[0];
-    }
-}
+//    public void ClosePortal()
+//    {
+//        endPoint.SetActive(false);
+//        mr_materials[0] = materials[0];
+//    }
+//}
