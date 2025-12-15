@@ -47,7 +47,7 @@ Assets/
 │       │   └── Modifiers/           # 능력별 개별 클래스 (중요!)
 │       │       ├── RicochetSkillData.cs
 │       │       └── PoisonSkillData.cs
-│       └── Patterns/                # 적용 패턴 데이터 (CreateStrategy 구현)
+│       └── Patterns/                # 몬스터 전용 적용 패턴 데이터 (CreateStrategy 구현)
 │           └── FanPatternSO.cs
 │
 └── Resources/                       # [에셋] 실제 인스펙터에서 설정된 파일들
