@@ -15,13 +15,12 @@ public class Enemy : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
 
         Debug.Log(agent.Warp(transform.position));
-        if (agent.Warp(transform.position))
-        {
-            agent.SetDestination(target.transform.position);
-        }
+        
     }
     private void Update()
     {
-       
+        
+        agent.SetDestination(target.transform.position);
+        
     }
 }
