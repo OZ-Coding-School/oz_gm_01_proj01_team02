@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SlotMachineManager : MonoBehaviour
 {
+    public GameObject slotMachineUI;
     public GameObject[] slotSkillObject;
     public Button[] slot;
     public Sprite[] skillSprite;
@@ -17,7 +18,7 @@ public class SlotMachineManager : MonoBehaviour
     public Image displayResultImage;
 
     public List<int> startList = new List<int> ();
-    public List<int> resultIndexList = new List<int> ();
+    public List<Sprite> resultSpriteList = new List<Sprite>();
     int itemCnt = 3;
 
 
@@ -35,10 +36,7 @@ public class SlotMachineManager : MonoBehaviour
                 slot[i].interactable = false;
 
                 int randomIndex = Random.Range (0, startList.Count);
-                if ( i == 0 && j == 1 || i == 1 && j == 0 || i == 2 && j == 2)
-                {
-                    resultIndexList.Add (startList [randomIndex]);
-                }
+                
                 displayItemSlots[i].slotSprite[j].sprite = skillSprite[startList[randomIndex]];
 
                 if ( j == 0)
@@ -49,63 +47,64 @@ public class SlotMachineManager : MonoBehaviour
             }
         }
 
-        StartCoroutine ( StartSlot1 ());
-        StartCoroutine ( StartSlot2 ());
-        StartCoroutine ( StartSlot3 ());
+        StartCoroutine ( StartSlot(0, (itemCnt*10 +5)*2));
+        StartCoroutine ( StartSlot(1, (itemCnt*10 + 2)*2));
+        StartCoroutine ( StartSlot(2, (itemCnt*14 + 2)*2));
+    }
+
+    int FinalSprite(int index)
+    {
+        int totalImages = displayItemSlots[index].slotSprite.Count;
+        float yPos = slotSkillObject[index].transform.localPosition.y;
+        float imageHeight = displayItemSlots[index].slotSprite[0].rectTransform.rect.height;
+        int centralIndex = Mathf.RoundToInt(yPos/ imageHeight);
+
+        centralIndex = Mathf.Clamp(centralIndex, 0, totalImages - 1);
+
+        return centralIndex;
+
     }
     
 
-    IEnumerator StartSlot1()
+    IEnumerator StartSlot(int index, int repeatCount)
     {
 
         yield return null;
         for (int i = 0; i < (itemCnt*10 + 5)*2; i++)
         {
-            slotSkillObject[0].transform.localPosition -= new Vector3 ( 0 , 50f, 0);
-            if (slotSkillObject[0].transform.localPosition.y < 50f)
+            slotSkillObject[index].transform.localPosition -= new Vector3 ( 0 , 50f, 0);
+            if (slotSkillObject[index].transform.localPosition.y < 50f)
             {
-                slotSkillObject[0].transform.localPosition += new Vector3 (0, 150f, 0);
+                slotSkillObject[index].transform.localPosition += new Vector3 (0, 150f, 0);
             }
             yield return new WaitForSeconds (0.02f);
         }
-        for ( int i = 0; i < itemCnt; i++)
-        {
-            slot[i].interactable = true;
-        }
+
+        int finalIndex = FinalSprite(index);
+        Sprite finalSprite = displayItemSlots[index].slotSprite[finalIndex].sprite;
+
+        if (resultSpriteList.Count <= index)
+            resultSpriteList.Add(finalSprite);
+        else
+            resultSpriteList[index] = finalSprite;
+
+        
+        
+        slot[index].interactable = true;
     }
 
-    IEnumerator StartSlot2()
+    public void ClickBtn(int index)
     {
-        for ( int i = 0; i < (itemCnt * 10 + 2) * 2; i ++)
-        {
-            slotSkillObject[1].transform.localPosition -= new Vector3 (0, 50f, 0);
-            if (slotSkillObject[1].transform.localPosition.y < 50f)
-            {
-                slotSkillObject[1].transform.localPosition += new Vector3 ( 0, 150f, 0);
-            }
-            yield return new WaitForSeconds (0.02f);
-        }
-        for (int i = 0; i < itemCnt; i++)
-        {
-            slot[i].interactable = true;
-        }
-    }
+        displayResultImage.sprite = resultSpriteList[index];
 
-    IEnumerator StartSlot3()
+        StartCoroutine(DisableAfterDelay(1f));
+    }
+    
+    private IEnumerator DisableAfterDelay(float delay)
     {
-        for ( int i = 0; i < (itemCnt * 14 + 2) *2 ; i ++)
-        {
-            slotSkillObject[2].transform.localPosition -= new Vector3 (0, 50f, 0);
-            if (slotSkillObject[2].transform.localPosition.y < 50f)
-            {
-                slotSkillObject[2].transform.localPosition += new Vector3 ( 0, 150f, 0);
-            }
-            yield return new WaitForSeconds (0.02f);
-        }
-        for (int i = 0; i < itemCnt; i++)
-        {
-            slot[i].interactable = true;
-        }
+        yield return new WaitForSeconds(delay);
+
+        slotMachineUI.SetActive(false);
     }
 
 
