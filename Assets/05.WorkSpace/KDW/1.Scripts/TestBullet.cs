@@ -3,14 +3,37 @@ using UnityEngine;
 public class TestBullet : MonoBehaviour
 {
     [SerializeField] private float bulletSpeed = 10.0f;
+    [SerializeField] float lifeTime = 3.0f; //살아 있는 시간
 
-    void Start()
+    private float spawnTime;
+
+    private void OnEnable()
     {
-        Destroy(gameObject, 3);
+        spawnTime = Time.time;
     }
 
     void Update()
     {
         transform.position += transform.forward * bulletSpeed * Time.deltaTime;
+
+        if (Time.time - spawnTime >= lifeTime)
+        {
+            ReturnPool();
+        }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.CompareTag("Enemy"))
+        {
+            ReturnPool();
+        }
+    }
+    private void ReturnPool()
+    {
+        if (PoolManager.pool_instance != null)
+        {
+            PoolManager.pool_instance.ReturnPool(this);
+        }
+    }
+
 }

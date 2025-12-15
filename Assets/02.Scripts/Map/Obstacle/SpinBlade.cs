@@ -47,7 +47,7 @@ public class SpinBlade : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Player player = other.GetComponent<Player>();
-            if (player != null && player.hp != null) 
+            if (player != null) 
             {
                 player.TakeDamage(damage);
 

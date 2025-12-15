@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,10 +9,11 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
     public MapData[] mapCard;
     
     private float[] positions = { 0f, 0.5f, 1f };
+    public int mapIndex;
     private bool isSnapping = false;
     private float target;
 
-    public int currentSelectedIndex;
+    // public int currentSelectedIndex;
 
     [Header("UI 여닫용")]
     public GameObject mapSelectPanel;
@@ -38,16 +40,21 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
     public void OnEndDrag(PointerEventData eventData)
     {
         float current = scrollbar.value;
-        float closet = positions[0];
-        foreach (float p in positions)
+        int closetIndex = 0;
+        float minDistance = Mathf.Abs(current - positions[0]);
+
+        for (int i = 0; i < positions.Length; i++)
         {
-            if(Mathf.Abs(current - p) < Mathf.Abs(current - closet))
+            float dist = Mathf.Abs(current - positions[i]);
+            if(dist < minDistance)
             {
-                closet = p;
+                minDistance = dist;
+                closetIndex = i;
             }
         }
 
-        target = closet;
+        target = positions[closetIndex];
+        mapIndex = closetIndex;
         isSnapping = true;
     }
 
@@ -57,11 +64,12 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
 
         if (Mathf.Abs(value - positions[i]) < 0.001f)
             {
-                currentSelectedIndex = i;
+                mapIndex = i;
                 break;
             }
     }
 
+    
      public void CloseMapSelectPanel()
     {
 
