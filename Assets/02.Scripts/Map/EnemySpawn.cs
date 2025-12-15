@@ -120,12 +120,6 @@ public class EnemySpawn : MonoBehaviour
         count++;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(DetectStandardPoint(), distanceToStandard);
-    }
-
     IEnumerator DelaySpawn()
     {
         yield return new WaitForSeconds(0.1f);
