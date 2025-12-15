@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &873161135
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 873161136}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &873161136
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873161135}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.7, z: 0.529}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1902322305109683793}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1398013727
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,6 +283,7 @@ GameObject:
   - component: {fileID: 1505827423}
   - component: {fileID: 1505827422}
   - component: {fileID: 1505827421}
+  - component: {fileID: 1505827424}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -333,6 +365,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1505827424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505827420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1001 &1902322305109683791
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -387,9 +463,45 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 9217089472072170428, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 873161136}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8404419110341632262, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1902322305109683794}
   m_SourcePrefab: {fileID: 100100000, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+--- !u!1 &1902322305109683792 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8404419110341632262, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+  m_PrefabInstance: {fileID: 1902322305109683791}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1902322305109683793 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9217089472072170428, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+  m_PrefabInstance: {fileID: 1902322305109683791}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1902322305109683794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902322305109683792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 138ede8ce86004ed89b883bd8a2eae70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats:
+    damage: 10
+    attackSpeed: 1
+    hp: 100
+    moveSpeed: 5
+  bulletPrefab: {fileID: 1652208765234379785, guid: 1d32f5f4a325a4e02abe9255559988f3, type: 3}
+  firePoint: {fileID: 873161136}
+  pattern: {fileID: 11400000, guid: b2a6e7795b75b412b91da52ee2a0f4b8, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
