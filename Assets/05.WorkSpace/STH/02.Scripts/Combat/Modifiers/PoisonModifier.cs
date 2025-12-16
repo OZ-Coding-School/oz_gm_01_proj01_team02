@@ -1,6 +1,7 @@
 using UnityEngine;
 using STH.Core;
 using STH.Combat.Projectiles;
+using STH.Systems;
 
 namespace STH.Combat.Modifiers
 {
@@ -28,60 +29,7 @@ namespace STH.Combat.Modifiers
 
         public void OnHit(Bullet bullet, IDamageable target)
         {
-            // 독 효과 적용 (MonoBehaviour가 필요하므로 타겟에서 처리)
-            if (target is MonoBehaviour mono)
-            {
-                var poisonEffect = mono.gameObject.GetComponent<PoisonEffect>();
-                if (poisonEffect == null)
-                {
-                    poisonEffect = mono.gameObject.AddComponent<PoisonEffect>();
-                }
-                poisonEffect.Apply(damagePerTick, duration, tickInterval);
-            }
-        }
-    }
-
-    /// <summary>
-    /// 독 효과 컴포넌트 - 실제 DoT 처리
-    /// </summary>
-    public class PoisonEffect : MonoBehaviour
-    {
-        private float damagePerTick;
-        private float remainingDuration;
-        private float tickInterval;
-        private float tickTimer;
-        private IDamageable target;
-
-        private void Awake()
-        {
-            target = GetComponent<IDamageable>();
-        }
-
-        public void Apply(float damage, float duration, float interval)
-        {
-            damagePerTick = damage;
-            remainingDuration = duration;
-            tickInterval = interval;
-            tickTimer = 0f;
-        }
-
-        private void Update()
-        {
-            if (remainingDuration <= 0) return;
-
-            remainingDuration -= Time.deltaTime;
-            tickTimer += Time.deltaTime;
-
-            if (tickTimer >= tickInterval)
-            {
-                tickTimer = 0f;
-                target?.TakeDamage(damagePerTick);
-            }
-
-            if (remainingDuration <= 0)
-            {
-                Destroy(this);
-            }
+            TickDamageManager.Instance.Apply(target, damagePerTick, duration, tickInterval);
         }
     }
 }

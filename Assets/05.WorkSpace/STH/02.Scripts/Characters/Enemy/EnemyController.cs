@@ -12,7 +12,7 @@ namespace STH.Characters.Enemy
     {
         public void TakeDamage(float amount)
         {
-
+            Debug.Log($"Enemy take damage {amount}");
         }
 
         public void Die()
