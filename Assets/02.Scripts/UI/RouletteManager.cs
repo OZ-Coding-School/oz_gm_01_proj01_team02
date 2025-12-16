@@ -8,6 +8,7 @@ public class RouletteManager : MonoBehaviour
     public GameObject roulettePlate;
     public GameObject roulettePanel;
     public Transform needle;
+    public Image resultImage;
 
     public Sprite[] skillSprite;
     public Image[] displayItemSlot;
@@ -15,6 +16,12 @@ public class RouletteManager : MonoBehaviour
     List<int> startList = new List<int> ();
     List<int> resultIndexList = new List<int> ();
     int itemCnt = 6;
+
+    
+    
+
+    private bool isStopping = false;
+    public float rotateSpeed = 10.0f;
 
     void Start()
     {
@@ -31,6 +38,8 @@ public class RouletteManager : MonoBehaviour
             startList.RemoveAt(randomIndex);
         }
 
+        resultImage.sprite = displayItemSlot[6].sprite;
+        resultImage.color = new Color(resultImage.color.r, resultImage.color.g, resultImage.color.b, 0.0f);
         StartCoroutine (StartRoulette());
 
     }
@@ -38,18 +47,30 @@ public class RouletteManager : MonoBehaviour
     IEnumerator StartRoulette()
     {
         yield return new WaitForSeconds(2f);
-        float rotateSpeed = 100.0f;
+        
         while (true)
         {
             yield return null;
+            
+            if (isStopping)
+            {
+                rotateSpeed = Mathf.Lerp(rotateSpeed, 0, Time.deltaTime*2f);
+            }
+            
             if (rotateSpeed <= 0.01f) break;
 
-            rotateSpeed = Mathf.Lerp (rotateSpeed, 0, Time.deltaTime * 2f);
             roulettePlate.transform.Rotate(0, 0, rotateSpeed);
+
+            if (rotateSpeed <= 0.01f && isStopping) break;
         }
 
         yield return new WaitForSeconds(1f);
         Result();
+    }
+
+    public void StopRoulette()
+    {
+        isStopping = true;
     }
 
     void Result()
@@ -74,8 +95,17 @@ public class RouletteManager : MonoBehaviour
             Debug.Log("Error");
         }
         displayItemSlot[itemCnt].sprite = displayItemSlot[closetIndex].sprite;
+        resultImage.color = new Color(resultImage.color.r, resultImage.color.g, resultImage.color.b, 1.0f);
 
         Debug.Log (" LV UP " + resultIndexList[closetIndex]);
+
+        StartCoroutine(DisableAfterDelay(2.0f));
+    }
+
+    IEnumerator DisableAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        this.gameObject.SetActive(false);
     }
 
 }
