@@ -20,7 +20,7 @@ namespace STH.Characters.Player
         [SerializeField] private Transform firePoint;
 
         [Header("Test")]
-        [SerializeField] private List<SkillData> patterns;
+        [SerializeField] private List<SkillData> skills;
 
         private List<IFireStrategy> strategies = new List<IFireStrategy>();
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
@@ -33,11 +33,12 @@ namespace STH.Characters.Player
 
         void Start()
         {
-            foreach (var pattern in patterns)
+            foreach (var skill in skills)
             {
                 // 테스트용
-                pattern.Apply(this);
+                skill.Apply(this);
             }
+            Attack();
         }
 
 
@@ -45,12 +46,12 @@ namespace STH.Characters.Player
         {
             if (isDead) return;
 
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= 1 / stats.attackSpeed)
-            {
-                Attack();
-                attackTimer = 0;
-            }
+            // attackTimer += Time.deltaTime;
+            // if (attackTimer >= 1 / stats.attackSpeed)
+            // {
+            //     Attack();
+            //     attackTimer = 0;
+            // }
 
         }
 
@@ -86,6 +87,12 @@ namespace STH.Characters.Player
         public void AddStrategy(IFireStrategy newStrategy)
         {
             strategies.Add(newStrategy);
+        }
+
+        // 총알 능력 추가
+        public void AddModifier(IBulletModifier newModifier)
+        {
+            modifiers.Add(newModifier);
         }
 
         public void TakeDamage(float amount)
