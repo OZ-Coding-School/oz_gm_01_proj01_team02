@@ -14,6 +14,7 @@ public class StageSpawner : MonoBehaviour
     SpawnPoint[] SpawnPoint;
     ObstacleSpawner obstSpawner;
     EnemySpawn enemySpawn;
+    Portal[] portal;
 
     private void Start()
     {
@@ -22,6 +23,7 @@ public class StageSpawner : MonoBehaviour
         cg = fadeIn.GetComponent<CanvasGroup>();
         obstSpawner = FindObjectOfType<ObstacleSpawner>();
         enemySpawn = FindObjectOfType<EnemySpawn>();
+        portal = FindObjectsOfType<Portal>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -44,6 +46,7 @@ public class StageSpawner : MonoBehaviour
 
     IEnumerator FadeIn()
     {
+        foreach (var port in portal) port.ClosePortal();
         fadeIn.gameObject.SetActive(true);
         cg.alpha = 1f;
         yield return cg.DOFade(0f, duration)

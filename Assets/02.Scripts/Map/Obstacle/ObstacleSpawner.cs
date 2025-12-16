@@ -6,7 +6,6 @@ using UnityEngine;
 //2. 스폰된 장애물은 EndPoint 객체의 StageSpawner 스크립트를 통해 플레이어가 해당 객체를 통과시 모두 return pool 처리
 //3. 플레이어가 다른 스테이지로 이동하면 그 때 다시 isSpawned 여부를 판단하여 해당 위치에 장애물 스폰
 
-
 public class ObstacleSpawner : MonoBehaviour
 {
     [Header("Obstacle Spawn Settings")]
@@ -17,12 +16,14 @@ public class ObstacleSpawner : MonoBehaviour
     Transform spawnpoint;
     public bool alreadySpawned;
     ObstacleSpawnPoint[] obstacleSpawnPoints;
+    Portal[] portal;
     private void Start()
     {
         obstacleSpawnPoints = FindObjectsOfType<ObstacleSpawnPoint>();
         var gmInit = GameManager.Pool.transform;
         var parent = new GameObject("Obstacle_Pool").transform;
         parent.SetParent(gmInit, false);
+        portal = FindObjectsOfType<Portal>();
 
         ShuffleList();
         foreach (var prefab in obstaclePrefabs)
@@ -46,6 +47,7 @@ public class ObstacleSpawner : MonoBehaviour
             }
         }
         canSpawn = Vector3.Distance(spawnpoint.position, player.transform.position) < distanceToPlayer ? true : false;
+        
         if (canSpawn && !alreadySpawned)
         {
             int select = Random.Range(0, obstaclePrefabs.Count);
@@ -65,5 +67,24 @@ public class ObstacleSpawner : MonoBehaviour
             obstaclePrefabs[i] = obstaclePrefabs[k];
             obstaclePrefabs[k] = temp;
         }
+    }
+    public Portal GetClosePortal()
+    {
+        if (!canSpawn) return null;
+        Portal closestPortal = null;
+        float minDist = float.MaxValue;
+        // 스포너와 가장가까운 문만 활성화 시켜주기
+        foreach (var p in portal)
+        {
+            if(p ==null) continue;
+            float currentDist = Vector3.Distance(spawnpoint.position, p.transform.position);
+
+            if (currentDist < minDist) 
+            {
+                minDist = currentDist;
+                closestPortal = p;
+            }
+        }
+        return closestPortal;
     }
 }
