@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class PoolManager : MonoBehaviour
     public static PoolManager pool_instance { get; private set; }
 
     public Dictionary<string, object> pools = new Dictionary<string, object>();
+
 
     private void Awake()
     {
