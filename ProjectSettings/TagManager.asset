@@ -8,6 +8,7 @@ TagManager:
   - ShortRange
   - LongRange
   - RandomRange
+  - Wall
   layers:
   - Default
   - TransparentFX

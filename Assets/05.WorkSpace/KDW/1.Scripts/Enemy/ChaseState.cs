@@ -16,7 +16,7 @@ public class ChaseState : EnemyState
         float dist = enemy.DistToPlayer();
 
         //공격 가능한 거리 안에 들어왔으면 공격 상태로 전환
-        if (dist <= enemy.AttackRange && enemy.IsAttack)
+        if (dist <= enemy.AttackRange && Time.time >= enemy.NextAttackTime)
         {
             enemy.ChangeState(enemy.AttackState);
             Debug.Log("공격");

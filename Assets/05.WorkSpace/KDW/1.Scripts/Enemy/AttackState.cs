@@ -9,7 +9,6 @@ public class AttackState : EnemyState
     {
         get { return StateEnums.Attack; }
     }
-
     public override void UpdateState()
     {
         if (enemy.Target == null) return;
@@ -17,7 +16,7 @@ public class AttackState : EnemyState
         float dist = enemy.DistToPlayer();
 
         //공격 가능 거리 보다 멀어지면
-        if (dist > enemy.AttackRange || !enemy.IsAttack)
+        if (dist > enemy.AttackRange || Time.time < enemy.NextAttackTime)
         {
             enemy.ChangeState(enemy.ChaseState);
             Debug.Log("추적");
