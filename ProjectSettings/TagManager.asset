@@ -9,6 +9,10 @@ TagManager:
   - LongRange
   - RandomRange
   - Wall
+  - FxTemporaire
+  - Obstacle
+  - Obstcales
+  - Coin
   layers:
   - Default
   - TransparentFX
