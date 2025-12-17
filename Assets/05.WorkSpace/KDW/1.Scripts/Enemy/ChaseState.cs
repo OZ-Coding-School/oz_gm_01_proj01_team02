@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ChaseState : EnemyState
+public abstract class ChaseState : EnemyState
 {
     public ChaseState(EnemyController enemy) : base(enemy) { }
 
@@ -11,17 +11,7 @@ public class ChaseState : EnemyState
 
     public override void UpdateState()
     {
-        if (enemy.Target == null) return;
-
-        float dist = enemy.DistToPlayer();
-
-        //공격 가능한 거리 안에 들어왔으면 공격 상태로 전환
-        if (dist <= enemy.AttackRange && Time.time >= enemy.NextAttackTime)
-        {
-            enemy.ChangeState(enemy.AttackState);
-            Debug.Log("공격");
-            return;
-        }
+        
     }
     public override void FixedUpdateState()
     {
@@ -32,5 +22,43 @@ public class ChaseState : EnemyState
             enemy.Chase();
         }
     }
-   
 }
+public class MeleeChase : ChaseState
+{
+    public MeleeChase(EnemyController enemy) : base(enemy) { }
+
+    public override void UpdateState()
+    {
+        if (enemy.Target == null) return;
+
+        float dist = enemy.DistToPlayer();
+
+        //근거리 적의 공격 가능한 거리 안에 들어왔으면 공격 상태로 전환
+        if (dist <= enemy.MeleeAttackRange)
+        {
+            enemy.ChangeState(enemy.AttackState);
+            Debug.Log("근거리공격");
+            return;
+        }
+    }
+}
+public class RangedChase : ChaseState
+{
+    public RangedChase(EnemyController enemy) : base(enemy) { }
+
+    public override void UpdateState()
+    {
+        if (enemy.Target == null) return;
+
+        float dist = enemy.DistToPlayer();
+
+        //원거리 적의 공격 가능한 거리 안에 들어왔으면 공격 상태로 전환
+        if (dist <= enemy.RangedAttackRange)
+        {
+            enemy.ChangeState(enemy.AttackState);
+            Debug.Log("원거리공격");
+            return;
+        }
+    }
+}
+
