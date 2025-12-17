@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.PlayerSettings;
 
 public enum EnemyType
 {
@@ -71,25 +70,21 @@ public class EnemySpawn : MonoBehaviour
         Collider[] shortSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[1]);
         Collider[] randomSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[2]);
         int maxSize = longSpawnPoint.Length + shortSpawnPoint.Length + randomSpawnPoint.Length;
-        Debug.Log("泅犁 荐笼等 积己 困摹 : " + maxSize);
-
+        
         canSpawn = longSpawnPoint.Length != 0 && shortSpawnPoint.Length != 0 && randomSpawnPoint.Length != 0 ? true: false;
-        Debug.Log("积己 啊瓷? " + canSpawn);
+        
         if (canSpawn)
         {
             foreach (var point in longSpawnPoint)
             {
-                Debug.Log("氛 积己");
                 GetEnemy(point.transform.position, EnemyType.Long, ref count, maxSize);
             }
             foreach (var point in shortSpawnPoint)
             {
-                Debug.Log("剪 积己");
                 GetEnemy(point.transform.position, EnemyType.Short, ref count, maxSize);
             }
             foreach (var point in randomSpawnPoint)
             {
-                Debug.Log("罚待 积己");
                 GetEnemy(point.transform.position, EnemyType.Random, ref count, maxSize);
             }
         }
@@ -125,10 +120,13 @@ public class EnemySpawn : MonoBehaviour
             NavMeshHit hit;
             if(NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
             {
-                enemyAgent.Warp(newPos);
+                enemyAgent.Warp(hit.position);
             }
         }
+        EnemyCheck enemyCheck = enemy.GetComponent<EnemyCheck>();
+        if (enemyCheck != null) enemyCheck.SetReady();
         count++;
+
     }
 
     IEnumerator DelaySpawn()

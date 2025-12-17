@@ -1,33 +1,69 @@
-//using System.Collections;
-//using System.Collections.Generic;
-//using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
 
-//public class Portal : MonoBehaviour
-//{
-//    MeshRenderer mr;
-//    [SerializeField] GameObject endPoint;
+public class Portal : MonoBehaviour
+{
+    MeshRenderer[] mr;
+   
+    [SerializeField] GameObject endPoint;
+    [SerializeField] Material[] materials;
 
-//    Material[] mr_materials;
-//    [SerializeField] Material[] materials;
 
-//    public bool isStageClear { get; set; }
+    private void OnEnable()
+    {
+        EnemyCheck.OnEnemyReturnPool += AllEnemiesDied;
+    }
 
-//    private void Start()
-//    {
-//        mr = GetComponent<MeshRenderer>();
-//        endPoint.SetActive(false);
-//        mr_materials = mr.materials;
-//    }
+    private void OnDisable()
+    {
+        EnemyCheck.OnEnemyReturnPool -= AllEnemiesDied;
+    }
 
-//    public void OpenPortal()
-//    {
-//        endPoint.SetActive(true);
-//        mr_materials[0] = materials[1];
-//    }
+    private void Start()
+    {
+        mr = GetComponentsInChildren<MeshRenderer>();
+        endPoint.SetActive(false);
+    }
 
-//    public void ClosePortal()
-//    {
-//        endPoint.SetActive(false);
-//        mr_materials[0] = materials[0];
-//    }
-//}
+    private void AllEnemiesDied(GameObject enemy)
+    {
+        
+        if (IsGetActiveChild()) OpenPortal();
+        else ClosePortal();
+    }
+
+    public bool IsGetActiveChild()
+    {
+        Enemy[] children = GameManager.Pool.GetComponentsInChildren<Enemy>(true);
+        
+        foreach (Enemy child in children)
+        {
+            if (child.gameObject.activeSelf) return false;
+        }
+        return true;
+    }
+
+    public void OpenPortal()
+    {
+        endPoint.SetActive(true);
+        foreach(var m in mr)
+        {
+            Material[] mats = m.materials;
+            if (mats.Length > 0) mats[0] = materials[1];
+            m.materials = mats;
+        }
+    }
+
+    public void ClosePortal()
+    {
+        endPoint.SetActive(false);
+        foreach (var m in mr)
+        {
+            Material[] mats = m.materials;
+            if (mats.Length > 0) mats[0] = materials[0];
+            m.materials = mats;
+        }
+    }
+}

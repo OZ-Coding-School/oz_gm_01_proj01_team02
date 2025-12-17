@@ -11,9 +11,16 @@ namespace STH.ScriptableObjects.Skills.Modifiers
     [CreateAssetMenu(fileName = "NewPoisonSkill", menuName = "STH/Skills/Modifiers/Poison")]
     public class PoisonSkillData : SkillData
     {
-        public override void Apply(PlayerController p)
-        {
+        [Header("Modifier Settings")]
+        public float AttackMultiplier = 0.35f; // 공격력 계수
+        public float duration = 5f;
+        public float tickInterval = 1f;
 
+        public override void Apply(PlayerController player)
+        {
+            float damagePerTick = player.Stats.damage * AttackMultiplier;
+            player.AddModifier(new PoisonModifier(damagePerTick, duration, tickInterval));
+            Debug.Log("modifier apply");
         }
     }
 }

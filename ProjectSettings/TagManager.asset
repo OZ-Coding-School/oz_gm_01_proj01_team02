@@ -8,6 +8,11 @@ TagManager:
   - ShortRange
   - LongRange
   - RandomRange
+  - Wall
+  - FxTemporaire
+  - Obstacle
+  - Obstcales
+  - Coin
   layers:
   - Default
   - TransparentFX

@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     private Player target;
     NavMeshAgent agent;
     Vector3 startPos;
-    //Portal portal;
 
     private void OnEnable()
     {
@@ -21,8 +20,6 @@ public class Enemy : MonoBehaviour
     {
         target = FindObjectOfType<Player>();
         agent = GetComponent<NavMeshAgent>();
-        //portal = GetComponents<Portal>();
-        Debug.Log(agent.Warp(transform.position));
     }
 
     private void Update()
@@ -37,12 +34,11 @@ public class Enemy : MonoBehaviour
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
 
-    
-
     IEnumerator Die()
     {
         yield return new WaitForSeconds(2);
         transform.position = startPos;
+        agent.enabled = false;
         ReturnPool();
     }
 }
