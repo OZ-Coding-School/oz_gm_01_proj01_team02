@@ -41,6 +41,9 @@ public class StageSpawner : MonoBehaviour
             int rand = Random.Range(0, SpawnPoint.Length);
             other.transform.position = SpawnPoint[rand].transform.position;
             StartCoroutine(FadeIn());
+
+            if (GameManager.clearStage <= 10) GameManager.InitStageClearCount();
+            else GameManager.StageIncrease();
         }
     }
 
