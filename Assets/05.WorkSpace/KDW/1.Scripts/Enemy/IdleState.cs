@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : MonoBehaviour
+public class IdleState : EnemyState
 {
-    void Start()
+    public IdleState(EnemyController enemy) : base(enemy) { }
+
+    public override StateEnums StateType
     {
-        
+        get { return StateEnums.Idle; }
     }
 
-    void Update()
+    public override void UpdateState()
     {
-        
+        if (enemy.Idle())
+        {
+            enemy.ChangeState(enemy.ChaseState);
+        }
     }
 }

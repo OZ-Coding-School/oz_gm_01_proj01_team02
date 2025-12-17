@@ -7,21 +7,31 @@ public class EnemyController : MonoBehaviour
 {
     private EnemyState currentState;
 
+    [Header("적 타입")]
+    [SerializeField] private TypeEnums type;  //근거리, 원거리 등 적의 타입
+
     [Header("이동/회전")]
     [SerializeField] private float moveSpeed = 3.0f;    //Enemy 이동속도
     [SerializeField] private float rotateSpeed = 8.0f;
 
-    [Header("공격 거리/쿨타임")]
-    [SerializeField] private float attackRange = 5.0f;  //공격 거리
-    [SerializeField] private float attackDelay = 10.0f; //공격 시간 쿨타임
+    [Header("근거리 공격 거리/쿨타임/돌진 속도")]
+    [SerializeField] private float meleeAttackRange = 5.0f; //근거리 공격거리
+    [SerializeField] private float attackDelay = 10.0f;      //근거리 공격 쿨타임
     [SerializeField] private float attackChargeTime = 3.0f;
+    [SerializeField] private float runSpeed = 10.0f;
+
+    [Header("원거리 공격 거리/쿨타임")]
+    [SerializeField] private float rangedAttackRange = 12.0f; //원거리 공격거리
+    [SerializeField] private float spawnTime = 1.0f;  //원거리 공격 쿨타임
+    private float rangedTimer = 0.0f; //쿨타임 까지 흐르는 시간
 
     [Header("타겟")]
     [SerializeField] private Transform target;  //타겟(플레이어)
     [SerializeField] private LayerMask playerLayer;
 
-    [Header("근거리 적 고속이동 속도")]
-    [SerializeField] private float runSpeed = 10.0f;
+    [Header("원거리 공격 프리팹/위치")]
+    [SerializeField] private TextEnemyBullet enemyBullet;
+    [SerializeField] protected Transform bulletPos;
 
     private Rigidbody rb;
     private NavMeshAgent nvAgent;
@@ -34,6 +44,7 @@ public class EnemyController : MonoBehaviour
     private Vector3 beforeTargetPos;
 
     //상태 객체들
+    public EnemyState IdleState { get; private set; }
     public EnemyState ChaseState { get; private set; }
     public EnemyState AttackState { get; private set; }
 
@@ -41,9 +52,11 @@ public class EnemyController : MonoBehaviour
     public StateEnums CurrentStateType { get; private set; }
 
     //외부에서 읽을 수 있도록 하는 프로퍼티
-    public float AttackRange => attackRange;
+    public float MeleeAttackRange => meleeAttackRange;
+    public float RangedAttackRange => rangedAttackRange;
     public float NextAttackTime => nextAttackTime;
     public Transform Target => target;
+    public TypeEnums Type => type;
 
     public Vector3 BeforeTargetPos
     {
@@ -64,11 +77,18 @@ public class EnemyController : MonoBehaviour
 
         nvAgent.speed = moveSpeed;
 
-        ChaseState = new ChaseState(this);
-        AttackState = new AttackState(this);
+        //IdleState = new IdleState(this);
+        //ChaseState = new ChaseState(this);
+        //AttackState = new AttackState(this);
+
+        EnemyType();
 
         ChangeState(ChaseState);
-
+    }
+    private void Start()
+    {
+        GameManager.Pool.CreatePool(enemyBullet, 50);
+        Debug.Log(enemyBullet.name);
     }
 
     void Update()
@@ -98,12 +118,42 @@ public class EnemyController : MonoBehaviour
 
         currentState.Enter();
     }
+    //Enemy 타입 결정
+    public void EnemyType()
+    {
+        switch(type)
+        {
+            case TypeEnums.Melee:
+                ChaseState = new MeleeChase(this);
+                AttackState = new MeleeAttack(this);
+                break;
+            case TypeEnums.Ranged:
+                ChaseState = new RangedChase(this);
+                AttackState = new RangedAttack(this);
+                break;
+        }
+
+    }
     //플레이어까지의 거리
     public float DistToPlayer()
     {
         if (target == null) return Mathf.Infinity;
 
         return Vector3.Distance(transform.position, target.position);
+    }
+    public bool Idle()
+    {
+        nvAgent.enabled = false;
+
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(target.position, out hit, 10, NavMesh.AllAreas))
+        {
+            nvAgent.enabled = true;
+            return true;
+        }
+
+        return false;
     }
     //플레이어 추적
     public void Chase()
@@ -117,7 +167,7 @@ public class EnemyController : MonoBehaviour
             nvAgent.SetDestination(target.transform.position);
         }
     }
-    public void Attack()
+    public void MeleeAttack()
     {
         if (Time.time < nextAttackTime) return;
         
@@ -135,9 +185,32 @@ public class EnemyController : MonoBehaviour
         
 
     }
-    //현재 회전을 담당하는 LookTo는 쓰지않고 있음(NevMesh가 알아서 회전함)
-    public void LookTo(Vector3 dir)
+    public void RangedAttack()
     {
+        nvAgent.enabled = false;
+        nvAgent.velocity = Vector3.zero; 
+        rb.velocity = Vector3.zero; 
+
+        rangedTimer += Time.deltaTime;
+
+        //공격 쿨타임이 되면 프리팹 발사
+        if (rangedTimer >= spawnTime)
+        {
+            TextEnemyBullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
+            enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, Quaternion.identity);
+            enemyBullet.transform.forward = transform.forward;
+
+            rangedTimer = 0.0f; //타이머 초기화
+        }
+
+        nvAgent.enabled = true;
+        nvAgent.Warp(transform.position);
+    }
+    //현재 회전을 담당하는 LookTo는 쓰지않고 있음(NevMesh가 알아서 회전함)
+    public void LookTo()
+    {
+        Vector3 dir = (target.position - transform.position).normalized;
+
         if (dir.sqrMagnitude < 0.0001f) return;
 
         Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
@@ -148,10 +221,6 @@ public class EnemyController : MonoBehaviour
     }
     IEnumerator AttackCharge()
     {
-        //beforeTargetPos = target.position;
-        //Vector3 attackDir = (beforeTargetPos - rb.position).normalized;
-        //transform.forward = attackDir;
-
         Debug.Log("공격시작");
         yield return new WaitForSeconds(attackChargeTime); //공격 시작하면 실제로 돌진하기까지의 차지타임
 
@@ -184,8 +253,17 @@ public class EnemyController : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawRay(transform.position, target.transform.position - transform.position);
+        if (type == TypeEnums.Melee)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, meleeAttackRange);
+        }
+
+        if (type == TypeEnums.Ranged)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, rangedAttackRange);
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {

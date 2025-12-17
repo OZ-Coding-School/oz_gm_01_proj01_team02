@@ -49,7 +49,7 @@ namespace STH.Characters.Player
             // attackTimer += Time.deltaTime;
             // if (attackTimer >= 1 / stats.attackSpeed)
             // {
-            //     Attack();
+            //     MeleeAttack();
             //     attackTimer = 0;
             // }
 
