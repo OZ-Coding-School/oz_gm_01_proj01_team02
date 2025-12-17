@@ -1,10 +1,13 @@
 
 using UnityEngine;
-using static UnityEditor.Progress;
+using System;
+
+
 
 public class PlayerStatManager : MonoBehaviour
 {
     public static PlayerStatManager Instance;
+    public static event Action OnStatChanged;
 
     [Header("Base Stats")]
     public float baseMaxHp = 1000;
@@ -61,6 +64,7 @@ public class PlayerStatManager : MonoBehaviour
         {
             ApplyStat(talent.stat);
         }
+        OnStatChanged?.Invoke();
     }
 
     private void ApplyStats(StatValue[] stats)
