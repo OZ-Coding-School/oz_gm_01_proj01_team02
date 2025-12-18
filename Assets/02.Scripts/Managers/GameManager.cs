@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager
 {
     private static GameObject _root;
     private static PoolManager _pool;
-    public static int clearStage { get; private set;}
+    public static int clearStage { get; private set; } = 1;
     
     private static void Init()
     {
@@ -46,5 +47,13 @@ public class GameManager
     public static void InitStageClearCount()
     {
         clearStage = 0;
+    }
+
+    public static void ClearChapter()
+    {
+        InitStageClearCount();
+        if (_pool != null) _pool.ClearPool();
+        SceneManager.LoadScene("TitleScene");
+        Debug.Log(clearStage);
     }
 }

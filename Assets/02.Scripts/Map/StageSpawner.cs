@@ -30,6 +30,7 @@ public class StageSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log(GameManager.clearStage);
             enemySpawn.count = 0;
             enemySpawn.Spawn();
             foreach (var obst in FindObjectsOfType<Obstacle>())
@@ -41,6 +42,11 @@ public class StageSpawner : MonoBehaviour
             int rand = Random.Range(0, SpawnPoint.Length);
             other.transform.position = SpawnPoint[rand].transform.position;
             StartCoroutine(FadeIn());
+
+            if (GameManager.clearStage >= 3) GameManager.ClearChapter();
+
+            GameManager.StageIncrease();
+            
         }
     }
 
@@ -56,7 +62,5 @@ public class StageSpawner : MonoBehaviour
         cg.alpha = 1f;
         fadeIn.gameObject.SetActive(false);
     }
-
-
 
 }

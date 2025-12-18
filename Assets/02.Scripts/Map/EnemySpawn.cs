@@ -13,7 +13,8 @@ public enum EnemyType
 public class EnemySpawn : MonoBehaviour
 {
     [Header("Enemy Spawn Setting")]
-    [SerializeField] private List<Enemy> enemyPrefab;
+    [SerializeField] private List<Enemy> _enemyPrefab;
+    [SerializeField] private List<EnemyController> enemyPrefab;
     [SerializeField] LayerMask[] layerMasks;
 
     [Header("Enemy Spawn Point Explore Setting")]
@@ -25,6 +26,7 @@ public class EnemySpawn : MonoBehaviour
     [Header("Spawning Setting")]
     bool canSpawn;
     public int count;
+    private const int PREFAB_COUNT = 7;
 
 
     private void Start()
@@ -32,15 +34,20 @@ public class EnemySpawn : MonoBehaviour
         count = 0;
         obstacleSpawnPoints = FindObjectsOfType<ObstacleSpawnPoint>();
         var gmInit = GameManager.Pool.transform;
-        var parent = new GameObject("Enemy_Pool").transform;
-        parent.SetParent(gmInit, false);
-
+        var parent = gmInit.Find("Enemy_Pool");
+        if(parent == null) 
+        { 
+            parent = new GameObject("Enemy_Pool").transform;
+            parent.SetParent(gmInit, false);
+        }
         foreach (var prefab in enemyPrefab)
         {
-            GameManager.Pool.CreatePool(prefab, 7, parent);
+            GameManager.Pool.CreatePool(prefab, PREFAB_COUNT, parent);
         }
+
         //스폰포인트와 가까이 있는(15f 이내) 모든 EnemySpawnPoint를 
         StartCoroutine(DelaySpawn());
+            
     }
 
     public void Spawn()
@@ -93,7 +100,7 @@ public class EnemySpawn : MonoBehaviour
     private void GetEnemy(Vector3 pos, EnemyType type, ref int count, int max)
     {
         if (count >= max) return;
-        Enemy enemy = null;
+        EnemyController enemy = null;
 
         switch (type)
         {
@@ -134,4 +141,5 @@ public class EnemySpawn : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         GoEnemySpawn(DetectStandardPoint());
     }
+
 }

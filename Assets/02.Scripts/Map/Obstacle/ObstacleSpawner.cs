@@ -21,11 +21,20 @@ public class ObstacleSpawner : MonoBehaviour
     {
         obstacleSpawnPoints = FindObjectsOfType<ObstacleSpawnPoint>();
         var gmInit = GameManager.Pool.transform;
-        var parent = new GameObject("Obstacle_Pool").transform;
-        parent.SetParent(gmInit, false);
+
+        var parent = gmInit.Find("Obstacle_Pool");
+        if (parent == null)
+        {
+            parent = new GameObject("Obstacle_Pool").transform;
+            parent.SetParent(gmInit, false);
+        }
+        
         portal = FindObjectsOfType<Portal>();
 
         ShuffleList();
+
+        if (parent.childCount == obstaclePrefabs.Count) return;
+
         foreach (var prefab in obstaclePrefabs)
         {
             GameManager.Pool.CreatePool(prefab, 1, parent);
@@ -34,7 +43,8 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void Update()
     {
-        foreach(var point in obstacleSpawnPoints) //find -> update에서 사용 금지
+        if (player == null ) return;
+        foreach (var point in obstacleSpawnPoints) //find -> update에서 사용 금지
         {
             var current = point.transform;
             if(spawnpoint==null) { spawnpoint = current; continue; }
@@ -52,6 +62,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             int select = Random.Range(0, obstaclePrefabs.Count);
             Obstacle obstacle = GameManager.Pool.GetFromPool(obstaclePrefabs[select]);
+            if (obstacle == null) return;
             obstacle.transform.SetPositionAndRotation(spawnpoint.position - new Vector3(0,2.5f,0), Quaternion.Euler(0,90f,0));
             alreadySpawned= true;
         }

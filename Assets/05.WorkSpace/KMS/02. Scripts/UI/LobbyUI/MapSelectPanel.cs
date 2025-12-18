@@ -35,8 +35,6 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
         }
     }
 
-    
-
     public void OnEndDrag(PointerEventData eventData)
     {
         float current = scrollbar.value;

@@ -36,9 +36,10 @@ public class Portal : MonoBehaviour
 
     public bool IsGetActiveChild()
     {
-        Enemy[] children = GameManager.Pool.GetComponentsInChildren<Enemy>(true);
+        EnemyController[] children = GameManager.Pool.GetComponentsInChildren<EnemyController>(true);
         
-        foreach (Enemy child in children)
+        
+        foreach (EnemyController child in children)
         {
             if (child.gameObject.activeSelf) return false;
         }
