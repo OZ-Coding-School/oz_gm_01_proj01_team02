@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpecialLevelUp : MonoBehaviour
 {
+    private const int DEVIL_APPEARS = 5;
+    private const int ANGEL_APPEARS = 4;
+
     [Header("angel_devil_spawn setting")]
     [SerializeField] Angel angelPrefab;
     [SerializeField] Devil devilPrefab;
@@ -51,25 +54,25 @@ public class SpecialLevelUp : MonoBehaviour
             }
         }
 
-        if (nowStage == 4)
+        if (nowStage == ANGEL_APPEARS)
         {
             Debug.Log("천사 소환");
             StartCoroutine(DelayAngelSpawn());
 
         }
-        if (nowStage == 2) 
+        if (nowStage == DEVIL_APPEARS) 
         {
             Debug.Log("악마 소환");
-            //Devil devil = GameManager.Pool.GetFromPool(devilPrefab);
-            //Debug.Log(devil is not null);
-            //devil.transform.SetPositionAndRotation(spawnpoint.position + (Vector3.up * 1.5f), Quaternion.Euler(0, 180, 0));
+            Devil devil = GameManager.Pool.GetFromPool(devilPrefab);
+            Debug.Log(devil is not null);
+            devil.transform.SetPositionAndRotation(spawnpoint.position + (Vector3.up * 1.5f), Quaternion.Euler(0, 180, 0));
         }
 
     }
 
     private void DevilSpawn(GameObject enemy)
     {
-        if (GameManager.clearStage != 10) return;
+        if (GameManager.clearStage != DEVIL_APPEARS) return;
         ADSpawn(GameManager.clearStage);
     }
 

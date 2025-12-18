@@ -11,6 +11,10 @@ public class Angel : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("천사 상호작용");
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("천사 상호작용");
+        }
+        
     }
 }

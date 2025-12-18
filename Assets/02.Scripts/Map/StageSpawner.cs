@@ -45,12 +45,14 @@ public class StageSpawner : MonoBehaviour
             }
             else if (GameManager.clearStage == 4)
             {
-                //specialLevelUp.ADSpawn(GameManager.clearStage);
+                specialLevelUp.ADSpawn(GameManager.clearStage);
                 GameManager.StageIncrease();
             }
             else if(GameManager.clearStage == 5)
             {
-                //DeSpawnAngel();
+                SpawnEnemy();
+                DeSpawnObstacle();
+                DeSpawnAngel();
                 GameManager.StageIncrease();
             }
             else
