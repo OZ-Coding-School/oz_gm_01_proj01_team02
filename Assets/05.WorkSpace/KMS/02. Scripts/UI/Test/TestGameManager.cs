@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TestGameManager : MonoBehaviour
 {
@@ -13,29 +15,38 @@ public class TestGameManager : MonoBehaviour
     [Header("UI")]
     public SegmentedHpBar hpBar;
     public SlotMachineManager slotMachine;
-
+    public GameObject pauseUI;
 
     [Header("HUD")]
     public int exp;
     public int[] nextExp = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
-    public int level;
+    public int level = 1;
     public int coin;
+
+    [Header("State")]
+    public TestGameState gameState = TestGameState.Playing;
+
+
+
 
 
     public TestPlayer player;
 
     private void Awake()
     {
+        
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        level = 1;
+        Time.timeScale = 1.0f;
+        gameState = TestGameState.Playing;
     }
 
     private void Start()
     {
         currentHp = maxHp;
         UpdateHpUI();
+        gameState = TestGameState.Playing;
     }
 
 
@@ -92,4 +103,37 @@ public class TestGameManager : MonoBehaviour
     {
         coin += amount;
     }
+
+    public void TogglePause()
+    {
+        if (gameState == TestGameState.Paused)
+            Resume();
+        else
+            Pause();
+
+    }
+
+    public void Pause()
+    {
+        
+        gameState = TestGameState.Paused;
+        Time.timeScale = 0.0f;
+        pauseUI.SetActive(true);
+
+    }
+
+    public void Resume()
+    {
+        gameState = TestGameState.Playing;
+        Time.timeScale = 1.0f;
+        pauseUI.SetActive(false);
+    }
+
+    public void GoHome()
+    {
+        Time.timeScale = 1.0f;
+        SceneManager.LoadScene("TitleScene");
+        
+    }
+
 }
