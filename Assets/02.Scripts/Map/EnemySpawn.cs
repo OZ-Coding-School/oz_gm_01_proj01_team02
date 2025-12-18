@@ -13,7 +13,7 @@ public enum EnemyType
 public class EnemySpawn : MonoBehaviour
 {
     [Header("Enemy Spawn Setting")]
-    [SerializeField] private List<Enemy> _enemyPrefab;
+    //[SerializeField] private List<Enemy> enemyPrefab;
     [SerializeField] private List<EnemyController> enemyPrefab;
     [SerializeField] LayerMask[] layerMasks;
 
@@ -101,6 +101,7 @@ public class EnemySpawn : MonoBehaviour
     {
         if (count >= max) return;
         EnemyController enemy = null;
+        //Enemy enemy = null;
 
         switch (type)
         {

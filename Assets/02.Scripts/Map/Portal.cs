@@ -29,15 +29,15 @@ public class Portal : MonoBehaviour
 
     private void AllEnemiesDied(GameObject enemy)
     {
-        
+        Debug.Log(IsGetActiveChild());
         if (IsGetActiveChild()) OpenPortal();
         else ClosePortal();
     }
 
     public bool IsGetActiveChild()
     {
+        Debug.Log("남은 적 검사");
         EnemyController[] children = GameManager.Pool.GetComponentsInChildren<EnemyController>(true);
-        
         
         foreach (EnemyController child in children)
         {

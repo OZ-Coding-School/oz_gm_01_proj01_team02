@@ -153,6 +153,7 @@ GameObject:
   - component: {fileID: 1751594287448666790}
   - component: {fileID: 2260553748599988100}
   - component: {fileID: 874604659507878870}
+  - component: {fileID: 5348370518655846211}
   m_Layer: 6
   m_Name: MeleeEnemy
   m_TagString: Enemy
@@ -325,6 +326,18 @@ MonoBehaviour:
     m_Bits: 8
   enemyBullet: {fileID: 269147033921475184}
   bulletPos: {fileID: 6566488752227311231}
+--- !u!114 &5348370518655846211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8045153271200570638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f71213d5d874c43ba701213f0373cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4502703611103318273
 PrefabInstance:
   m_ObjectHideFlags: 0
