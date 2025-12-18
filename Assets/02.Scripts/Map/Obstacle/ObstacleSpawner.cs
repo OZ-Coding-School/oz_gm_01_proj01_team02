@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//1. ½ºÆù Æ÷ÀÎÆ®¿Í ÇÃ·¹ÀÌ¾î °£ÀÇ °Å¸®¸¦ °è»êÇÏ¿© distanceToPlayer º¸´Ù ÂªÀ¸¸é ±× À§Ä¡¿¡ Àå¾Ö¹° ½ºÆù
-//2. ½ºÆùµÈ Àå¾Ö¹°Àº EndPoint °´Ã¼ÀÇ StageSpawner ½ºÅ©¸³Æ®¸¦ ÅëÇØ ÇÃ·¹ÀÌ¾î°¡ ÇØ´ç °´Ã¼¸¦ Åë°ú½Ã ¸ðµÎ return pool Ã³¸®
-//3. ÇÃ·¹ÀÌ¾î°¡ ´Ù¸¥ ½ºÅ×ÀÌÁö·Î ÀÌµ¿ÇÏ¸é ±× ¶§ ´Ù½Ã isSpawned ¿©ºÎ¸¦ ÆÇ´ÜÇÏ¿© ÇØ´ç À§Ä¡¿¡ Àå¾Ö¹° ½ºÆù
+//1. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ distanceToPlayer ï¿½ï¿½ï¿½ï¿½ Âªï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+//2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ EndPoint ï¿½ï¿½Ã¼ï¿½ï¿½ StageSpawner ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ø´ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ return pool Ã³ï¿½ï¿½
+//3. ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ isSpawned ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½Ç´ï¿½ï¿½Ï¿ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 public class ObstacleSpawner : MonoBehaviour
 {
@@ -34,7 +34,7 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void Update()
     {
-        foreach(var point in obstacleSpawnPoints) //find -> update¿¡¼­ »ç¿ë ±ÝÁö
+        foreach(var point in obstacleSpawnPoints) //find -> updateï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             var current = point.transform;
             if(spawnpoint==null) { spawnpoint = current; continue; }
@@ -73,7 +73,7 @@ public class ObstacleSpawner : MonoBehaviour
         if (!canSpawn) return null;
         Portal closestPortal = null;
         float minDist = float.MaxValue;
-        // ½ºÆ÷³Ê¿Í °¡Àå°¡±î¿î ¹®¸¸ È°¼ºÈ­ ½ÃÄÑÁÖ±â
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½å°¡ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
         foreach (var p in portal)
         {
             if(p ==null) continue;

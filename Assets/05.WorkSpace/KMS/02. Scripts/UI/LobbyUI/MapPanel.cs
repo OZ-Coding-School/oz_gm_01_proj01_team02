@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapPanel : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class MapPanel : MonoBehaviour
 
         mapSelectPanel.SetActive(true);
         tab.SetActive(false);
+    }
+
+    public void GoGameScene()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 
    

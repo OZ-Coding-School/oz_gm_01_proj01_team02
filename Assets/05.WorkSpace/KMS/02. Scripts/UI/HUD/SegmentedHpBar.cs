@@ -10,14 +10,21 @@ public class SegmentedHpBar : MonoBehaviour
     [Header("HP")]
     public int maxHp = 500;
     public int currentHp = 500;
+    private float displayHp;
 
     public int segmentCount = 7;
+    private Image[] units;
+
 
     [Header("UI")]
     public Transform hpFillRoot;
     public Image hpUnitPrefab;
 
-    private Image[] units;
+    [Header("Animation")]
+    public float hpAnimSpeed = 100.0f;
+    private Coroutine hpAnimCoroutine;
+
+
 
     private bool isInitialized = false;
 
@@ -29,6 +36,7 @@ public class SegmentedHpBar : MonoBehaviour
             units[i] = Instantiate(hpUnitPrefab, hpFillRoot);
         }
 
+        displayHp = TestGameManager.Instance.currentHp;
         isInitialized = true;
         UpdateUI();
     
@@ -41,10 +49,38 @@ public class SegmentedHpBar : MonoBehaviour
     {
         if (!isInitialized) return;
         currentHp = Mathf.Clamp(hp, 0, maxHp);
+
+        if (hpAnimCoroutine != null)
+        {
+            StopCoroutine(hpAnimCoroutine);
+        }
+        
         UpdateUI();
+        hpAnimCoroutine = StartCoroutine(AnimateHp());
+    }
+
+    IEnumerator AnimateHp()
+    {
+        while (!Mathf.Approximately(displayHp, currentHp))
+        {
+            displayHp = Mathf.MoveTowards(displayHp, currentHp, hpAnimSpeed * Time.deltaTime);
+        
+
+        UpdateUIWithValue(displayHp);
+        yield return null;
+        }
+
+        displayHp = TestGameManager.Instance.currentHp;
+        UpdateUIWithValue(displayHp);
     }
 
     void UpdateUI()
+    {
+        UpdateUIWithValue(currentHp);
+    }
+
+
+    void UpdateUIWithValue(float amount)
     {
         float hpRatio = (float) currentHp / maxHp;
         int activeSegments = Mathf.CeilToInt(hpRatio*segmentCount);
