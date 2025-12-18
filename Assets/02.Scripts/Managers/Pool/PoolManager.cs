@@ -33,7 +33,6 @@ public class PoolManager : MonoBehaviour
         pools.Add(key, new ObjectPool<T>(prefab, initCount, parent));
     }
 
-
     public T GetFromPool<T>(T prefab) where T : MonoBehaviour
     {
         if (prefab == null) return null;

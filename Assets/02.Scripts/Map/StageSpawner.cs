@@ -40,6 +40,7 @@ public class StageSpawner : MonoBehaviour
             obstSpawner.alreadySpawned = false;
 
             int rand = Random.Range(0, SpawnPoint.Length);
+            Debug.Log($"소환 위치:{SpawnPoint[rand].transform.position}");
             other.transform.position = SpawnPoint[rand].transform.position;
             StartCoroutine(FadeIn());
 
