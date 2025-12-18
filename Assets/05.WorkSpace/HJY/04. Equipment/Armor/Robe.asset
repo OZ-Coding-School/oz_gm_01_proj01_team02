@@ -10,18 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
-  m_Name: StalkerStaff
+  m_Name: Robe
   m_EditorClassIdentifier: 
-  equipmentName: StalkerStaff
-  type: 0
-  icon: {fileID: 21300000, guid: f32b753922206a244acec70cebff78d6, type: 3}
+  equipmentName: Robe
+  type: 1
+  icon: {fileID: 21300000, guid: d85c52838d5311f439f44c11e336eb89, type: 3}
   stats:
-  - statType: 1
-    value: 50
-  - statType: 2
-    value: 1.83
+  - statType: 0
+    value: 566
+  - statType: 10
+    value: 0.1
+  - statType: 11
+    value: 0.2
   armorEffect:
-    effectType: 0
+    effectType: 4
     value: 0
   ringBonus:
     enemyType: 0

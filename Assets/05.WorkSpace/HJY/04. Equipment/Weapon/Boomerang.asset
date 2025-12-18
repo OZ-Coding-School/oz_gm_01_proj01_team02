@@ -10,20 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
-  m_Name: Vest
+  m_Name: Boomerang
   m_EditorClassIdentifier: 
-  equipmentName: Vest
-  type: 1
-  icon: {fileID: 21300000, guid: 77dfee7f5565d6640b9e6e69c3427df0, type: 3}
+  equipmentName: Boomerang
+  type: 0
+  icon: {fileID: 21300000, guid: 34311f2ed8d3a524dba229b230f4e9ca, type: 3}
   stats:
-  - statType: 0
-    value: 2537
-  - statType: 7
-    value: 0.07
-  - statType: 11
-    value: 0.2
+  - statType: 1
+    value: 40
+  - statType: 2
+    value: 1.83
   armorEffect:
-    effectType: 1
+    effectType: 0
     value: 0
   ringBonus:
     enemyType: 0

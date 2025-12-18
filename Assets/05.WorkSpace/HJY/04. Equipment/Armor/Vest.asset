@@ -10,18 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
-  m_Name: EBoomerang
+  m_Name: Vest
   m_EditorClassIdentifier: 
-  equipmentName: Epic Boomerang
-  type: 0
-  icon: {fileID: 21300000, guid: 0d9e5a55c820aec4b81ffc8e83517448, type: 3}
+  equipmentName: Vest
+  type: 1
+  icon: {fileID: 21300000, guid: fd69eccc92f8f4a4b8017f85a28af98e, type: 3}
   stats:
-  - statType: 1
-    value: 500
-  - statType: 2
-    value: 1.83
+  - statType: 0
+    value: 2537
+  - statType: 7
+    value: 0.07
+  - statType: 11
+    value: 0.2
   armorEffect:
-    effectType: 0
+    effectType: 1
     value: 0
   ringBonus:
     enemyType: 0

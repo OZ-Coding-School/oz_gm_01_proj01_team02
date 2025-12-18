@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipmentName: EpicSawBlade
   type: 0
-  icon: {fileID: 21300000, guid: f2aab6c76a79dee42baaebbf37723760, type: 3}
+  icon: {fileID: 21300000, guid: b85970a2e2c99bd4e8c70e1aabd9b4d0, type: 3}
   stats:
   - statType: 1
     value: 500

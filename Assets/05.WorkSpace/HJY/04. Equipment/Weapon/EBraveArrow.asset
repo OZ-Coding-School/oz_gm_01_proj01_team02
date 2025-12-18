@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
-  m_Name: BraveArrow
+  m_Name: EBraveArrow
   m_EditorClassIdentifier: 
-  equipmentName: BraveArrow
+  equipmentName: EpicBraveArrow
   type: 0
-  icon: {fileID: 21300000, guid: b18a9134b29dac348b917c4b70ae456c, type: 3}
+  icon: {fileID: 21300000, guid: 74c2461962de0de4e898e74ab6873d00, type: 3}
   stats:
   - statType: 1
-    value: 50
+    value: 617.4
   - statType: 2
     value: 1.67
   armorEffect:
