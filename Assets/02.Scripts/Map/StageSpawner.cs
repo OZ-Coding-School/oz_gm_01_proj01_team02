@@ -5,6 +5,9 @@ using DG.Tweening;
 
 public class StageSpawner : MonoBehaviour
 {
+    private const int DEVIL_APPEARS = 4;
+    private const int ANGEL_APPEARS = 2;
+
     [Header("FadeIn")]
     FadeIn fadeIn;
     CanvasGroup cg;
@@ -43,16 +46,16 @@ public class StageSpawner : MonoBehaviour
                 SpawnEnemy();
                 GameManager.InitStageClearCount(); // 다른 위치로 옮겨야함.
             }
-            else if (GameManager.clearStage == 4)
+            else if (GameManager.clearStage == ANGEL_APPEARS)
             {
                 specialLevelUp.ADSpawn(GameManager.clearStage);
                 GameManager.StageIncrease();
             }
-            else if(GameManager.clearStage == 5)
+            else if(GameManager.clearStage == ANGEL_APPEARS +1) DeSpawnAngel();
+            else if (GameManager.clearStage == DEVIL_APPEARS)
             {
                 SpawnEnemy();
                 DeSpawnObstacle();
-                DeSpawnAngel();
                 GameManager.StageIncrease();
             }
             else
@@ -71,7 +74,7 @@ public class StageSpawner : MonoBehaviour
         foreach (var port in portal) 
         {
             port.ClosePortal();
-            if (GameManager.clearStage == 4) port.OpenPortal();
+            if (GameManager.clearStage == ANGEL_APPEARS) port.OpenPortal();
         }
         fadeIn.gameObject.SetActive(true);
         cg.alpha = 1f;

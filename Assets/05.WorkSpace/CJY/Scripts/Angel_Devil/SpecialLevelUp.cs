@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SpecialLevelUp : MonoBehaviour
 {
-    private const int DEVIL_APPEARS = 5;
-    private const int ANGEL_APPEARS = 4;
+    private const int DEVIL_APPEARS = 4;
+    private const int ANGEL_APPEARS = 2;
 
     [Header("angel_devil_spawn setting")]
     [SerializeField] Angel angelPrefab;
@@ -35,7 +35,6 @@ public class SpecialLevelUp : MonoBehaviour
         GameManager.Pool.CreatePool(angelPrefab, 1, parent);
         GameManager.Pool.CreatePool(devilPrefab, 1, parent);
 
-        Debug.Log(spawnPoints is not null);
     }
 
 
@@ -72,6 +71,7 @@ public class SpecialLevelUp : MonoBehaviour
 
     private void DevilSpawn(GameObject enemy)
     {
+        Debug.Log("µ¥ºô ½ºÆù");
         if (GameManager.clearStage != DEVIL_APPEARS) return;
         ADSpawn(GameManager.clearStage);
     }
