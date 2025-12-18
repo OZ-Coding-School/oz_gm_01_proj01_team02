@@ -10,20 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
-  m_Name: Breastplate
+  m_Name: EBrightSpear
   m_EditorClassIdentifier: 
-  equipmentName: Breastplate
-  type: 1
-  icon: {fileID: 21300000, guid: 657029aeb542630449c6a53f18d4774e, type: 3}
+  equipmentName: EpicBrightSpear
+  type: 0
+  icon: {fileID: 21300000, guid: 70f743ef7a1e6bc40b39f6aa98933f39, type: 3}
   stats:
-  - statType: 0
-    value: 2950
-  - statType: 8
-    value: 0.05
-  - statType: 11
-    value: 0.2
+  - statType: 1
+    value: 735
+  - statType: 2
+    value: 1.5
   armorEffect:
-    effectType: 2
+    effectType: 0
     value: 0
   ringBonus:
     enemyType: 0

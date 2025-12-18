@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
-  m_Name: EDeathScythe
+  m_Name: EBoomerang
   m_EditorClassIdentifier: 
-  equipmentName: EpicDeathScythe
+  equipmentName: EpicBoomerang
   type: 0
-  icon: {fileID: 21300000, guid: ba92a0cd7093f274d8abf9b1116ee017, type: 3}
+  icon: {fileID: 21300000, guid: f3c784aae78afb84daeec070b6881c45, type: 3}
   stats:
   - statType: 1
-    value: 852.6
+    value: 500
   - statType: 2
-    value: 1.5
+    value: 1.83
   armorEffect:
     effectType: 0
     value: 0

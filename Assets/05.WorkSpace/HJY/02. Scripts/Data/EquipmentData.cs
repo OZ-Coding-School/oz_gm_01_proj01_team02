@@ -17,5 +17,6 @@ public class EquipmentData: ScriptableObject
     
     [Header("Ring Bonus")]
     public RingDamageBonus ringBonus;
+
 }
 
