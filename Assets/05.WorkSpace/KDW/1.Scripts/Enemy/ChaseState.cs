@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class ChaseState : EnemyState
@@ -7,11 +8,6 @@ public abstract class ChaseState : EnemyState
     public override StateEnums StateType
     {
         get { return StateEnums.Chase; }
-    }
-
-    public override void UpdateState()
-    {
-        
     }
     public override void FixedUpdateState()
     {
@@ -34,10 +30,17 @@ public class MeleeChase : ChaseState
         float dist = enemy.DistToPlayer();
 
         //근거리 적의 공격 가능한 거리 안에 들어왔으면 공격 상태로 전환
-        if (dist <= enemy.MeleeAttackRange)
+        if (dist <= enemy.MeleeAttackRange && Time.time >= enemy.NextAttackTime)
         {
             enemy.ChangeState(enemy.AttackState);
             Debug.Log("근거리공격");
+            return;
+        }
+        else if (dist <= enemy.MeleeIdleRange && Time.time < enemy.NextAttackTime && !enemy.IsAttack)
+        {
+            Debug.Log("멈춰");
+            Debug.Log(enemy.IsAttack);
+            enemy.ChangeState(enemy.IdleState);
             return;
         }
     }
