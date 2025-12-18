@@ -25,7 +25,7 @@ public class MeleeAttack : AttackState
         if (dist > enemy.MeleeAttackRange || Time.time < enemy.NextAttackTime)
         {
             enemy.ChangeState(enemy.ChaseState);
-            Debug.Log("근거리추적");
+            //Debug.Log("근거리추적");
         }
     }
 

@@ -9,15 +9,17 @@ public class PlayerStatManager : MonoBehaviour
     public static PlayerStatManager Instance;
     public static event Action OnStatChanged;
 
+    // 기본 스탯
     [Header("Base Stats")]
-    public float baseMaxHp = 1000;
-    public float baseAttack = 150;
-    public float baseAttackSpeed = 1;
-    public float baseCritRate = 0.05f;
-    public float baseCritDamage = 2f;
-    public float baseMoveSpeed = 5;
-    public float baseSuperTime = 0.5f;
+    public float baseMaxHp = 1000; // 최대 체력
+    public float baseAttack = 150; // 공격력
+    public float baseAttackSpeed = 1; // 공격 속도 (분당 공속) 
+    public float baseCritRate = 0.05f; // 치명타 확률
+    public float baseCritDamage = 2f; // 치명타 대미지
+    public float baseMoveSpeed = 5; // 이동 속도
+    public float baseSuperTime = 0.5f; // 피격 무적 시간 (연속 피격 방지)
 
+    // 현재 스탯
     [Header("Current Stats")]
     public float maxHp;
     public float attack;
@@ -27,8 +29,8 @@ public class PlayerStatManager : MonoBehaviour
     public float moveSpeed;
     public float superTime;
 
-    public float dodgeRate;
-    public float coinBonus;
+    public float dodgeRate; // 회피 확률
+    public float coinBonus; // 코인 보너스
 
     private void Awake()
     {
@@ -50,6 +52,7 @@ public class PlayerStatManager : MonoBehaviour
         coinBonus = 0;
     }
 
+    // 최신 스탯 계산
     public void RecalculateStats()
     {
         ResetStat();

@@ -29,6 +29,11 @@ public class TextEnemyBullet : MonoBehaviour
         {
             ReturnPool();
         }
+
+        if (other.CompareTag("Wall"))
+        {
+            ReturnPool();
+        }
     }
     private void ReturnPool()
     {
