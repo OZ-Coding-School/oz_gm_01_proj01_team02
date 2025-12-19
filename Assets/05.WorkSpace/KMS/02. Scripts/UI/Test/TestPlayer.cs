@@ -26,6 +26,7 @@ public class TestPlayer : MonoBehaviour
 
     void FixedUpdate()
     {
+        
         rb.velocity = new Vector3(moveInput.x, 0f, moveInput.y)*moveSpeed;
     }
 

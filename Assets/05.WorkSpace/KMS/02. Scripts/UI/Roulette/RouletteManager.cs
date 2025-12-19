@@ -44,6 +44,11 @@ public class RouletteManager : MonoBehaviour
 
     }
 
+    private void OnEnable()
+    {
+        Time.timeScale = 0.0f;
+    }
+
     IEnumerator StartRoulette()
     {
         yield return new WaitForSeconds(2f);
@@ -106,6 +111,7 @@ public class RouletteManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         this.gameObject.SetActive(false);
+        Time.timeScale = 1.0f;
     }
 
 }

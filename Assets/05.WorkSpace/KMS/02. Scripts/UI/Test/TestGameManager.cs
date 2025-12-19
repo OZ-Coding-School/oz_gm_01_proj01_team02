@@ -136,4 +136,18 @@ public class TestGameManager : MonoBehaviour
         
     }
 
+    public void DecreaseMaxHp(int amount)
+    {
+        maxHp -= amount;
+        Debug.Log($"{maxHp}");
+        maxHp = Mathf.Max(1, maxHp);
+        currentHp = Mathf.Min(currentHp, maxHp);
+        UpdateHpUI();
+    }
+
+    public void AddBuff(AngelBuffData buff)
+    {
+        Debug.Log($"악마 계약: {buff.displayName}");
+    }
+
 }
