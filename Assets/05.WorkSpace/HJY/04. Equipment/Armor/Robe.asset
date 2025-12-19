@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
+  m_Name: Robe
+  m_EditorClassIdentifier: 
+  equipmentName: Robe
+  displayName: "\uBCF4\uC774\uB4DC \uB85C\uBE0C"
+  type: 1
+  icon: {fileID: 21300000, guid: d85c52838d5311f439f44c11e336eb89, type: 3}
+  description: "\uC545\uB9C8\uB4E4\uC758 \uB545\uC5D0\uC11C \uC628 \uB85C\uBE0C.
+    \uADFC\uC811 \uACF5\uACA9\uC73C\uB85C \uC778\uD55C \uB300\uBBF8\uC9C0\uB97C \uC904\uC5EC
+    \uC90D\uB2C8\uB2E4."
+  abilityDescription: "HP + 566\n\uCDA9\uB3CC \uB300\uBBF8\uC9C0 \uC800\uD56D + 10%\n\uB808\uB4DC
+    \uD558\uD2B8\uC758 \uD790\uB9C1 \uD6A8\uACFC + 20%\n\uBC29 \uC548\uC758 \uBAA8\uB4E0
+    \uC801\uB4E4\uC744 \uC911\uB3C5\uC2DC\uD0B5\uB2C8\uB2E4"
+  stats:
+  - statType: 0
+    value: 566
+  - statType: 10
+    value: 0.1
+  - statType: 11
+    value: 0.2
+  armorEffect:
+    effectType: 4
+    value: 0
+  ringBonus:
+    enemyType: 0
+    bonusDamage: 0

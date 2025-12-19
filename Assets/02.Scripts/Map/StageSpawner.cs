@@ -1,10 +1,21 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using DG.Tweening;
+using UnityEngine.SceneManagement;
+
+// ���� �Ǵ� ���� ���������� ���̳Ŀ����� ������ �޸��������
+// �������� �Ŵ������� �̺�Ʈ�� �İ� stage ���� ���� ���� ��ȣ�ۿ��� �ʿ���. < �̹������ ����.
+// õ�� : Ư�� �������� �ޱ��ڰ� 5�� ������������ ����
+// �Ǹ� : ������ ���� ����
+// ���ÿ��� �Ϲ���, ��ֹ� ����
+// ���ڸ� 5�� ������������ �Ϲ���, ��ֹ� ���� x õ�� ����
+// 10�������� ���� �Ϲ���, ��ֹ� ���� x ������ ���� �� �Ǹ� ����
 
 public class StageSpawner : MonoBehaviour
 {
+
     [Header("FadeIn")]
     FadeIn fadeIn;
     CanvasGroup cg;
@@ -15,6 +26,10 @@ public class StageSpawner : MonoBehaviour
     ObstacleSpawner obstSpawner;
     EnemySpawn enemySpawn;
     Portal[] portal;
+    SpecialLevelUp specialLevelUp;
+    bool isBossStage;
+    ObstacleSpawner obstacleSpawner;
+
 
     private void Start()
     {
@@ -24,37 +39,134 @@ public class StageSpawner : MonoBehaviour
         obstSpawner = FindObjectOfType<ObstacleSpawner>();
         enemySpawn = FindObjectOfType<EnemySpawn>();
         portal = FindObjectsOfType<Portal>();
+        specialLevelUp = FindObjectOfType<SpecialLevelUp>();
+        Debug.Log($"���� �������� : {GameManager.Stage.currentStage}");
+    }
+
+    private void OnEnable()
+    {
+        StageManager.OnStageIncrease += NextStage;
+    }
+
+    private void OnDisable()
+    {
+        StageManager.OnStageIncrease -= NextStage;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log(GameManager.clearStage);
+            // �÷��̾� ��ġ �������������� �̵�
             int rand = Random.Range(0, SpawnPoint.Length);
-            Debug.Log($"��ȯ ��ġ:{SpawnPoint[rand].transform.position}");
             other.transform.position = SpawnPoint[rand].transform.position;
-            enemySpawn.count = 0;
-            enemySpawn.Spawn();
-            foreach (var obst in FindObjectsOfType<Obstacle>())
-            {
-                if (obst.isActiveAndEnabled) obst.ReturnPool();
-            }
-            obstSpawner.alreadySpawned = false;
+            DeSpawnObstacle();
 
-
+            // ȭ�� ���̵��� �ڷ�ƾ
             StartCoroutine(FadeIn());
 
-            if (GameManager.clearStage >= 3) GameManager.ClearChapter();
+            // �������� +1 �ϴ� �޼���
+            GameManager.Stage.StageIncrease();
 
-            GameManager.StageIncrease();
+            // �ش� ���������� �� �� ��ֹ� ����
+            NextStage(GameManager.Stage.currentStage);
+            #region õ��/�Ǹ� ��ȯ �����ڵ�
+            //if (GameManager.Stage.currentStage == 10)
+            //{
+            //    SpawnEnemy(isBossStage);
+
+            //}
+            //else if (GameManager.Stage.currentStage == GameManager.Stage.Select("angel"))
+            //{
+            //    specialLevelUp.ADSpawn(GameManager.Stage.currentStage);
+            //    GameManager.Stage.StageIncrease();
+            //}
+            //else if (GameManager.Stage.currentStage == GameManager.Stage.Select("angel") + 1)
+            //{
+            //    DeSpawnAngel();
+            //    SpawnEnemy(isBossStage);
+            //    DeSpawnObstacle();
+            //    GameManager.Stage.StageIncrease();
+            //}
+            //else if (GameManager.Stage.currentStage == GameManager.Stage.Select("devil"))
+            //{
+            //    SpawnEnemy(isBossStage);
+            //    DeSpawnObstacle();
+            //    GameManager.Stage.StageIncrease();
+            //}
+            //else if (GameManager.Stage.currentStage == GameManager.Stage.Select("devil") + 1)
+            //{
+            //    DeSpawnDevil();
+            //    SpawnEnemy(isBossStage);
+            //    DeSpawnObstacle();
+            //    GameManager.Stage.StageIncrease();
+            //}
+            //else
+            //{
+            //    SpawnEnemy(isBossStage);
+            //    DeSpawnObstacle();
+            //    GameManager.Stage.StageIncrease();
+            //}
+            #endregion
+
+            Debug.Log($"���� �������� : {GameManager.Stage.currentStage}");
+        }
+    }
+
+    private void NextStage(int currentstage)
+    {
+        if (currentstage == 0) return;
+        obstSpawner.notthistimeObstacle = false;
+        isBossStage = false;
+        Debug.Log(currentstage % 10 == 5 ? $"õ�� ��ȯ. ���� �������� : {currentstage}" : $"õ�� ��ȯ ���������� �ƴ�. ���� �������� : {currentstage}");
+        Debug.Log(currentstage % 10 == 0 && currentstage != 0 ? $"���� �� �Ǹ� ��ȯ. ���� �������� : {currentstage}" : $"���� �� �Ǹ� ��ȯ ���������� �ƴ�. ���� �������� : {currentstage}");
+        if (currentstage % 10 == GameManager.Stage.Select("angel"))
+        {
+            Debug.Log("õ�� ��ȯ");
+            // õ�簡 ���� �������� => �� x , ��ֹ� x, ��Ż ON
+            obstSpawner.notthistimeObstacle = true;
+            DeSpawnObstacle();
+            specialLevelUp.ADSpawn(GameManager.Stage.currentStage);
+            Portal[] portal = FindObjectsOfType<Portal>();
+            foreach (var p in portal) p.OpenPortal();
+        }
+        else if (currentstage % GameManager.Stage.Select("devil") == 0 && currentstage != 0)
+        {
+            // �Ǹ��� ���� �������� => ���� O, ��ֹ� x, ��Ż OFF
+            Debug.Log("���� ����");
+            obstSpawner.notthistimeObstacle = true;
+            isBossStage = true;
+            SpawnEnemy(isBossStage);
+
+        }
+        else if (currentstage > 20)
+        {
+            // �� é�Ͱ� �����.
+            Debug.Log("��é�� Ŭ����");
+            // �� é�Ͱ� �رݵǾ��ٴ� ������ �̵�.
+
+            GameManager.Stage.InitStageClearCount(); // �������� �ʱ�ȭ
+            Debug.Log($"�������� �ʱ�ȭ : {GameManager.Stage.currentStage}");
+        }
+        else
+        {
+            Debug.Log("�Ϲ� �� ��ȯ");
+            // �Ǹ�, õ�縦 ��Ȱ��ȭ ���ִ� �κ�
+            SpawnEnemy(isBossStage);
+            DeSpawnAngel();
+            DeSpawnDevil();
+            // �Ϲ� �������� => �� O, ��ֹ� O, ��Ż OFF
+
         }
     }
 
 
     IEnumerator FadeIn()
     {
-        foreach (var port in portal) port.ClosePortal();
+        foreach (var port in portal)
+        {
+            port.ClosePortal();
+        }
         fadeIn.gameObject.SetActive(true);
         cg.alpha = 1f;
         yield return cg.DOFade(0f, duration)
@@ -65,4 +177,32 @@ public class StageSpawner : MonoBehaviour
         cg.alpha = 1f;
     }
 
+    private void SpawnEnemy(bool boss)
+    {
+        enemySpawn.count = 0;
+        enemySpawn.Spawn(boss);
+    }
+
+    private void DeSpawnObstacle()
+    {
+        foreach (var obst in FindObjectsOfType<Obstacle>())
+        {
+            if (obst.isActiveAndEnabled) obst.ReturnPool();
+        }
+        obstSpawner.alreadySpawned = false;
+    }
+
+    private void DeSpawnAngel()
+    {
+        Angel angel = FindObjectOfType<Angel>();
+        if (angel == null) return;
+        if (angel.isActiveAndEnabled) angel.ReturnPool();
+    }
+
+    private void DeSpawnDevil()
+    {
+        Devil devil = FindObjectOfType<Devil>();
+        if (devil == null) return;
+        if (devil.isActiveAndEnabled) devil.ReturnPool();
+    }
 }

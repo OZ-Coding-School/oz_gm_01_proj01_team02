@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//1. ½ºÆù Æ÷ÀÎÆ®¿Í ÇÃ·¹ÀÌ¾î °£ÀÇ °Å¸®¸¦ °è»êÇÏ¿© distanceToPlayer º¸´Ù ÂªÀ¸¸é ±× À§Ä¡¿¡ Àå¾Ö¹° ½ºÆù
-//2. ½ºÆùµÈ Àå¾Ö¹°Àº EndPoint °´Ã¼ÀÇ StageSpawner ½ºÅ©¸³Æ®¸¦ ÅëÇØ ÇÃ·¹ÀÌ¾î°¡ ÇØ´ç °´Ã¼¸¦ Åë°ú½Ã ¸ðµÎ return pool Ã³¸®
-//3. ÇÃ·¹ÀÌ¾î°¡ ´Ù¸¥ ½ºÅ×ÀÌÁö·Î ÀÌµ¿ÇÏ¸é ±× ¶§ ´Ù½Ã isSpawned ¿©ºÎ¸¦ ÆÇ´ÜÇÏ¿© ÇØ´ç À§Ä¡¿¡ Àå¾Ö¹° ½ºÆù
+//1. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ distanceToPlayer ï¿½ï¿½ï¿½ï¿½ Âªï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+//2. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ EndPoint ï¿½ï¿½Ã¼ï¿½ï¿½ StageSpawner ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ø´ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ return pool Ã³ï¿½ï¿½
+//3. ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ù½ï¿½ isSpawned ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½Ç´ï¿½ï¿½Ï¿ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 public class ObstacleSpawner : MonoBehaviour
 {
@@ -17,6 +17,8 @@ public class ObstacleSpawner : MonoBehaviour
     public bool alreadySpawned;
     ObstacleSpawnPoint[] obstacleSpawnPoints;
     Portal[] portal;
+
+    public bool notthistimeObstacle;
     private void Start()
     {
         obstacleSpawnPoints = FindObjectsOfType<ObstacleSpawnPoint>();
@@ -28,7 +30,7 @@ public class ObstacleSpawner : MonoBehaviour
             parent = new GameObject("Obstacle_Pool").transform;
             parent.SetParent(gmInit, false);
         }
-        
+
         portal = FindObjectsOfType<Portal>();
 
         ShuffleList();
@@ -39,39 +41,40 @@ public class ObstacleSpawner : MonoBehaviour
         {
             GameManager.Pool.CreatePool(prefab, 1, parent);
         }
+        notthistimeObstacle = false;
     }
 
     private void Update()
     {
-        if (player == null ) return;
-        foreach (var point in obstacleSpawnPoints) //find -> update¿¡¼­ »ç¿ë ±ÝÁö
+        foreach (var point in obstacleSpawnPoints) //find -> updateï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             var current = point.transform;
-            if(spawnpoint==null) { spawnpoint = current; continue; }
+            if (spawnpoint == null) { spawnpoint = current; continue; }
             else
             {
-                if(Vector3.Distance(current.position, player.transform.position) < Vector3.Distance(spawnpoint.position, player.transform.position))
+                if (Vector3.Distance(current.position, player.transform.position) < Vector3.Distance(spawnpoint.position, player.transform.position))
                 {
                     spawnpoint = current;
                 }
             }
         }
         canSpawn = Vector3.Distance(spawnpoint.position, player.transform.position) < distanceToPlayer ? true : false;
-        
+
+        //if (canSpawn && !alreadySpawned && !notthistimeObstacle) => ìž¥ì• ë¬¼ ì¹˜ìš°ëŠ” ì½”ë“œ (ì•…ë§ˆ ì†Œí™˜ì‹œ ë³´ìŠ¤ëª¹ë„ ì†Œí™˜ì´ì•ˆë˜ì„œ ì§€ì›€)
         if (canSpawn && !alreadySpawned)
         {
             int select = Random.Range(0, obstaclePrefabs.Count);
             Obstacle obstacle = GameManager.Pool.GetFromPool(obstaclePrefabs[select]);
             if (obstacle == null) return;
-            obstacle.transform.SetPositionAndRotation(spawnpoint.position - new Vector3(0,2.5f,0), Quaternion.Euler(0,90f,0));
-            alreadySpawned= true;
+            obstacle.transform.SetPositionAndRotation(spawnpoint.position - new Vector3(0, 2.5f, 0), Quaternion.Euler(0, 90f, 0));
+            alreadySpawned = true;
         }
     }
 
     private void ShuffleList()
     {
         System.Random rand = new System.Random();
-        for (int i = obstaclePrefabs.Count-1; i > 0; i--)
+        for (int i = obstaclePrefabs.Count - 1; i > 0; i--)
         {
             int k = rand.Next(i + 1);
             var temp = obstaclePrefabs[i];
@@ -84,13 +87,13 @@ public class ObstacleSpawner : MonoBehaviour
         if (!canSpawn) return null;
         Portal closestPortal = null;
         float minDist = float.MaxValue;
-        // ½ºÆ÷³Ê¿Í °¡Àå°¡±î¿î ¹®¸¸ È°¼ºÈ­ ½ÃÄÑÁÖ±â
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½å°¡ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½
         foreach (var p in portal)
         {
-            if(p ==null) continue;
+            if (p == null) continue;
             float currentDist = Vector3.Distance(spawnpoint.position, p.transform.position);
 
-            if (currentDist < minDist) 
+            if (currentDist < minDist)
             {
                 minDist = currentDist;
                 closestPortal = p;

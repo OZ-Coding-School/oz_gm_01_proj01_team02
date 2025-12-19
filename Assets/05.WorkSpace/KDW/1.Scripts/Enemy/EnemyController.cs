@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float rotateSpeed = 8.0f;
 
     [Header("근거리 공격 거리/쿨타임/돌진 속도")]
+    [SerializeField] private float meleeIdleRange = 1.0f;   //타겟의 근처에 가면 멈추는 거리
     [SerializeField] private float meleeAttackRange = 5.0f; //근거리 공격거리
     [SerializeField] private float attackDelay = 10.0f;      //근거리 공격 쿨타임
     [SerializeField] private float attackChargeTime = 3.0f;
@@ -52,11 +53,13 @@ public class EnemyController : MonoBehaviour
     public StateEnums CurrentStateType { get; private set; }
 
     //외부에서 읽을 수 있도록 하는 프로퍼티
+    public float MeleeIdleRange => meleeIdleRange;
     public float MeleeAttackRange => meleeAttackRange;
     public float RangedAttackRange => rangedAttackRange;
     public float NextAttackTime => nextAttackTime;
     public Transform Target => target;
     public TypeEnums Type => type;
+    public bool IsAttack => isAttack;
 
     public Vector3 BeforeTargetPos
     {
@@ -95,8 +98,10 @@ public class EnemyController : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.Pool.CreatePool(enemyBullet, 50);
-        Debug.Log(enemyBullet.name);
+        if (type == TypeEnums.Ranged)
+        {
+            GameManager.Pool.CreatePool(enemyBullet, 50);
+        }
     }
 
     void Update()
@@ -132,6 +137,7 @@ public class EnemyController : MonoBehaviour
         switch(type)
         {
             case TypeEnums.Melee:
+                IdleState = new MeleeIdle(this);
                 ChaseState = new MeleeChase(this);
                 AttackState = new MeleeAttack(this);
                 break;
@@ -149,19 +155,13 @@ public class EnemyController : MonoBehaviour
 
         return Vector3.Distance(transform.position, target.position);
     }
-    public bool Idle()
+    public void Idle()
     {
         nvAgent.enabled = false;
+        nvAgent.velocity = Vector3.zero;
 
-        NavMeshHit hit;
-
-        if (NavMesh.SamplePosition(target.position, out hit, 10, NavMesh.AllAreas))
-        {
-            nvAgent.enabled = true;
-            return true;
-        }
-
-        return false;
+        nvAgent.enabled = true;
+        nvAgent.Warp(transform.position);
     }
     //플레이어 추적
     public void Chase()
@@ -177,17 +177,15 @@ public class EnemyController : MonoBehaviour
     }
     public void MeleeAttack()
     {
-        if (Time.time < nextAttackTime) return;
+       if (Time.time < nextAttackTime) return;
         
         isAttack = true;
 
         nvAgent.enabled = false; //NebMesh는 기본적으로 매 프레임마다 타겟의 위치를 업데이트하기 때문에, Enemy를 멈추고 타겟의 이전위치를 저장하여 후에 그곳으로 이동할려면 .enable = false로 해야한다.
-        nvAgent.velocity = Vector3.zero; //NavMeshAgent를 꺼도 남는 잔류 속도 초기화
-        rb.velocity = Vector3.zero; //Rigidbody 기존 속도를 초기화 하여 돌진 직선 유지
-
+       
         StartCoroutine(AttackCharge());
 
-        isAttack = false;
+        //isAttack = false;
 
         nextAttackTime = Time.time + attackDelay;
         
@@ -214,25 +212,24 @@ public class EnemyController : MonoBehaviour
         nvAgent.enabled = true;
         nvAgent.Warp(transform.position);
     }
-    //현재 회전을 담당하는 LookTo는 쓰지않고 있음(NevMesh가 알아서 회전함)
+    //방향 회전
     public void LookTo()
     {
         Vector3 dir = (target.position - transform.position).normalized;
 
-        if (dir.sqrMagnitude < 0.0001f) return;
+        Quaternion targetRot = Quaternion.LookRotation(dir);
 
-        Quaternion targetRot = Quaternion.LookRotation(dir, Vector3.up);
-
-        Quaternion newRot = Quaternion.Slerp(rb.rotation, targetRot, rotateSpeed * Time.deltaTime);
-
-        rb.MoveRotation(newRot);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
     }
     IEnumerator AttackCharge()
     {
-        Debug.Log("공격시작");
+        //Debug.Log("공격시작");
         yield return new WaitForSeconds(attackChargeTime); //공격 시작하면 실제로 돌진하기까지의 차지타임
 
-        Debug.Log("발사!!!!!!!!");
+        //Debug.Log("발사!!!!!!!!");
+
+        nvAgent.velocity = Vector3.zero; //NavMeshAgent를 꺼도 남는 잔류 속도 초기화
+        rb.velocity = Vector3.zero; //Rigidbody 기존 속도를 초기화 하여 돌진 직선 유지
 
         float timer = 0.0f;         //돌진하고 있는 시간(타이머)
         float attackRunTime = 0.5f; //돌진 총 시간
@@ -253,6 +250,7 @@ public class EnemyController : MonoBehaviour
         isWall = false;
 
         rb.isKinematic = true;
+        isAttack = false;
         nvAgent.enabled = true;
         nvAgent.Warp(transform.position);
         //nvAgent.enabled = fals에서 NavMeshAgent는 Rigidbody로 이동시킨 위치를 따라가지 못함
@@ -265,6 +263,9 @@ public class EnemyController : MonoBehaviour
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, meleeAttackRange);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, meleeIdleRange);
         }
 
         if (type == TypeEnums.Ranged)

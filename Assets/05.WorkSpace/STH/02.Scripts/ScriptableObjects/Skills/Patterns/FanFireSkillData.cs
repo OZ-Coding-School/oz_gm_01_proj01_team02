@@ -9,7 +9,7 @@ namespace STH.ScriptableObjects.Skills
     /// <summary>
     /// 패턴 스킬 데이터 - 발사 패턴을 추가함
     /// </summary>
-    [CreateAssetMenu(fileName = "NewFanFireSkill", menuName = "STH/Skills/FanFireSkill")]
+    [CreateAssetMenu(fileName = "Pattern_FanFire", menuName = "STH/Skills/FanFireSkill")]
     public class FanFireSkillData : SkillData
     {
         [Header("Pattern Settings")]
@@ -19,6 +19,7 @@ namespace STH.ScriptableObjects.Skills
         public override void Apply(PlayerController player)
         {
             player.AddStrategy(new FanFireStrategy(count, angle));
+            player.AddSkill(this);
             Debug.Log("pattern apply");
 
         }

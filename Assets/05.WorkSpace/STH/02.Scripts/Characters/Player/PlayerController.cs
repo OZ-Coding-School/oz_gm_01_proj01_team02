@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using STH.Core;
+using STH.Core.Stats;
 using STH.Combat.Projectiles;
 using STH.ScriptableObjects.Base;
 
@@ -13,15 +14,16 @@ namespace STH.Characters.Player
     public class PlayerController : MonoBehaviour, IDamageable
     {
         [Header("Stats")]
-        [SerializeField] private GameStats stats = new GameStats();
+        [SerializeField] private CharacterStats stats = new CharacterStats();
 
         [Header("Combat")]
         [SerializeField] private Bullet bulletPrefab;
         [SerializeField] private Transform firePoint;
 
         [Header("Test")]
-        [SerializeField] private List<SkillData> skills;
+        [SerializeField] private List<SkillData> testSkills;
 
+        private List<SkillData> skills = new List<SkillData>();
         private List<IFireStrategy> strategies = new List<IFireStrategy>();
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
 
@@ -32,7 +34,8 @@ namespace STH.Characters.Player
         private float attackTimer;
         private bool isDead;
 
-        public GameStats Stats => stats;
+        public CharacterStats Stats => stats;
+        public List<SkillData> Skills => skills;
 
         private void Awake()
         {
@@ -52,7 +55,7 @@ namespace STH.Characters.Player
                 // 테스트용
                 skill.Apply(this);
             }
-            Attack();
+            // Attack();
         }
 
 
@@ -109,7 +112,7 @@ namespace STH.Characters.Player
 
             if (bullet != null)
             {
-                bullet.Initialize(stats.damage, modifiers);
+                bullet.Initialize(stats, modifiers);
             }
         }
 
@@ -123,6 +126,11 @@ namespace STH.Characters.Player
         public void AddModifier(IBulletModifier newModifier)
         {
             modifiers.Add(newModifier);
+        }
+
+        public void AddSkill(SkillData newSkill)
+        {
+            skills.Add(newSkill);
         }
 
         public void TakeDamage(float amount)

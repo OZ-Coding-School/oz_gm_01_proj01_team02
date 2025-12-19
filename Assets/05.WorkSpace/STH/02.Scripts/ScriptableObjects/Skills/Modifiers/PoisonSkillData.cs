@@ -8,7 +8,7 @@ namespace STH.ScriptableObjects.Skills.Modifiers
     /// <summary>
     /// 독 스킬 데이터 - 총알에 독 효과 추가
     /// </summary>
-    [CreateAssetMenu(fileName = "NewPoisonSkill", menuName = "STH/Skills/Modifiers/Poison")]
+    [CreateAssetMenu(fileName = "Modifier_Poison", menuName = "STH/Skills/Modifiers/Poison")]
     public class PoisonSkillData : SkillData
     {
         [Header("Modifier Settings")]
@@ -18,8 +18,9 @@ namespace STH.ScriptableObjects.Skills.Modifiers
 
         public override void Apply(PlayerController player)
         {
-            float damagePerTick = player.Stats.damage * AttackMultiplier;
+            float damagePerTick = player.Stats.GetStat(STH.Core.Stats.StatType.Attack) * AttackMultiplier;
             player.AddModifier(new PoisonModifier(damagePerTick, duration, tickInterval));
+            player.AddSkill(this);
             Debug.Log("modifier apply");
         }
     }

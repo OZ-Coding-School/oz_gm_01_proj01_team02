@@ -21,6 +21,7 @@ public class EquipmentSlotUI: MonoBehaviour
     public void SetEquipment(EquipmentData data)
     {
         equipment = data;
+        iconImage.sprite = equipment.icon;
         RefreshUI();
     }
 
@@ -28,7 +29,6 @@ public class EquipmentSlotUI: MonoBehaviour
     {
         if (equipment == null) return;
 
-        iconImage.sprite = equipment.icon;
         nameText.text = equipment.equipmentName;
         statText.text = GetStatText();
 
@@ -48,18 +48,7 @@ public class EquipmentSlotUI: MonoBehaviour
 
     public void OnClickSlot()
     {
-        int index = (int)equipment.type;
-
-        if (InventoryManager.Instance.equippedItems[index] == equipment)
-        {
-            InventoryManager.Instance.UnequipItem(index);
-        }
-
-        else
-        {
-            InventoryManager.Instance.EquipItem(equipment);
-        }
-        inventoryUI.RefreshAll();
+        EquipmentDetailPanel.Instance.Show(equipment);
     }
 }
 

@@ -26,6 +26,7 @@ public class SlotMachineManager : MonoBehaviour
     void OnEnable()
     {
         displayResultImage.sprite = null;
+        Time.timeScale = 0.0f;
         
     }
 
@@ -112,6 +113,7 @@ public class SlotMachineManager : MonoBehaviour
         
         slotMachineUI.SetActive(false);
         hpBar.SetActive(true);
+        Time.timeScale = 1.0f;
     }
 
     public void Show()

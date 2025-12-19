@@ -1,6 +1,8 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using STH.Core;
+using STH.Core.Stats;
 
 namespace STH.Combat.Projectiles
 {
@@ -13,6 +15,8 @@ namespace STH.Combat.Projectiles
         [SerializeField] private float lifeTime = 5f;
 
         private float damage;
+        private float critRate;
+        private float critDamage;
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
         private int pierceCount = 0;
 
@@ -27,11 +31,33 @@ namespace STH.Combat.Projectiles
         public void Initialize(float dmg, List<IBulletModifier> mods)
         {
             damage = dmg;
+
+            ApplyModifiers(mods);
+        }
+
+        public void Initialize(CharacterStats stats, List<IBulletModifier> mods)
+        {
+            damage = stats.GetStat(STH.Core.Stats.StatType.Attack);
+            critRate = stats.GetStat(STH.Core.Stats.StatType.CritRate);
+            critDamage = stats.GetStat(STH.Core.Stats.StatType.CritDamage);
+
+            // 치명타 계산
+            int rand = Random.Range(0, 100);
+            if (rand < critRate * 100f)
+            {
+                damage *= critDamage;
+            }
+
+            ApplyModifiers(mods);
+        }
+
+        private void ApplyModifiers(List<IBulletModifier> mods)
+        {
             if (mods != null)
             {
                 modifiers = new List<IBulletModifier>(mods);
             }
-            Destroy(gameObject, lifeTime);
+            StartCoroutine(ReturnToPoolAfterTime(lifeTime));
         }
 
         private void Update()
@@ -56,7 +82,8 @@ namespace STH.Combat.Projectiles
             // 관통력이 없으면 파괴
             if (pierceCount <= 0)
             {
-                Destroy(gameObject);
+                StopAllCoroutines();
+                PoolManager.pool_instance.ReturnPool(this);
             }
             else
             {
@@ -70,6 +97,12 @@ namespace STH.Combat.Projectiles
         public void SetDirection(Vector3 direction)
         {
             transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        IEnumerator ReturnToPoolAfterTime(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            PoolManager.pool_instance.ReturnPool(this);
         }
     }
 }
