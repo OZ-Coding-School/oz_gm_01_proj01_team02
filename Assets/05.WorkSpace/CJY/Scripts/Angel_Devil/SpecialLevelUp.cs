@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class SpecialLevelUp : MonoBehaviour
 {
-    private const int DEVIL_APPEARS = 4;
-    private const int ANGEL_APPEARS = 2;
-
+    
     [Header("angel_devil_spawn setting")]
     [SerializeField] Angel angelPrefab;
     [SerializeField] Devil devilPrefab;
@@ -37,7 +35,6 @@ public class SpecialLevelUp : MonoBehaviour
 
     }
 
-
     public void ADSpawn(int nowStage)
     {
         foreach (var point in spawnPoints) //find -> update에서 사용 금지
@@ -53,13 +50,12 @@ public class SpecialLevelUp : MonoBehaviour
             }
         }
 
-        if (nowStage == ANGEL_APPEARS)
+        if (nowStage % 10 == 5)
         {
-            Debug.Log("천사 소환");
+            //Debug.Log("천사 소환");
             StartCoroutine(DelayAngelSpawn());
-
         }
-        if (nowStage == DEVIL_APPEARS) 
+        if (nowStage % 10 == 0)
         {
             Debug.Log("악마 소환");
             Devil devil = GameManager.Pool.GetFromPool(devilPrefab);
@@ -71,9 +67,19 @@ public class SpecialLevelUp : MonoBehaviour
 
     private void DevilSpawn(GameObject enemy)
     {
-        Debug.Log("데빌 스폰");
-        if (GameManager.clearStage != DEVIL_APPEARS) return;
-        ADSpawn(GameManager.clearStage);
+        Devil[] children = GameManager.Pool.GetComponentsInChildren<Devil>(true);
+
+        foreach (Devil child in children)
+        {
+            if (child.gameObject.activeSelf) return;
+        }
+        Debug.Log("데빌 스폰 시도");
+        if (GameManager.Stage.currentStage % 10 != 0)
+        {
+            Debug.Log("데빌 스폰 실패");
+            return;
+        }
+        ADSpawn(GameManager.Stage.currentStage);
     }
 
     IEnumerator DelayAngelSpawn()
