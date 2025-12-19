@@ -9,11 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ea8746ca6c1b49028b12a51fded57b3, type: 3}
-  m_Name: NewStatSkill
+  m_Script: {fileID: 11500000, guid: 2da53b41c214345a09f0e9a4ed591d16, type: 3}
+  m_Name: Stat_NewStat
   m_EditorClassIdentifier: 
-  skillName: 
-  description: 
-  icon: {fileID: 0}
-  statType: 1
-  amount: 0.1
+  skillName: AttackUp
+  icon: {fileID: 21300000, guid: c94a132e2eb699a4fb81183f911abebc, type: 3}
+  targetStat: 0
+  percentage: 0.3

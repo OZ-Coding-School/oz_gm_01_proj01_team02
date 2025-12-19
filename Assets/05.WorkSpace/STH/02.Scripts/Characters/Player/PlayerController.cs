@@ -41,7 +41,7 @@ namespace STH.Characters.Player
                 // 테스트용
                 skill.Apply(this);
             }
-            Attack();
+            // Attack();
         }
 
 
@@ -49,12 +49,12 @@ namespace STH.Characters.Player
         {
             if (isDead) return;
 
-            // attackTimer += Time.deltaTime;
-            // if (attackTimer >= 1 / stats.attackSpeed)
-            // {
-            //     MeleeAttack();
-            //     attackTimer = 0;
-            // }
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= 1 / stats.GetStat(STH.Core.Stats.StatType.AttackSpeed))
+            {
+                Attack();
+                attackTimer = 0;
+            }
 
         }
 
@@ -82,7 +82,7 @@ namespace STH.Characters.Player
             Bullet bullet = go.GetComponent<Bullet>();
             if (bullet != null)
             {
-                bullet.Initialize(stats.GetStat(STH.Core.Stats.StatType.Attack), modifiers);
+                bullet.Initialize(stats, modifiers);
             }
         }
 

@@ -32,7 +32,6 @@ namespace STH.Combat.Strategies
 
             for (int i = 0; i < count; i++)
             {
-                Debug.Log($"FanFire {i}");
                 float currentAngle = startAngle + (angleStep * i);
                 Quaternion rotation = origin.rotation * Quaternion.Euler(0f, currentAngle, 0f);
                 Vector3 position = origin.position;
