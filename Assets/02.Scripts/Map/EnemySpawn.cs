@@ -15,7 +15,8 @@ public enum EnemyType
 public class EnemySpawn : MonoBehaviour
 {
     [Header("Enemy Spawn Setting")]
-    [SerializeField] private List<Enemy> enemyPrefab;
+    //[SerializeField] private List<Enemy> enemyPrefab;
+    [SerializeField] private List<EnemyController> enemyPrefab;
     [SerializeField] private Boss bossPrefab;
     [SerializeField] LayerMask[] layerMasks;
 
@@ -28,6 +29,7 @@ public class EnemySpawn : MonoBehaviour
     [Header("Spawning Setting")]
     bool canSpawn;
     public int count;
+    private const int PREFAB_COUNT = 7;
 
 
     private void Start()
@@ -35,15 +37,18 @@ public class EnemySpawn : MonoBehaviour
         count = 0;
         obstacleSpawnPoints = FindObjectsOfType<ObstacleSpawnPoint>();
         var gmInit = GameManager.Pool.transform;
-        var parent = new GameObject("Enemy_Pool").transform;
-        parent.SetParent(gmInit, false);
-
+        var parent = gmInit.Find("Enemy_Pool");
+        if (parent == null)
+        {
+            parent = new GameObject("Enemy_Pool").transform;
+            parent.SetParent(gmInit, false);
+        }
         foreach (var prefab in enemyPrefab)
         {
-            GameManager.Pool.CreatePool(prefab, 7, parent);
+            GameManager.Pool.CreatePool(prefab, PREFAB_COUNT, parent);
         }
         GameManager.Pool.CreatePool(bossPrefab, 1, parent);
-        //½ºÆùÆ÷ÀÎÆ®¿Í °¡±îÀÌ ÀÖ´Â(15f ÀÌ³») ¸ðµç EnemySpawnPoint¸¦ 
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½(15f ï¿½Ì³ï¿½) ï¿½ï¿½ï¿½ EnemySpawnPointï¿½ï¿½ 
         StartCoroutine(DelaySpawn(false));
     }
 
@@ -54,7 +59,7 @@ public class EnemySpawn : MonoBehaviour
 
     private Vector3 DetectStandardPoint()
     {
-        foreach (var point in obstacleSpawnPoints) //find -> update¿¡¼­ »ç¿ë ±ÝÁö
+        foreach (var point in obstacleSpawnPoints) //find -> updateï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         {
             var current = point.transform;
             if (exploredPoint == null) { exploredPoint = current; continue; }
@@ -75,12 +80,12 @@ public class EnemySpawn : MonoBehaviour
         Collider[] shortSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[1]);
         Collider[] randomSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[2]);
         int maxSize = longSpawnPoint.Length + shortSpawnPoint.Length + randomSpawnPoint.Length;
-        
-        canSpawn = longSpawnPoint.Length != 0 && shortSpawnPoint.Length != 0 && randomSpawnPoint.Length != 0 && pos != null? true: false;
-        
+
+        canSpawn = longSpawnPoint.Length != 0 && shortSpawnPoint.Length != 0 && randomSpawnPoint.Length != 0 && pos != null ? true : false;
+
         if (canSpawn)
         {
-            if(!boss)
+            if (!boss)
             {
                 foreach (var point in longSpawnPoint)
                 {
@@ -100,13 +105,13 @@ public class EnemySpawn : MonoBehaviour
                 GetEnemy(pos, EnemyType.Boss, ref count, maxSize);
             }
         }
-        
+
     }
 
     private void GetEnemy(Vector3 pos, EnemyType type, ref int count, int max)
     {
         if (count >= max) return;
-        Enemy enemy = null;
+        EnemyController enemy = null;
         Boss boss = null;
 
         switch (type)
@@ -124,9 +129,9 @@ public class EnemySpawn : MonoBehaviour
                 boss = GameManager.Pool.GetFromPool(bossPrefab);
                 break;
         }
-        if(enemy ==null && boss == null) return;
-        if(enemy != null && boss == null) EnemyInit(type, pos, enemy, null);
-        if(boss != null && enemy == null) EnemyInit(type, pos, null, boss);
+        if (enemy == null && boss == null) return;
+        if (enemy != null && boss == null) EnemyInit(type, pos, enemy, null);
+        if (boss != null && enemy == null) EnemyInit(type, pos, null, boss);
 
         count++;
     }
@@ -137,9 +142,9 @@ public class EnemySpawn : MonoBehaviour
         GoEnemySpawn(DetectStandardPoint(), boss);
     }
 
-    private void EnemyInit(EnemyType type, Vector3 pos, Enemy enemy = null, Boss boss = null)
+    private void EnemyInit(EnemyType type, Vector3 pos, EnemyController enemy = null, Boss boss = null)
     {
-        if (type == EnemyType.Boss) 
+        if (type == EnemyType.Boss)
         {
             NavMeshAgent bossAgent = boss.GetComponent<NavMeshAgent>();
             bossAgent.enabled = false;
@@ -147,7 +152,7 @@ public class EnemySpawn : MonoBehaviour
             boss.transform.SetPositionAndRotation(newPos, Quaternion.identity);
             bossAgent.enabled = true;
 
-            if (!bossAgent.isOnNavMesh) // navmesh À§°¡ ¾Æ´Ï¸é Àç¹èÄ¡
+            if (!bossAgent.isOnNavMesh) // navmesh ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½Ä¡
             {
                 NavMeshHit hit;
                 if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
@@ -158,7 +163,7 @@ public class EnemySpawn : MonoBehaviour
             EnemyCheck enemyCheck = boss.GetComponent<EnemyCheck>();
             if (enemyCheck != null) enemyCheck.SetReady();
         }
-        else 
+        else
         {
             NavMeshAgent enemyAgent = enemy.GetComponent<NavMeshAgent>();
             enemyAgent.enabled = false;
@@ -166,7 +171,7 @@ public class EnemySpawn : MonoBehaviour
             enemy.transform.SetPositionAndRotation(newPos, Quaternion.identity);
             enemyAgent.enabled = true;
 
-            if (!enemyAgent.isOnNavMesh) // navmesh À§°¡ ¾Æ´Ï¸é Àç¹èÄ¡
+            if (!enemyAgent.isOnNavMesh) // navmesh ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´Ï¸ï¿½ ï¿½ï¿½ï¿½Ä¡
             {
                 NavMeshHit hit;
                 if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
@@ -178,4 +183,5 @@ public class EnemySpawn : MonoBehaviour
             if (enemyCheck != null) enemyCheck.SetReady();
         }
     }
+
 }

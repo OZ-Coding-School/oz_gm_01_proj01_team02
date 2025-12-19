@@ -5,13 +5,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// ÇöÀç ¶Ç´Â ´ÙÀ½ ½ºÅ×ÀÌÁö°¡ ¸îÀÌ³Ä¿¡µû¶ó µ¿ÀÛÀ» ´Þ¸®ÇØÁà¾ßÇÔ
-// ½ºÅ×ÀÌÁö ¸Å´ÏÀú¿¡¼­ ÀÌº¥Æ®¸¦ ÆÄ°í stage °ª¿¡ µû¶ó ¹º°¡ »óÈ£ÀÛ¿ëÀÌ ÇÊ¿äÇÔ. < ÀÌ¹æ½ÄÀ¸·Î º¯°æ.
-// Ãµ»ç : Æ¯Á¤ ½ºÅ×ÀÌÁö µÞ±ÛÀÚ°¡ 5ÀÎ ½ºÅ×ÀÌÁö¸¶´Ù µîÀå
-// ¾Ç¸¶ : º¸½ºÀü ÀÌÈÄ µîÀå
-// Æò»ó½Ã¿¡´Â ÀÏ¹ÝÀû, Àå¾Ö¹° »ý¼º
-// µÞÀÚ¸® 5ÀÎ ½ºÅ×ÀÌÁö¸¶´Ù ÀÏ¹ÝÀû, Àå¾Ö¹° »ý¼º x Ãµ»ç »ý¼º
-// 10½ºÅ×ÀÌÁö ¸¶´Ù ÀÏ¹ÝÀû, Àå¾Ö¹° »ý¼º x º¸½ºÀü Á¾·á ÈÄ ¾Ç¸¶ »ý¼º
+// ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì³Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½Ä°ï¿½ stage ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½. < ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+// Ãµï¿½ï¿½ : Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ±ï¿½ï¿½Ú°ï¿½ 5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// ï¿½Ç¸ï¿½ : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½ï¿½ ï¿½Ï¹ï¿½ï¿½ï¿½, ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½Ú¸ï¿½ 5ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¹ï¿½ï¿½ï¿½, ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ x Ãµï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// 10ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¹ï¿½ï¿½ï¿½, ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½ x ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 public class StageSpawner : MonoBehaviour
 {
@@ -40,7 +40,7 @@ public class StageSpawner : MonoBehaviour
         enemySpawn = FindObjectOfType<EnemySpawn>();
         portal = FindObjectsOfType<Portal>();
         specialLevelUp = FindObjectOfType<SpecialLevelUp>();
-        Debug.Log($"ÇöÀç ½ºÅ×ÀÌÁö : {GameManager.Stage.currentStage}");
+        Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : {GameManager.Stage.currentStage}");
     }
 
     private void OnEnable()
@@ -57,20 +57,20 @@ public class StageSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // ÇÃ·¹ÀÌ¾î À§Ä¡ ´ÙÀ½½ºÅ×ÀÌÁö·Î ÀÌµ¿
+            // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
             int rand = Random.Range(0, SpawnPoint.Length);
             other.transform.position = SpawnPoint[rand].transform.position;
             DeSpawnObstacle();
-            
-            // È­¸é ÆäÀÌµåÀÎ ÄÚ·çÆ¾
+
+            // È­ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾
             StartCoroutine(FadeIn());
 
-            // ½ºÅ×ÀÌÁö +1 ÇÏ´Â ¸Þ¼­µå
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ +1 ï¿½Ï´ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
             GameManager.Stage.StageIncrease();
 
-            // ÇØ´ç ½ºÅ×ÀÌÁö¿¡ Àû ¹× Àå¾Ö¹° »ý¼º
+            // ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ö¹ï¿½ ï¿½ï¿½ï¿½ï¿½
             NextStage(GameManager.Stage.currentStage);
-            #region Ãµ»ç/¾Ç¸¶ ¼ÒÈ¯ ÀÌÀüÄÚµå
+            #region Ãµï¿½ï¿½/ï¿½Ç¸ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½
             //if (GameManager.Stage.currentStage == 10)
             //{
             //    SpawnEnemy(isBossStage);
@@ -109,7 +109,7 @@ public class StageSpawner : MonoBehaviour
             //}
             #endregion
 
-            Debug.Log($"ÇöÀç ½ºÅ×ÀÌÁö : {GameManager.Stage.currentStage}");
+            Debug.Log($"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : {GameManager.Stage.currentStage}");
         }
     }
 
@@ -118,12 +118,12 @@ public class StageSpawner : MonoBehaviour
         if (currentstage == 0) return;
         obstSpawner.notthistimeObstacle = false;
         isBossStage = false;
-        Debug.Log(currentstage % 10 == 5? $"Ãµ»ç ¼ÒÈ¯. ÇöÀç ½ºÅ×ÀÌÁö : {currentstage}" : $"Ãµ»ç ¼ÒÈ¯ ½ºÅ×ÀÌÁö°¡ ¾Æ´Ô. ÇöÀç ½ºÅ×ÀÌÁö : {currentstage}");
-        Debug.Log(currentstage % 10 == 0 && currentstage != 0? $"º¸½º ¹× ¾Ç¸¶ ¼ÒÈ¯. ÇöÀç ½ºÅ×ÀÌÁö : {currentstage}" : $"º¸½º ¹× ¾Ç¸¶ ¼ÒÈ¯ ½ºÅ×ÀÌÁö°¡ ¾Æ´Ô. ÇöÀç ½ºÅ×ÀÌÁö : {currentstage}");
+        Debug.Log(currentstage % 10 == 5 ? $"Ãµï¿½ï¿½ ï¿½ï¿½È¯. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : {currentstage}" : $"Ãµï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : {currentstage}");
+        Debug.Log(currentstage % 10 == 0 && currentstage != 0 ? $"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½È¯. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : {currentstage}" : $"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : {currentstage}");
         if (currentstage % 10 == GameManager.Stage.Select("angel"))
         {
-            Debug.Log("Ãµ»ç ¼ÒÈ¯");
-            // Ãµ»ç°¡ ³ª¿Ã ½ºÅ×ÀÌÁö => Àû x , Àå¾Ö¹° x, Æ÷Å» ON
+            Debug.Log("Ãµï¿½ï¿½ ï¿½ï¿½È¯");
+            // Ãµï¿½ç°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ x , ï¿½ï¿½Ö¹ï¿½ x, ï¿½ï¿½Å» ON
             obstSpawner.notthistimeObstacle = true;
             DeSpawnObstacle();
             specialLevelUp.ADSpawn(GameManager.Stage.currentStage);
@@ -132,8 +132,8 @@ public class StageSpawner : MonoBehaviour
         }
         else if (currentstage % GameManager.Stage.Select("devil") == 0 && currentstage != 0)
         {
-            // ¾Ç¸¶°¡ ³ª¿Ã ½ºÅ×ÀÌÁö => º¸½º O, Àå¾Ö¹° x, Æ÷Å» OFF
-            Debug.Log("º¸½º µîÀå");
+            // ï¿½Ç¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ï¿½ï¿½ O, ï¿½ï¿½Ö¹ï¿½ x, ï¿½ï¿½Å» OFF
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
             obstSpawner.notthistimeObstacle = true;
             isBossStage = true;
             SpawnEnemy(isBossStage);
@@ -141,28 +141,29 @@ public class StageSpawner : MonoBehaviour
         }
         else if (currentstage > 20)
         {
-            // ÇÑ Ã©ÅÍ°¡ Á¾·áµÊ.
-            Debug.Log("ÇÑÃ©ÅÍ Å¬¸®¾î");
-            // »õ Ã©ÅÍ°¡ ÇØ±ÝµÇ¾ú´Ù´Â ¾ÀÀ¸·Î ÀÌµ¿.
+            // ï¿½ï¿½ Ã©ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½.
+            Debug.Log("ï¿½ï¿½Ã©ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½");
+            // ï¿½ï¿½ Ã©ï¿½Í°ï¿½ ï¿½Ø±ÝµÇ¾ï¿½ï¿½Ù´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½.
 
-            GameManager.Stage.InitStageClearCount(); // ½ºÅ×ÀÌÁö ÃÊ±âÈ­
-            Debug.Log($"½ºÅ×ÀÌÁö ÃÊ±âÈ­ : {GameManager.Stage.currentStage}");
+            GameManager.Stage.InitStageClearCount(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
+            Debug.Log($"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ : {GameManager.Stage.currentStage}");
         }
         else
         {
-            Debug.Log("ÀÏ¹Ý Àû ¼ÒÈ¯");
-            // ¾Ç¸¶, Ãµ»ç¸¦ ºñÈ°¼ºÈ­ ÇØÁÖ´Â ºÎºÐ
+            Debug.Log("ï¿½Ï¹ï¿½ ï¿½ï¿½ ï¿½ï¿½È¯");
+            // ï¿½Ç¸ï¿½, Ãµï¿½ç¸¦ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Îºï¿½
             SpawnEnemy(isBossStage);
             DeSpawnAngel();
             DeSpawnDevil();
-            // ÀÏ¹Ý ½ºÅ×ÀÌÁö => Àû O, Àå¾Ö¹° O, Æ÷Å» OFF
+            // ï¿½Ï¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ => ï¿½ï¿½ O, ï¿½ï¿½Ö¹ï¿½ O, ï¿½ï¿½Å» OFF
 
         }
     }
 
+
     IEnumerator FadeIn()
     {
-        foreach (var port in portal) 
+        foreach (var port in portal)
         {
             port.ClosePortal();
         }
@@ -172,8 +173,8 @@ public class StageSpawner : MonoBehaviour
                    .SetEase(Ease.OutQuad)
                    .SetUpdate(true)
                    .WaitForCompletion();
-        cg.alpha = 1f;
         fadeIn.gameObject.SetActive(false);
+        cg.alpha = 1f;
     }
 
     private void SpawnEnemy(bool boss)
@@ -181,7 +182,7 @@ public class StageSpawner : MonoBehaviour
         enemySpawn.count = 0;
         enemySpawn.Spawn(boss);
     }
-    
+
     private void DeSpawnObstacle()
     {
         foreach (var obst in FindObjectsOfType<Obstacle>())
@@ -195,7 +196,7 @@ public class StageSpawner : MonoBehaviour
     {
         Angel angel = FindObjectOfType<Angel>();
         if (angel == null) return;
-        if(angel.isActiveAndEnabled) angel.ReturnPool();
+        if (angel.isActiveAndEnabled) angel.ReturnPool();
     }
 
     private void DeSpawnDevil()

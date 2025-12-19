@@ -23,11 +23,20 @@ public class ObstacleSpawner : MonoBehaviour
     {
         obstacleSpawnPoints = FindObjectsOfType<ObstacleSpawnPoint>();
         var gmInit = GameManager.Pool.transform;
-        var parent = new GameObject("Obstacle_Pool").transform;
-        parent.SetParent(gmInit, false);
+
+        var parent = gmInit.Find("Obstacle_Pool");
+        if (parent == null)
+        {
+            parent = new GameObject("Obstacle_Pool").transform;
+            parent.SetParent(gmInit, false);
+        }
+
         portal = FindObjectsOfType<Portal>();
 
         ShuffleList();
+
+        if (parent.childCount == obstaclePrefabs.Count) return;
+
         foreach (var prefab in obstaclePrefabs)
         {
             GameManager.Pool.CreatePool(prefab, 1, parent);
@@ -37,13 +46,13 @@ public class ObstacleSpawner : MonoBehaviour
 
     private void Update()
     {
-        foreach(var point in obstacleSpawnPoints) //find -> update���� ��� ����
+        foreach (var point in obstacleSpawnPoints) //find -> update���� ��� ����
         {
             var current = point.transform;
-            if(spawnpoint==null) { spawnpoint = current; continue; }
+            if (spawnpoint == null) { spawnpoint = current; continue; }
             else
             {
-                if(Vector3.Distance(current.position, player.transform.position) < Vector3.Distance(spawnpoint.position, player.transform.position))
+                if (Vector3.Distance(current.position, player.transform.position) < Vector3.Distance(spawnpoint.position, player.transform.position))
                 {
                     spawnpoint = current;
                 }
@@ -56,15 +65,16 @@ public class ObstacleSpawner : MonoBehaviour
         {
             int select = Random.Range(0, obstaclePrefabs.Count);
             Obstacle obstacle = GameManager.Pool.GetFromPool(obstaclePrefabs[select]);
-            obstacle.transform.SetPositionAndRotation(spawnpoint.position - new Vector3(0,2.5f,0), Quaternion.Euler(0,90f,0));
-            alreadySpawned= true;
+            if (obstacle == null) return;
+            obstacle.transform.SetPositionAndRotation(spawnpoint.position - new Vector3(0, 2.5f, 0), Quaternion.Euler(0, 90f, 0));
+            alreadySpawned = true;
         }
     }
 
     private void ShuffleList()
     {
         System.Random rand = new System.Random();
-        for (int i = obstaclePrefabs.Count-1; i > 0; i--)
+        for (int i = obstaclePrefabs.Count - 1; i > 0; i--)
         {
             int k = rand.Next(i + 1);
             var temp = obstaclePrefabs[i];
@@ -80,10 +90,10 @@ public class ObstacleSpawner : MonoBehaviour
         // �����ʿ� ���尡��� ���� Ȱ��ȭ �����ֱ�
         foreach (var p in portal)
         {
-            if(p ==null) continue;
+            if (p == null) continue;
             float currentDist = Vector3.Distance(spawnpoint.position, p.transform.position);
 
-            if (currentDist < minDist) 
+            if (currentDist < minDist)
             {
                 minDist = currentDist;
                 closestPortal = p;

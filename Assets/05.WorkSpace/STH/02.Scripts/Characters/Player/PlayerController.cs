@@ -17,7 +17,7 @@ namespace STH.Characters.Player
         [SerializeField] private CharacterStats stats = new CharacterStats();
 
         [Header("Combat")]
-        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private Bullet bulletPrefab;
         [SerializeField] private Transform firePoint;
 
         [Header("Test")]
@@ -27,16 +27,30 @@ namespace STH.Characters.Player
         private List<IFireStrategy> strategies = new List<IFireStrategy>();
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
 
+        private PlayerEnemySearch enemySearch;
+        private PlayerMove player;
+        private Rigidbody rb;
+
         private float attackTimer;
         private bool isDead;
 
         public CharacterStats Stats => stats;
         public List<SkillData> Skills => skills;
 
+        private void Awake()
+        {
+            enemySearch = GetComponent<PlayerEnemySearch>();
+            player = GetComponent<PlayerMove>();
+
+            rb = GetComponent<Rigidbody>();
+        }
+
 
         void Start()
         {
-            foreach (var skill in testSkills)
+            GameManager.Pool.CreatePool(bulletPrefab, 50);
+
+            foreach (var skill in skills)
             {
                 // 테스트용
                 skill.Apply(this);
@@ -50,7 +64,7 @@ namespace STH.Characters.Player
             if (isDead) return;
 
             attackTimer += Time.deltaTime;
-            if (attackTimer >= 1 / stats.GetStat(STH.Core.Stats.StatType.AttackSpeed))
+            if (attackTimer >= 1 / stats.attackSpeed)
             {
                 Attack();
                 attackTimer = 0;
@@ -58,28 +72,44 @@ namespace STH.Characters.Player
 
         }
 
+
+        // public void ShootBullet()
+        // {
+        //     if (enemySearch.CloseEnemy != null && rb.velocity.sqrMagnitude < 0.0001f)
+        //     {
+        //         //GameObject bullet = Instantiate(bulletPrefab, bulletPos.position, Quaternion.identity);
+        //         TestBullet bullet = GameManager.Pool.GetFromPool(bulletPrefab);
+        //         bullet.transform.SetLocalPositionAndRotation(bulletPos.position, Quaternion.identity);
+        //         bullet.transform.forward = player.EnemyDir;
+        //     }
+        // }
+
         private void Attack()
         {
-            if (strategies.Count == 0)
+            // 적이 없거나 움직이면 공격 안 함
+            if (enemySearch.CloseEnemy != null && rb.velocity.sqrMagnitude < 0.0001f)
             {
-                // 기본 단발 공격
-                SpawnBulletCallback(firePoint.position, firePoint.rotation);
-                return;
-            }
+                if (strategies.Count == 0)
+                {
+                    // 기본 단발 공격
+                    SpawnBulletCallback(firePoint.position, firePoint.rotation);
+                    return;
+                }
 
-            // 모든 전략 실행
-            foreach (var strategy in strategies)
-            {
-                strategy.Fire(firePoint, SpawnBulletCallback);
+                // 모든 전략 실행
+                foreach (var strategy in strategies)
+                {
+                    strategy.Fire(firePoint, SpawnBulletCallback);
+                }
             }
         }
 
         private void SpawnBulletCallback(Vector3 position, Quaternion rotation)
         {
             // TODO 생성하지말고 pool에서 꺼내기
-            GameObject go = Instantiate(bulletPrefab, position, rotation);
+            Bullet bullet = GameManager.Pool.GetFromPool(bulletPrefab);
+            bullet.transform.SetLocalPositionAndRotation(position, rotation);
 
-            Bullet bullet = go.GetComponent<Bullet>();
             if (bullet != null)
             {
                 bullet.Initialize(stats, modifiers);
