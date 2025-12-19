@@ -11,6 +11,13 @@ namespace STH.ScriptableObjects.Patterns
     [CreateAssetMenu(fileName = "NewFanPattern", menuName = "STH/Patterns/FanPattern")]
     public class FanPatternSO : AttackPatternSO
     {
+        [Header("Fan Settings")]
+        public int count = 3;
+        public float angle = 45f;
 
+        public override IFireStrategy CreateStrategy()
+        {
+            return new FanFireStrategy(count, angle);
+        }
     }
 }

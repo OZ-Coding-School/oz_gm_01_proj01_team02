@@ -50,7 +50,7 @@ namespace STH.Core.Stats
         private void InitializeStats()
         {
             // 1. 인스펙터에 설정된 초기값으로 딕셔너리 빌드
-            if (new CharacterStats() != null)
+            if (_initialStats != null)
             {
                 foreach (var initData in _initialStats)
                 {

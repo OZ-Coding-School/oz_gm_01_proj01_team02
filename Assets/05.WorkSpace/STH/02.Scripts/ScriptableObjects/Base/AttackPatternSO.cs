@@ -8,6 +8,14 @@ namespace STH.ScriptableObjects.Base
     /// </summary>
     public abstract class AttackPatternSO : ScriptableObject
     {
+        [Header("Projectile")]
+        [SerializeField] private GameObject bulletPrefab;
 
+        public GameObject BulletPrefab => bulletPrefab;
+
+        /// <summary>
+        /// 발사 전략을 생성합니다.
+        /// </summary>
+        public abstract IFireStrategy CreateStrategy();
     }
 }
