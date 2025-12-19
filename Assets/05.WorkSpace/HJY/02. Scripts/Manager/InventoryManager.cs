@@ -26,11 +26,24 @@ public class InventoryManager : MonoBehaviour
         PlayerStatManager.Instance.RecalculateStats();
     }
 
-    public void UnequipItem(int index)
+    public void UnequipItem(EquipmentData item)
     {
-        equippedItems[index] = null;
-        PlayerStatManager.Instance.RecalculateStats();
+        int index = (int)item.type;
+        if (equippedItems[index] == item)
+        {
+            equippedItems[index] = null;
+            PlayerStatManager.Instance.RecalculateStats();
+        }
+
     }
+
+    public bool IsEquipped(EquipmentData item)
+    {
+        int index = (int)item.type;
+        return equippedItems[index] == item;
+    }
+
+
 
     public void AcquireTalent()
     {
