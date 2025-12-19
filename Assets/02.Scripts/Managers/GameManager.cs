@@ -6,7 +6,8 @@ public class GameManager
 {
     private static GameObject _root;
     private static PoolManager _pool;
-    public static int clearStage { get; private set; } = 1;
+    private static StageManager _stage;
+    
    
 
     private static void Init()
@@ -39,13 +40,13 @@ public class GameManager
         }
     }
 
-    public static void StageIncrease()
+    public static StageManager Stage
     {
-        clearStage++;
+        get
+        {
+            CreateManager(ref _stage, "StageManager");
+            return _stage;
+        }
     }
 
-    public static void InitStageClearCount()
-    {
-        clearStage = 1;
-    }
 }

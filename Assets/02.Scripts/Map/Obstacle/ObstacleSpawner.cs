@@ -17,6 +17,8 @@ public class ObstacleSpawner : MonoBehaviour
     public bool alreadySpawned;
     ObstacleSpawnPoint[] obstacleSpawnPoints;
     Portal[] portal;
+
+    public bool notthistimeObstacle;
     private void Start()
     {
         obstacleSpawnPoints = FindObjectsOfType<ObstacleSpawnPoint>();
@@ -30,6 +32,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             GameManager.Pool.CreatePool(prefab, 1, parent);
         }
+        notthistimeObstacle = false;
     }
 
     private void Update()
@@ -47,7 +50,8 @@ public class ObstacleSpawner : MonoBehaviour
             }
         }
         canSpawn = Vector3.Distance(spawnpoint.position, player.transform.position) < distanceToPlayer ? true : false;
-        
+
+        //if (canSpawn && !alreadySpawned && !notthistimeObstacle) => 장애물 치우는 코드 (악마 소환시 보스몹도 소환이안되서 지움)
         if (canSpawn && !alreadySpawned)
         {
             int select = Random.Range(0, obstaclePrefabs.Count);

@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        hp = 500;
+        hp = 10000;
     }
 
     // Update is called once per frame
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     {
         Vector2 dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
 
-        transform.position += new Vector3(dir.x, 0, dir.y) * 5f * Time.deltaTime;
+        transform.position += new Vector3(dir.x, 0, dir.y) * 20f * Time.deltaTime;
     }
 
     public void TakeDamage(int damage)
