@@ -13,8 +13,8 @@ EditorBuildSettings:
     guid: 8a01f287401375540b050b95a031800b
   - enabled: 1
     path: Assets/05.WorkSpace/CJY/Scene/InGameMainScenes/Stage_02_Scene.unity
-    guid: 4efdfc4f9340345429ec7aa873dc0d63
+    guid: 153e87fe1c9dd7f449c57086091f480a
   - enabled: 1
     path: Assets/05.WorkSpace/CJY/Scene/InGameMainScenes/Stage_03_Scene.unity
-    guid: da7c6d88d056a0c48b55ae467b8559b5
+    guid: b13f09e6e96d64a4b988a1550fbfe03c
   m_configObjects: {}

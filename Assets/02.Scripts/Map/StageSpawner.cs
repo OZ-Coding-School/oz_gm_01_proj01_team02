@@ -31,25 +31,26 @@ public class StageSpawner : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Debug.Log(GameManager.clearStage);
+            int rand = Random.Range(0, SpawnPoint.Length);
+            Debug.Log($"소환 위치:{SpawnPoint[rand].transform.position}");
+            other.transform.position = SpawnPoint[rand].transform.position;
             enemySpawn.count = 0;
             enemySpawn.Spawn();
             foreach (var obst in FindObjectsOfType<Obstacle>())
             {
-                if(obst.isActiveAndEnabled) obst.ReturnPool();
+                if (obst.isActiveAndEnabled) obst.ReturnPool();
             }
             obstSpawner.alreadySpawned = false;
 
-            int rand = Random.Range(0, SpawnPoint.Length);
-            Debug.Log($"소환 위치:{SpawnPoint[rand].transform.position}");
-            other.transform.position = SpawnPoint[rand].transform.position;
+
             StartCoroutine(FadeIn());
 
             if (GameManager.clearStage >= 3) GameManager.ClearChapter();
 
             GameManager.StageIncrease();
-            
         }
     }
+
 
     IEnumerator FadeIn()
     {
@@ -60,8 +61,8 @@ public class StageSpawner : MonoBehaviour
                    .SetEase(Ease.OutQuad)
                    .SetUpdate(true)
                    .WaitForCompletion();
-        cg.alpha = 1f;
         fadeIn.gameObject.SetActive(false);
+        cg.alpha = 1f;
     }
 
 }
