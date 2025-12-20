@@ -29,7 +29,6 @@ public class Portal : MonoBehaviour
 
     private void AllEnemiesDied(GameObject enemy)
     {
-        Debug.Log(IsGetActiveChild());
         if (IsGetActiveChild()) OpenPortal();
         else ClosePortal();
     }

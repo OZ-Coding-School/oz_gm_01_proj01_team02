@@ -31,7 +31,6 @@ public class EnemySpawn : MonoBehaviour
     public int count;
     private const int PREFAB_COUNT = 7;
 
-
     private void Start()
     {
         count = 0;

@@ -8,11 +8,13 @@ public class Boss : MonoBehaviour
     private Player target;
     NavMeshAgent agent;
     Vector3 startPos;
+    Obstacle obst;
 
     private void OnEnable()
     {
         startPos = transform.position;
         StartCoroutine(Die());
+        obst = FindObjectOfType<Obstacle>();
     }
 
     private void Start()
@@ -23,8 +25,13 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
+        if (this.gameObject.activeSelf)
+        {
+            obst.ReturnPool();
+        }
         if (!agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
         agent.SetDestination(target.transform.position);
+        
     }
     public void ReturnPool()
     {

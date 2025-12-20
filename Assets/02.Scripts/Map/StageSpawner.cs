@@ -116,7 +116,6 @@ public class StageSpawner : MonoBehaviour
     private void NextStage(int currentstage)
     {
         if (currentstage == 0) return;
-        obstSpawner.notthistimeObstacle = false;
         isBossStage = false;
         Debug.Log(currentstage % 10 == 5 ? $"õ�� ��ȯ. ���� �������� : {currentstage}" : $"õ�� ��ȯ ���������� �ƴ�. ���� �������� : {currentstage}");
         Debug.Log(currentstage % 10 == 0 && currentstage != 0 ? $"���� �� �Ǹ� ��ȯ. ���� �������� : {currentstage}" : $"���� �� �Ǹ� ��ȯ ���������� �ƴ�. ���� �������� : {currentstage}");
@@ -124,7 +123,6 @@ public class StageSpawner : MonoBehaviour
         {
             Debug.Log("õ�� ��ȯ");
             // õ�簡 ���� �������� => �� x , ��ֹ� x, ��Ż ON
-            obstSpawner.notthistimeObstacle = true;
             DeSpawnObstacle();
             specialLevelUp.ADSpawn(GameManager.Stage.currentStage);
             Portal[] portal = FindObjectsOfType<Portal>();
@@ -134,7 +132,6 @@ public class StageSpawner : MonoBehaviour
         {
             // �Ǹ��� ���� �������� => ���� O, ��ֹ� x, ��Ż OFF
             Debug.Log("���� ����");
-            obstSpawner.notthistimeObstacle = true;
             isBossStage = true;
             SpawnEnemy(isBossStage);
 

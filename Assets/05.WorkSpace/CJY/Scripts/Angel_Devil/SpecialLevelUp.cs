@@ -50,12 +50,12 @@ public class SpecialLevelUp : MonoBehaviour
             }
         }
 
-        if (nowStage % 10 == 5)
+        if (nowStage % 10 == GameManager.Stage.Select("angel"))
         {
             //Debug.Log("천사 소환");
             StartCoroutine(DelayAngelSpawn());
         }
-        if (nowStage % 10 == 0)
+        if (nowStage % 10 == GameManager.Stage.Select("devil"))
         {
             Debug.Log("악마 소환");
             Devil devil = GameManager.Pool.GetFromPool(devilPrefab);
@@ -74,7 +74,7 @@ public class SpecialLevelUp : MonoBehaviour
             if (child.gameObject.activeSelf) return;
         }
         Debug.Log("데빌 스폰 시도");
-        if (GameManager.Stage.currentStage % 10 != 0)
+        if (GameManager.Stage.currentStage % 10 != GameManager.Stage.Select("devil"))
         {
             Debug.Log("데빌 스폰 실패");
             return;

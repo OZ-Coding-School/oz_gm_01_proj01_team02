@@ -12,6 +12,7 @@ public class StageManager : MonoBehaviour
     public static event Action<int> OnStageIncrease;
 
     public int currentStage { get; private set; } = 1;
+    public bool onObstacle { get; private set; } = true;
 
     public int Select(string name)
     {
@@ -22,6 +23,8 @@ public class StageManager : MonoBehaviour
 
     public void StageIncrease()
     {
+        onObstacle = true;
+        if (currentStage % 10 == ANGEL_APPEARS - 1 || currentStage % 10 == DEVIL_APPEARS-1) onObstacle = false;
         currentStage++;
         OnStageIncrease?.Invoke(currentStage);
     }
@@ -30,6 +33,10 @@ public class StageManager : MonoBehaviour
     {
         currentStage = 1;
     }
+
+   
+
+
 
     // 천사 : 특정 스테이지 뒷글자가 5인 스테이지마다 등장
     // 악마 : 보스전 이후 등장
