@@ -25,6 +25,12 @@ public class RouletteManager : MonoBehaviour
 
     void Start()
     {
+        
+
+    }
+
+    private void OnEnable()
+    {
         for (int i = 0; i < itemCnt; i++)
         {
             startList.Add (i);
@@ -41,12 +47,6 @@ public class RouletteManager : MonoBehaviour
         resultImage.sprite = displayItemSlot[6].sprite;
         resultImage.color = new Color(resultImage.color.r, resultImage.color.g, resultImage.color.b, 0.0f);
         StartCoroutine (StartRoulette());
-
-    }
-
-    private void OnEnable()
-    {
-        Time.timeScale = 0.0f;
     }
 
     IEnumerator StartRoulette()

@@ -18,11 +18,28 @@ public class ScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     float distance, curPos, targetPos;
     bool isDrag;
     int targetIndex;
+    public int startIndex = 2;
+    bool firstFrame = true;
 
     void Start()
     {
         distance = 1f / (Size - 1);
         for (int i = 0; i < Size; i++) pos[i] = distance * i;
+
+        targetIndex = startIndex;
+        targetPos = pos[startIndex];
+        curPos = targetPos;
+        scrollbar.value = targetPos;
+        
+
+         for (int i = 0; i < Size; i++)
+        {
+            BtnRect[i].sizeDelta = new Vector2(i == targetIndex ? 360 : 180, BtnRect[i].sizeDelta.y);
+            Vector3 BtnTargetPos = BtnRect[i].anchoredPosition3D;
+            if (i == targetIndex) BtnTargetPos.y = -23f;
+            BtnImageRect[i].anchoredPosition3D = BtnTargetPos;
+        }
+        
     }
 
 
@@ -96,3 +113,5 @@ public class ScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
    
     
 }
+
+
