@@ -28,7 +28,7 @@ public class StageSpawner : MonoBehaviour
     Portal[] portal;
     SpecialLevelUp specialLevelUp;
     bool isBossStage;
-    ObstacleSpawner obstacleSpawner;
+
 
 
     private void Start()
@@ -40,7 +40,7 @@ public class StageSpawner : MonoBehaviour
         enemySpawn = FindObjectOfType<EnemySpawn>();
         portal = FindObjectsOfType<Portal>();
         specialLevelUp = FindObjectOfType<SpecialLevelUp>();
-        Debug.Log($"���� �������� : {GameManager.Stage.currentStage}");
+        Debug.Log($"현재 스테이지 : {GameManager.Stage.currentStage}");
     }
 
     private void OnEnable()
@@ -109,22 +109,16 @@ public class StageSpawner : MonoBehaviour
             //}
             #endregion
 
-            Debug.Log($"���� �������� : {GameManager.Stage.currentStage}");
+            Debug.Log($"현재 스테이지 : {GameManager.Stage.currentStage}");
         }
     }
 
     private void NextStage(int currentstage)
     {
         if (currentstage == 0) return;
-        obstSpawner.notthistimeObstacle = false;
         isBossStage = false;
-        Debug.Log(currentstage % 10 == 5 ? $"õ�� ��ȯ. ���� �������� : {currentstage}" : $"õ�� ��ȯ ���������� �ƴ�. ���� �������� : {currentstage}");
-        Debug.Log(currentstage % 10 == 0 && currentstage != 0 ? $"���� �� �Ǹ� ��ȯ. ���� �������� : {currentstage}" : $"���� �� �Ǹ� ��ȯ ���������� �ƴ�. ���� �������� : {currentstage}");
-        if (currentstage % 10 == GameManager.Stage.Select("angel"))
+        if (currentstage % GameManager.Stage.Select("stage") == GameManager.Stage.Select("angel"))
         {
-            Debug.Log("õ�� ��ȯ");
-            // õ�簡 ���� �������� => �� x , ��ֹ� x, ��Ż ON
-            obstSpawner.notthistimeObstacle = true;
             DeSpawnObstacle();
             specialLevelUp.ADSpawn(GameManager.Stage.currentStage);
             Portal[] portal = FindObjectsOfType<Portal>();
@@ -132,31 +126,19 @@ public class StageSpawner : MonoBehaviour
         }
         else if (currentstage % GameManager.Stage.Select("devil") == 0 && currentstage != 0)
         {
-            // �Ǹ��� ���� �������� => ���� O, ��ֹ� x, ��Ż OFF
-            Debug.Log("���� ����");
-            obstSpawner.notthistimeObstacle = true;
             isBossStage = true;
             SpawnEnemy(isBossStage);
 
         }
-        else if (currentstage > 20)
+        else if (currentstage > GameManager.Stage.Select("finish"))
         {
-            // �� é�Ͱ� �����.
-            Debug.Log("��é�� Ŭ����");
-            // �� é�Ͱ� �رݵǾ��ٴ� ������ �̵�.
-
             GameManager.Stage.InitStageClearCount(); // �������� �ʱ�ȭ
-            Debug.Log($"�������� �ʱ�ȭ : {GameManager.Stage.currentStage}");
         }
         else
         {
-            Debug.Log("�Ϲ� �� ��ȯ");
-            // �Ǹ�, õ�縦 ��Ȱ��ȭ ���ִ� �κ�
             SpawnEnemy(isBossStage);
             DeSpawnAngel();
             DeSpawnDevil();
-            // �Ϲ� �������� => �� O, ��ֹ� O, ��Ż OFF
-
         }
     }
 

@@ -9,10 +9,16 @@ using UnityEngine;
 public class EnemyCheck : MonoBehaviour
 {
     public static event Action<GameObject> OnEnemyReturnPool;
+    public Vector3 endPos { get; private set; }
 
     private bool isReady = false;
 
     public void SetReady() {  isReady = true; }
+
+    private void LateUpdate()
+    {
+        endPos = transform.position;
+    }
 
     private void OnDisable()
     {

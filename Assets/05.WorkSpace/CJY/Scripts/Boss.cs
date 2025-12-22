@@ -8,23 +8,27 @@ public class Boss : MonoBehaviour
     private Player target;
     NavMeshAgent agent;
     Vector3 startPos;
+    Obstacle obst;
+    public Vector3 endPos { get; private set; }
 
     private void OnEnable()
     {
-        startPos = transform.position;
-        StartCoroutine(Die());
-    }
-
-    private void Start()
-    {
         target = FindObjectOfType<Player>();
         agent = GetComponent<NavMeshAgent>();
+        startPos = transform.position;
+        StartCoroutine(Die());
+        obst = FindObjectOfType<Obstacle>();
     }
 
     private void Update()
     {
+        if (this.gameObject.activeSelf)
+        {
+            //obst.ReturnPool();
+        }
         if (!agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
-        agent.SetDestination(target.transform.position);
+        //agent.SetDestination(target.transform.position);
+        
     }
     public void ReturnPool()
     {
@@ -36,6 +40,7 @@ public class Boss : MonoBehaviour
         yield return new WaitForSeconds(2);
         transform.position = startPos;
         agent.enabled = false;
+        endPos = transform.position;
         ReturnPool();
     }
 }
