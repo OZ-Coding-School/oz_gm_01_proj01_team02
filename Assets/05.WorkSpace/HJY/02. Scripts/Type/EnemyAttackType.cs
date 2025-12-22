@@ -1,10 +1,11 @@
 
 public enum EnemyAttackType
 {
-    Melee,
-    Ranged,
-    Flying,
-    Ground
+    Melee,     // 근접 유닛
+    Ranged,  // 원거리 유닛
+    Flying,    // 공중 유닛
+    Ground     // 지상 유닛
 }
+
 
 

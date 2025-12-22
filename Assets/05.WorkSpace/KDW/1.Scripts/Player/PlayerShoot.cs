@@ -44,7 +44,7 @@ public class PlayerShoot : MonoBehaviour
         {
             //GameObject bullet = Instantiate(bulletPrefab, bulletPos.position, Quaternion.identity);
             TestBullet bullet = GameManager.Pool.GetFromPool(bulletPrefab);
-            bullet.transform.SetLocalPositionAndRotation(bulletPos.position, Quaternion.identity);
+            bullet.transform.localPosition = bulletPos.position;
             bullet.transform.forward = player.EnemyDir;
         }
     }

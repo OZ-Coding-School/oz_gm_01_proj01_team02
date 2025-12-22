@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: EBrightSpear
   m_EditorClassIdentifier: 
   equipmentName: EpicBrightSpear
+  displayName: "\uC5D0\uD53D \uBE0C\uB77C\uC774\uD2B8 \uC2A4\uD53C\uC5B4"
   type: 0
-  icon: {fileID: 21300000, guid: 70f743ef7a1e6bc40b39f6aa98933f39, type: 3}
+  icon: {fileID: 21300000, guid: 8b83322e396583b4ca6af1ce748506d7, type: 3}
+  description: "\uC5C4\uCCAD\uB09C \uC5D0\uB108\uC9C0\uB97C \uB2F4\uACE0 \uC788\uC5B4,
+    \uC801\uC774 \uC54C\uC544\uCC44\uAE30\uB3C4 \uC804\uC5D0 \uC801\uC744 \uCC98\uCE58\uD569\uB2C8\uB2E4."
+  abilityDescription: "\uC801\uC744 \uAE09\uACA9\uD788 \uACF5\uACA9\uD560 \uC218
+    \uC788\uC2B5\uB2C8\uB2E4.\n\uC720\uC0AC\uD55C \uC801\uC744 \uACF5\uACA9\uD560
+    \uB54C, \uB300\uBBF8\uC9C0\uAC00 30% \uC99D\uAC00\uD569\uB2C8\uB2E4.\n\uACF5\uACA9
+    + 735"
   stats:
   - statType: 1
     value: 735
