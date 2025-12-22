@@ -23,8 +23,9 @@ public class ItemBase : MonoBehaviour
 
     IEnumerator CollectionCo()
     {
-        Debug.Log("수집 코루틴 동작");
+        
         float current = 0f;
+        Vector3 startPos = transform.position;
 
         while( current < duration)
         {
@@ -33,25 +34,20 @@ public class ItemBase : MonoBehaviour
 
             if(player != null)
             {
-                transform.position = Vector3.Lerp(transform.position, player.transform.position, t);
+                transform.position = Vector3.Lerp(startPos, player.transform.position, t);
             }
 
             yield return null;
         }
-        if (Vector3.Distance(transform.position, player.transform.position) < 0.6f) {
-            Debug.Log("0.6이하 근접");
-            ReturnPool(); }
 
-    }
-
-    public void ReturnPool()
-    {
-        Debug.Log($"{this.name} 리턴풀");
-        if (PoolManager.pool_instance != null)
+        if(player != null) transform.position = player.transform.position;
+        if (Vector3.Distance(transform.position, player.transform.position) < 0.6f)
         {
-            Debug.Log("리턴풀 2");
+            ReturnPool(); 
+        }
 
-            PoolManager.pool_instance.ReturnPool(this); }
     }
+
+    public virtual void ReturnPool(){ }
 
 }

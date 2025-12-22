@@ -11,4 +11,9 @@ public class Coin : ItemBase
     {
         transform.Rotate(rotationSpeedX, rotationSpeedY, rotationSpeedZ);
     }
+
+    public override void ReturnPool()
+    {
+        if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
+    }
 }
