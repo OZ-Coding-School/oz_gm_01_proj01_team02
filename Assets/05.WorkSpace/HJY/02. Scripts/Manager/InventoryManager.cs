@@ -19,6 +19,7 @@ public class InventoryManager : MonoBehaviour
         Instance = this;
     }
 
+    // Àåºñ Âø¿ë
     public void EquipItem(EquipmentData item)
     {
         int index = (int)item.type;
@@ -26,6 +27,7 @@ public class InventoryManager : MonoBehaviour
         PlayerStatManager.Instance.RecalculateStats();
     }
 
+    // Àåºñ ¹ÌÂø¿ë
     public void UnequipItem(EquipmentData item)
     {
         int index = (int)item.type;
@@ -34,7 +36,6 @@ public class InventoryManager : MonoBehaviour
             equippedItems[index] = null;
             PlayerStatManager.Instance.RecalculateStats();
         }
-
     }
 
     public bool IsEquipped(EquipmentData item)

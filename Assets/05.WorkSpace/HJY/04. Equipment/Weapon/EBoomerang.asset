@@ -15,7 +15,7 @@ MonoBehaviour:
   equipmentName: EpicBoomerang
   displayName: "\uC5D0\uD53D \uBD80\uBA54\uB791"
   type: 0
-  icon: {fileID: 21300000, guid: f3c784aae78afb84daeec070b6881c45, type: 3}
+  icon: {fileID: 21300000, guid: abae21317254ba2488489b706a789cc8, type: 3}
   description: "\uB0A0\uC544\uAC00\uB2E4 \uB418\uB3CC\uC544\uC624\uB294 \uB0A0\uCE74\uB85C\uC6B4
     \uBD80\uBA54\uB791"
   abilityDescription: "\uBB34\uAE30\uAC00 \uB098\uC5D0\uAC8C \uB418\uB3CC\uC544\uC635\uB2C8\uB2E4.\n\uBD80\uBA54\uB791\uC774

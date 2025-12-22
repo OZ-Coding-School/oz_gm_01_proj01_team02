@@ -11,9 +11,13 @@ public class InventoryUI : MonoBehaviour
 
     private List<EquipmentSlotUI> slots = new List<EquipmentSlotUI>();
 
+  
     private void OnEnable()
     {
-        Refresh();
+        if (InventoryManager.Instance != null)
+        {
+            Refresh();
+        }
     }
 
     public void Refresh()

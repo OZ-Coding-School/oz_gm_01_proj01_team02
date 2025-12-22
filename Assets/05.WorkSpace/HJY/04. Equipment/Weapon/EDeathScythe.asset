@@ -13,8 +13,15 @@ MonoBehaviour:
   m_Name: EDeathScythe
   m_EditorClassIdentifier: 
   equipmentName: EpicDeathScythe
+  displayName: "\uC5D0\uD53D \uB370\uC2A4 \uC0AC\uC774\uB4DC"
   type: 0
-  icon: {fileID: 21300000, guid: 42b2c92a41f9a4e42b81a38b12f9bcad, type: 3}
+  icon: {fileID: 21300000, guid: e2ee6998c9d273d4383790eac2cf16c1, type: 3}
+  description: "\uAC15\uB825\uD55C \uC0AC\uC774\uB4DC, \uB9E4\uC6B0 \uBB34\uAC81\uACE0
+    \uACF5\uACA9 \uC18D\uB3C4\uAC00 \uB290\uB9BD\uB2C8\uB2E4."
+  abilityDescription: "\uC18D\uB3C4\uB294 \uB290\uB9AC\uC9C0\uB9CC, \uACF5\uACA9\uB825\uC774
+    \uB192\uC2B5\uB2C8\uB2E4.\nHP 30% \uC774\uD558\uC77C \uB54C, 50% \uD655\uB960\uB85C
+    \uBAAC\uC2A4\uD130\uB97C \uC989\uC0AC\uC2DC\uD0B5\uB2C8\uB2E4!\n\uACF5\uACA9
+    + 852.6"
   stats:
   - statType: 1
     value: 852.6

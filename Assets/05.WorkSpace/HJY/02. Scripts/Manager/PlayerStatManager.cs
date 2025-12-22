@@ -79,7 +79,7 @@ public class PlayerStatManager : MonoBehaviour
             
     }
 
-    private void ApplyStat(StatValue stat)
+    public void ApplyStat(StatValue stat)
     {
         switch (stat.statType)
         {
