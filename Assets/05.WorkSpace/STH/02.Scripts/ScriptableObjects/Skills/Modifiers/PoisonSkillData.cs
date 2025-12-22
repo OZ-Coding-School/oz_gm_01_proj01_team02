@@ -18,7 +18,7 @@ namespace STH.ScriptableObjects.Skills.Modifiers
 
         public override void Apply(PlayerController player)
         {
-            float damagePerTick = player.Stats.GetStat(STH.Core.Stats.StatType.Attack) * AttackMultiplier;
+            float damagePerTick = player.Stats.attack * AttackMultiplier;
             player.AddModifier(new PoisonModifier(damagePerTick, duration, tickInterval));
             player.AddSkill(this);
             Debug.Log("modifier apply");

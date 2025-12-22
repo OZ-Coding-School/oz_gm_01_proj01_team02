@@ -15,5 +15,6 @@ namespace STH.Core
         /// 사망 처리를 합니다.
         /// </summary>
         void Die();
+
     }
 }

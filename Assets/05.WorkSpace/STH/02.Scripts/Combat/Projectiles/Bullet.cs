@@ -2,10 +2,14 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using STH.Core;
-using STH.Core.Stats;
+using STH.Characters.Player;
 
 namespace STH.Combat.Projectiles
 {
+    public enum TypeEnums
+    {
+        Player, Enemy
+    }
     /// <summary>
     /// 총알 클래스 - Modifiers를 싣고 날아가는 운반체
     /// </summary>
@@ -13,6 +17,7 @@ namespace STH.Combat.Projectiles
     {
         [SerializeField] private float speed = 10f;
         [SerializeField] private float lifeTime = 5f;
+        [SerializeField] private TypeEnums bulletOwner = TypeEnums.Player;
 
         private float damage;
         private float critRate;
@@ -28,18 +33,25 @@ namespace STH.Combat.Projectiles
         /// </summary>
         /// <param name="dmg">데미지</param>
         /// <param name="mods">적용할 모디파이어 리스트</param>
-        public void Initialize(float dmg, List<IBulletModifier> mods)
+
+        public void Initialize(float dmg)
         {
             damage = dmg;
+            StartCoroutine(ReturnToPoolAfterTime(lifeTime));
+        }
+
+        public void Initialize(float dmg, List<IBulletModifier> mods)
+        {
+            Initialize(dmg);
 
             ApplyModifiers(mods);
         }
 
-        public void Initialize(CharacterStats stats, List<IBulletModifier> mods)
+        public void Initialize(PlayerStatManager stats, List<IBulletModifier> mods)
         {
-            damage = stats.GetStat(STH.Core.Stats.StatType.Attack);
-            critRate = stats.GetStat(STH.Core.Stats.StatType.CritRate);
-            critDamage = stats.GetStat(STH.Core.Stats.StatType.CritDamage);
+            Initialize(stats.attack);
+            critRate = stats.critRate;
+            critDamage = stats.critDamage;
 
             // 치명타 계산
             int rand = Random.Range(0, 100);
@@ -57,7 +69,7 @@ namespace STH.Combat.Projectiles
             {
                 modifiers = new List<IBulletModifier>(mods);
             }
-            StartCoroutine(ReturnToPoolAfterTime(lifeTime));
+
         }
 
         private void Update()
@@ -69,6 +81,8 @@ namespace STH.Combat.Projectiles
         {
             IDamageable target = other.GetComponent<IDamageable>();
             if (target == null) return;
+            if (bulletOwner == TypeEnums.Player && other.GetComponent<PlayerController>()) return;
+            if (bulletOwner == TypeEnums.Enemy && other.GetComponent<EnemyController>()) return;
 
             // 기본 데미지 적용
             target.TakeDamage(damage);

@@ -14,7 +14,7 @@ namespace STH.Characters.Player
     public class PlayerController : MonoBehaviour, IDamageable
     {
         [Header("Stats")]
-        [SerializeField] private CharacterStats stats = new CharacterStats();
+        [SerializeField] private PlayerStatManager stats;
 
         [Header("Combat")]
         [SerializeField] private Bullet bulletPrefab;
@@ -34,7 +34,7 @@ namespace STH.Characters.Player
         private float attackTimer;
         private bool isDead;
 
-        public CharacterStats Stats => stats;
+        public PlayerStatManager Stats => stats;
         public List<SkillData> Skills => skills;
 
         private void Awake()
@@ -50,25 +50,26 @@ namespace STH.Characters.Player
         {
             GameManager.Pool.CreatePool(bulletPrefab, 50);
 
-            foreach (var skill in skills)
+            foreach (var skill in testSkills)
             {
                 // 테스트용
                 skill.Apply(this);
             }
             // Attack();
+            // SpawnBulletCallback(firePoint.position, firePoint.rotation);
         }
 
 
         private void Update()
         {
-            //if (isDead) return;
+            if (isDead) return;
 
-            //attackTimer += Time.deltaTime;
-            //if (attackTimer >= 1 / stats.attackSpeed)
-            //{
-            //    Attack();
-            //    attackTimer = 0;
-            //}
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= 1 / stats.attackSpeed)
+            {
+                Attack();
+                attackTimer = 0;
+            }
 
         }
 
@@ -108,10 +109,10 @@ namespace STH.Characters.Player
         {
             // TODO 생성하지말고 pool에서 꺼내기
             Bullet bullet = GameManager.Pool.GetFromPool(bulletPrefab);
-            bullet.transform.SetLocalPositionAndRotation(position, rotation);
 
             if (bullet != null)
             {
+                bullet.transform.SetLocalPositionAndRotation(position, rotation);
                 bullet.Initialize(stats, modifiers);
             }
         }
