@@ -47,7 +47,7 @@ public class EnemySpawn : MonoBehaviour
             GameManager.Pool.CreatePool(prefab, PREFAB_COUNT, parent);
         }
         GameManager.Pool.CreatePool(bossPrefab, 1, parent);
-        //��������Ʈ�� ������ �ִ�(15f �̳�) ��� EnemySpawnPoint�� 
+        
         StartCoroutine(DelaySpawn(false));
     }
 
@@ -80,8 +80,8 @@ public class EnemySpawn : MonoBehaviour
         Collider[] randomSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[2]);
         int maxSize = longSpawnPoint.Length + shortSpawnPoint.Length + randomSpawnPoint.Length;
 
-        canSpawn = longSpawnPoint.Length != 0 && shortSpawnPoint.Length != 0 && randomSpawnPoint.Length != 0 && pos != null ? true : false;
-
+        canSpawn = (longSpawnPoint.Length != 0 && shortSpawnPoint.Length != 0 && randomSpawnPoint.Length != 0 && pos != null) || boss ? true : false;
+        
         if (canSpawn)
         {
             if (!boss)
@@ -101,7 +101,8 @@ public class EnemySpawn : MonoBehaviour
             }
             else
             {
-                GetEnemy(pos, EnemyType.Boss, ref count, maxSize);
+                Debug.Log("보스 소환");
+                GetEnemy(pos, EnemyType.Boss, ref count, 1);
             }
         }
 
@@ -109,6 +110,7 @@ public class EnemySpawn : MonoBehaviour
 
     private void GetEnemy(Vector3 pos, EnemyType type, ref int count, int max)
     {
+        Debug.Log("GetEnemy 동작");
         if (count >= max) return;
         EnemyController enemy = null;
         Boss boss = null;
@@ -125,6 +127,7 @@ public class EnemySpawn : MonoBehaviour
                 enemy = Random.value > 0.5f ? GameManager.Pool.GetFromPool(enemyPrefab[0]) : GameManager.Pool.GetFromPool(enemyPrefab[1]);
                 break;
             case EnemyType.Boss:
+                Debug.Log("보스 소환 2");
                 boss = GameManager.Pool.GetFromPool(bossPrefab);
                 break;
         }
@@ -143,44 +146,96 @@ public class EnemySpawn : MonoBehaviour
 
     private void EnemyInit(EnemyType type, Vector3 pos, EnemyController enemy = null, Boss boss = null)
     {
+        NavMeshAgent agent = null;
+        EnemyCheck check = null;
+        Transform target = null;
+        GameObject targetObj = null;
+
         if (type == EnemyType.Boss)
         {
-            NavMeshAgent bossAgent = boss.GetComponent<NavMeshAgent>();
-            bossAgent.enabled = false;
-            Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
-            boss.transform.SetPositionAndRotation(newPos, Quaternion.identity);
-            bossAgent.enabled = true;
-
-            if (!bossAgent.isOnNavMesh) // navmesh ���� �ƴϸ� ���ġ
-            {
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
-                {
-                    bossAgent.Warp(hit.position);
-                }
-            }
-            EnemyCheck enemyCheck = boss.GetComponent<EnemyCheck>();
-            if (enemyCheck != null) enemyCheck.SetReady();
+            agent = boss.GetComponent<NavMeshAgent>();
+            check = boss.GetComponent<EnemyCheck>();
+            target = boss.transform;
+            targetObj = boss.gameObject;
         }
         else
         {
-            NavMeshAgent enemyAgent = enemy.GetComponent<NavMeshAgent>();
-            enemyAgent.enabled = false;
-            Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
-            enemy.transform.SetPositionAndRotation(newPos, Quaternion.identity);
-            enemyAgent.enabled = true;
-
-            if (!enemyAgent.isOnNavMesh) // navmesh ���� �ƴϸ� ���ġ
-            {
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
-                {
-                    enemyAgent.Warp(hit.position);
-                }
-            }
-            EnemyCheck enemyCheck = enemy.GetComponent<EnemyCheck>();
-            if (enemyCheck != null) enemyCheck.SetReady();
+            agent = enemy.GetComponent<NavMeshAgent>();
+            check = enemy.GetComponent<EnemyCheck>();
+            target = enemy.transform;
+            targetObj = enemy.gameObject;
         }
+
+        if(agent != null)
+        {
+            if(agent.enabled) agent.enabled = false;
+
+            NavMeshHit hit;
+
+            
+            if(NavMesh.SamplePosition(pos, out hit, 3f, NavMesh.AllAreas))
+            {
+                target.position = hit.position;
+                target.rotation = Quaternion.identity;
+            }
+            else
+            {
+                Debug.Log("현재 위치에는 NavMesh가 존재할 수 없습니다.");
+                targetObj.SetActive(false);
+                return;
+            }
+            agent.enabled = true;
+        }
+        if(check != null) check.SetReady();
+
+
+
+        #region
+        //if (type == EnemyType.Boss)
+        //{
+        //    Debug.Log("보스 소환 3");
+        //    NavMeshAgent bossAgent = boss.GetComponent<NavMeshAgent>();
+        //    if(bossAgent.enabled)bossAgent.enabled = false;
+        //    NavMeshHit hit;
+        //    if(NavMesh.SamplePosition(pos, out hit, 2f, NavMesh.AllAreas))
+        //    {
+        //        bossAgent.transform.position = hit.position;
+        //    }
+        //    //Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
+        //    //boss.transform.SetPositionAndRotation(newPos, Quaternion.identity);
+        //    bossAgent.enabled = true;
+
+        //    //if (!bossAgent.isOnNavMesh) 
+        //    //{
+        //    //    NavMeshHit hit;
+        //    //    if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
+        //    //    {
+        //    //        bossAgent.Warp(hit.position);
+        //    //    }
+        //    //}
+        //    EnemyCheck enemyCheck = boss.GetComponent<EnemyCheck>();
+        //    if (enemyCheck != null) enemyCheck.SetReady();
+        //}
+        //else
+        //{
+        //    NavMeshAgent enemyAgent = enemy.GetComponent<NavMeshAgent>();
+        //    enemyAgent.enabled = false;
+        //    Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
+        //    enemy.transform.SetPositionAndRotation(newPos, Quaternion.identity);
+        //    enemyAgent.enabled = true;
+
+        //    if (!enemyAgent.isOnNavMesh) // navmesh ���� �ƴϸ� ���ġ
+        //    {
+        //        NavMeshHit hit;
+        //        if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
+        //        {
+        //            enemyAgent.Warp(hit.position);
+        //        }
+        //    }
+        //    EnemyCheck enemyCheck = enemy.GetComponent<EnemyCheck>();
+        //    if (enemyCheck != null) enemyCheck.SetReady();
+        //}
+        #endregion
     }
 
 }

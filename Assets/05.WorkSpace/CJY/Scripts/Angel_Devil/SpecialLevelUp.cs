@@ -13,6 +13,9 @@ public class SpecialLevelUp : MonoBehaviour
     Transform spawnpoint;
     ObstacleSpawnPoint[] spawnPoints;
 
+    bool canAngelSpawn;
+    bool canDevilSpawn;
+
     private void OnEnable()
     {
         EnemyCheck.OnEnemyReturnPool += DevilSpawn;
@@ -35,8 +38,12 @@ public class SpecialLevelUp : MonoBehaviour
 
     }
 
+
     public void ADSpawn(int nowStage)
     {
+        canAngelSpawn = nowStage % GameManager.Stage.Select("stage") == GameManager.Stage.Select("angel");
+        canDevilSpawn = nowStage % GameManager.Stage.Select("stage") == 0;
+
         foreach (var point in spawnPoints) //find -> update에서 사용 금지
         {
             var current = point.transform;
@@ -50,12 +57,12 @@ public class SpecialLevelUp : MonoBehaviour
             }
         }
 
-        if (nowStage % 10 == GameManager.Stage.Select("angel"))
+        if (canAngelSpawn)
         {
             //Debug.Log("천사 소환");
             StartCoroutine(DelayAngelSpawn());
         }
-        if (nowStage % 10 == GameManager.Stage.Select("devil"))
+        if (canDevilSpawn)
         {
             Debug.Log("악마 소환");
             Devil devil = GameManager.Pool.GetFromPool(devilPrefab);
@@ -74,11 +81,12 @@ public class SpecialLevelUp : MonoBehaviour
             if (child.gameObject.activeSelf) return;
         }
         Debug.Log("데빌 스폰 시도");
-        if (GameManager.Stage.currentStage % 10 != GameManager.Stage.Select("devil"))
+        if (GameManager.Stage.currentStage % GameManager.Stage.Select("stage") != 0)
         {
             Debug.Log("데빌 스폰 실패");
             return;
         }
+        Debug.Log("데빌 스폰 시작");
         ADSpawn(GameManager.Stage.currentStage);
     }
 

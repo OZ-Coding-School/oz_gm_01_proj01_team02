@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    public const int DEVIL_APPEARS = 10;
-    public const int ANGEL_APPEARS = 5;
-    public const int CHAPTER_FINISH = 20;
+    public const int DEVIL_APPEARS = 5;
+    public const int ANGEL_APPEARS = 3;
+    public const int STAGE_BRANCH = 5;
+    public const int CHAPTER_FINISH = 15;
 
     public static event Action<int> OnStageIncrease;
 
@@ -18,13 +19,15 @@ public class StageManager : MonoBehaviour
     {
         if(name == "angel") return ANGEL_APPEARS;
         if (name == "devil") return DEVIL_APPEARS;
+        if (name == "stage") return STAGE_BRANCH;
+        if (name == "finish") return CHAPTER_FINISH;
         else return 0;
     }
 
     public void StageIncrease()
     {
         onObstacle = true;
-        if (currentStage % 10 == ANGEL_APPEARS - 1 || currentStage % 10 == DEVIL_APPEARS-1) onObstacle = false;
+        if (currentStage % STAGE_BRANCH == ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == DEVIL_APPEARS-1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+DEVIL_APPEARS - 1) onObstacle = false;
         currentStage++;
         OnStageIncrease?.Invoke(currentStage);
     }

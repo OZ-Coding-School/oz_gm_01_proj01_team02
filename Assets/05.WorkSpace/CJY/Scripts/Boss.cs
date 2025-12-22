@@ -12,25 +12,21 @@ public class Boss : MonoBehaviour
 
     private void OnEnable()
     {
+        target = FindObjectOfType<Player>();
+        agent = GetComponent<NavMeshAgent>();
         startPos = transform.position;
         StartCoroutine(Die());
         obst = FindObjectOfType<Obstacle>();
-    }
-
-    private void Start()
-    {
-        target = FindObjectOfType<Player>();
-        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
         if (this.gameObject.activeSelf)
         {
-            obst.ReturnPool();
+            //obst.ReturnPool();
         }
         if (!agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
-        agent.SetDestination(target.transform.position);
+        //agent.SetDestination(target.transform.position);
         
     }
     public void ReturnPool()
