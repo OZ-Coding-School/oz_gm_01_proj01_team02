@@ -81,11 +81,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.168
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
       propertyPath: m_LocalRotation.w
@@ -454,14 +454,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 138ede8ce86004ed89b883bd8a2eae70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats:
-    damage: 10
-    attackSpeed: 1
-    hp: 100
-    moveSpeed: 5
-  bulletPrefab: {fileID: 470941819021952283, guid: 1d32f5f4a325a4e02abe9255559988f3, type: 3}
+  stats: {fileID: 0}
+  bulletPrefab: {fileID: 1153233507859069040, guid: ac60a00a314954179a62e61c9369d3e2, type: 3}
   firePoint: {fileID: 6559030558202558702}
-  skills: []
+  testSkills: []
 --- !u!65 &7320867022711481725
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -481,8 +477,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.7, y: 1.91, z: 1}
+  m_Center: {x: 0.05, y: 0.88, z: 0.15}
 --- !u!54 &5163750774664040641
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -523,7 +519,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  joystick: {fileID: 0}
+  joystick: {fileID: 5100785248001841578, guid: 55bf6c94300504d7aa5c2ed560edb816, type: 3}
 --- !u!114 &1223375086811561582
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -547,7 +543,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8404419110341632262}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
