@@ -59,14 +59,11 @@ public class SpecialLevelUp : MonoBehaviour
 
         if (canAngelSpawn)
         {
-            //Debug.Log("천사 소환");
             StartCoroutine(DelayAngelSpawn());
         }
         if (canDevilSpawn)
         {
-            Debug.Log("악마 소환");
             Devil devil = GameManager.Pool.GetFromPool(devilPrefab);
-            Debug.Log(devil is not null);
             devil.transform.SetPositionAndRotation(spawnpoint.position + (Vector3.up * 1.5f), Quaternion.Euler(0, 180, 0));
         }
 
@@ -80,13 +77,10 @@ public class SpecialLevelUp : MonoBehaviour
         {
             if (child.gameObject.activeSelf) return;
         }
-        Debug.Log("데빌 스폰 시도");
         if (GameManager.Stage.currentStage % GameManager.Stage.Select("stage") != 0)
         {
-            Debug.Log("데빌 스폰 실패");
             return;
         }
-        Debug.Log("데빌 스폰 시작");
         ADSpawn(GameManager.Stage.currentStage);
     }
 

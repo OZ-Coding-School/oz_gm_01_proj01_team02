@@ -101,7 +101,6 @@ public class EnemySpawn : MonoBehaviour
             }
             else
             {
-                Debug.Log("보스 소환");
                 GetEnemy(pos, EnemyType.Boss, ref count, 1);
             }
         }
@@ -110,7 +109,6 @@ public class EnemySpawn : MonoBehaviour
 
     private void GetEnemy(Vector3 pos, EnemyType type, ref int count, int max)
     {
-        Debug.Log("GetEnemy 동작");
         if (count >= max) return;
         EnemyController enemy = null;
         Boss boss = null;
@@ -127,7 +125,6 @@ public class EnemySpawn : MonoBehaviour
                 enemy = Random.value > 0.5f ? GameManager.Pool.GetFromPool(enemyPrefab[0]) : GameManager.Pool.GetFromPool(enemyPrefab[1]);
                 break;
             case EnemyType.Boss:
-                Debug.Log("보스 소환 2");
                 boss = GameManager.Pool.GetFromPool(bossPrefab);
                 break;
         }
@@ -180,7 +177,6 @@ public class EnemySpawn : MonoBehaviour
             }
             else
             {
-                Debug.Log("현재 위치에는 NavMesh가 존재할 수 없습니다.");
                 targetObj.SetActive(false);
                 return;
             }
@@ -188,54 +184,6 @@ public class EnemySpawn : MonoBehaviour
         }
         if(check != null) check.SetReady();
 
-
-
-        #region
-        //if (type == EnemyType.Boss)
-        //{
-        //    Debug.Log("보스 소환 3");
-        //    NavMeshAgent bossAgent = boss.GetComponent<NavMeshAgent>();
-        //    if(bossAgent.enabled)bossAgent.enabled = false;
-        //    NavMeshHit hit;
-        //    if(NavMesh.SamplePosition(pos, out hit, 2f, NavMesh.AllAreas))
-        //    {
-        //        bossAgent.transform.position = hit.position;
-        //    }
-        //    //Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
-        //    //boss.transform.SetPositionAndRotation(newPos, Quaternion.identity);
-        //    bossAgent.enabled = true;
-
-        //    //if (!bossAgent.isOnNavMesh) 
-        //    //{
-        //    //    NavMeshHit hit;
-        //    //    if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
-        //    //    {
-        //    //        bossAgent.Warp(hit.position);
-        //    //    }
-        //    //}
-        //    EnemyCheck enemyCheck = boss.GetComponent<EnemyCheck>();
-        //    if (enemyCheck != null) enemyCheck.SetReady();
-        //}
-        //else
-        //{
-        //    NavMeshAgent enemyAgent = enemy.GetComponent<NavMeshAgent>();
-        //    enemyAgent.enabled = false;
-        //    Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
-        //    enemy.transform.SetPositionAndRotation(newPos, Quaternion.identity);
-        //    enemyAgent.enabled = true;
-
-        //    if (!enemyAgent.isOnNavMesh) // navmesh ���� �ƴϸ� ���ġ
-        //    {
-        //        NavMeshHit hit;
-        //        if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
-        //        {
-        //            enemyAgent.Warp(hit.position);
-        //        }
-        //    }
-        //    EnemyCheck enemyCheck = enemy.GetComponent<EnemyCheck>();
-        //    if (enemyCheck != null) enemyCheck.SetReady();
-        //}
-        #endregion
     }
 
 }
