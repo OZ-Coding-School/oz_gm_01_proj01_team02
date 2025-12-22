@@ -46,7 +46,12 @@ public class ItemBase : MonoBehaviour
 
     public void ReturnPool()
     {
-        if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
+        Debug.Log($"{this.name} 리턴풀");
+        if (PoolManager.pool_instance != null)
+        {
+            Debug.Log("리턴풀 2");
+
+            PoolManager.pool_instance.ReturnPool(this); }
     }
 
 }

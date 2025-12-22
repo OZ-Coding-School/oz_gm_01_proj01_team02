@@ -62,14 +62,14 @@ namespace STH.Characters.Player
 
         private void Update()
         {
-            if (isDead) return;
+            //if (isDead) return;
 
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= 1 / stats.attackSpeed)
-            {
-                Attack();
-                attackTimer = 0;
-            }
+            //attackTimer += Time.deltaTime;
+            //if (attackTimer >= 1 / stats.attackSpeed)
+            //{
+            //    Attack();
+            //    attackTimer = 0;
+            //}
 
         }
 
