@@ -7,9 +7,11 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
 {
     public Scrollbar scrollbar;
     public MapData[] mapCard;
+    public MapPanel mapPanel;
     
     private float[] positions = { 0f, 0.5f, 1f };
     public int mapIndex;
+    public int currentIndex;
     private bool isSnapping = false;
     private float target;
 
@@ -19,8 +21,12 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
     public GameObject mapSelectPanel;
     public GameObject tab;
     public GameObject[] otherPanels;
-    
 
+
+    
+    
+    
+    
     void Update()
     {
         if (isSnapping)
@@ -31,8 +37,38 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
             {
                 scrollbar.value = target;
                 isSnapping = false;
+            
+                SelectMap(mapIndex);
             }
         }
+
+    }
+
+    private void Start()
+    {
+        
+        SelectMap(mapIndex);
+    }
+
+    public void ConfirmSelectedMap()
+    {
+        Debug.Log($"[Confirm] mapIndex: {mapIndex}, currentIndex: {currentIndex}, this: {gameObject.name}");
+        MapData data = mapCard[mapIndex];
+        
+    }
+
+    public void SelectMap(int index)
+    {
+        currentIndex = index;
+        MapData data = mapCard[index];
+        
+        if (mapPanel != null)
+        {
+            mapPanel.currentMapData = data;
+            mapPanel.UpdateMapCardUI();
+        }
+
+        
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -54,6 +90,8 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
         target = positions[closetIndex];
         mapIndex = closetIndex;
         isSnapping = true;
+
+        SelectMap(mapIndex);
     }
 
     public void OnScrollValueChanged(float value)

@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour
     private Player target;
     NavMeshAgent agent;
     Vector3 startPos;
+    public Vector3 endPos {get; private set;}
 
     private void OnEnable()
     {
@@ -36,6 +37,7 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(2);
         transform.position = startPos;
         agent.enabled = false;
+        endPos = transform.position;
         ReturnPool();
     }
 }

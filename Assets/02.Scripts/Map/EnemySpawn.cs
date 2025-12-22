@@ -31,7 +31,6 @@ public class EnemySpawn : MonoBehaviour
     public int count;
     private const int PREFAB_COUNT = 7;
 
-
     private void Start()
     {
         count = 0;
@@ -48,7 +47,7 @@ public class EnemySpawn : MonoBehaviour
             GameManager.Pool.CreatePool(prefab, PREFAB_COUNT, parent);
         }
         GameManager.Pool.CreatePool(bossPrefab, 1, parent);
-        //��������Ʈ�� ������ �ִ�(15f �̳�) ��� EnemySpawnPoint�� 
+        
         StartCoroutine(DelaySpawn(false));
     }
 
@@ -59,7 +58,7 @@ public class EnemySpawn : MonoBehaviour
 
     private Vector3 DetectStandardPoint()
     {
-        foreach (var point in obstacleSpawnPoints) //find -> update���� ��� ����
+        foreach (var point in obstacleSpawnPoints)
         {
             var current = point.transform;
             if (exploredPoint == null) { exploredPoint = current; continue; }
@@ -81,8 +80,8 @@ public class EnemySpawn : MonoBehaviour
         Collider[] randomSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[2]);
         int maxSize = longSpawnPoint.Length + shortSpawnPoint.Length + randomSpawnPoint.Length;
 
-        canSpawn = longSpawnPoint.Length != 0 && shortSpawnPoint.Length != 0 && randomSpawnPoint.Length != 0 && pos != null ? true : false;
-
+        canSpawn = (longSpawnPoint.Length != 0 && shortSpawnPoint.Length != 0 && randomSpawnPoint.Length != 0 && pos != null) || boss ? true : false;
+        
         if (canSpawn)
         {
             if (!boss)
@@ -102,7 +101,7 @@ public class EnemySpawn : MonoBehaviour
             }
             else
             {
-                GetEnemy(pos, EnemyType.Boss, ref count, maxSize);
+                GetEnemy(pos, EnemyType.Boss, ref count, 1);
             }
         }
 
@@ -144,44 +143,47 @@ public class EnemySpawn : MonoBehaviour
 
     private void EnemyInit(EnemyType type, Vector3 pos, EnemyController enemy = null, Boss boss = null)
     {
+        NavMeshAgent agent = null;
+        EnemyCheck check = null;
+        Transform target = null;
+        GameObject targetObj = null;
+
         if (type == EnemyType.Boss)
         {
-            NavMeshAgent bossAgent = boss.GetComponent<NavMeshAgent>();
-            bossAgent.enabled = false;
-            Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
-            boss.transform.SetPositionAndRotation(newPos, Quaternion.identity);
-            bossAgent.enabled = true;
-
-            if (!bossAgent.isOnNavMesh) // navmesh ���� �ƴϸ� ���ġ
-            {
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
-                {
-                    bossAgent.Warp(hit.position);
-                }
-            }
-            EnemyCheck enemyCheck = boss.GetComponent<EnemyCheck>();
-            if (enemyCheck != null) enemyCheck.SetReady();
+            agent = boss.GetComponent<NavMeshAgent>();
+            check = boss.GetComponent<EnemyCheck>();
+            target = boss.transform;
+            targetObj = boss.gameObject;
         }
         else
         {
-            NavMeshAgent enemyAgent = enemy.GetComponent<NavMeshAgent>();
-            enemyAgent.enabled = false;
-            Vector3 newPos = pos + new Vector3(0, 1.5f, 0);
-            enemy.transform.SetPositionAndRotation(newPos, Quaternion.identity);
-            enemyAgent.enabled = true;
-
-            if (!enemyAgent.isOnNavMesh) // navmesh ���� �ƴϸ� ���ġ
-            {
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(newPos, out hit, 2f, NavMesh.AllAreas))
-                {
-                    enemyAgent.Warp(hit.position);
-                }
-            }
-            EnemyCheck enemyCheck = enemy.GetComponent<EnemyCheck>();
-            if (enemyCheck != null) enemyCheck.SetReady();
+            agent = enemy.GetComponent<NavMeshAgent>();
+            check = enemy.GetComponent<EnemyCheck>();
+            target = enemy.transform;
+            targetObj = enemy.gameObject;
         }
+
+        if(agent != null)
+        {
+            if(agent.enabled) agent.enabled = false;
+
+            NavMeshHit hit;
+
+            
+            if(NavMesh.SamplePosition(pos, out hit, 3f, NavMesh.AllAreas))
+            {
+                target.position = hit.position;
+                target.rotation = Quaternion.identity;
+            }
+            else
+            {
+                targetObj.SetActive(false);
+                return;
+            }
+            agent.enabled = true;
+        }
+        if(check != null) check.SetReady();
+
     }
 
 }

@@ -14,7 +14,7 @@ public class StartBtn : MonoBehaviour
 
     public void OnClickStartBtn()
     {
-        Debug.Log("½ÃÀÛ¹öÆ° ÀÛµ¿");
+        Debug.Log("ï¿½ï¿½ï¿½Û¹ï¿½Æ° ï¿½Ûµï¿½");
         if (mapSelectPanel == null) return;
         SceneManager.LoadScene($"Stage_0{mapSelectPanel.mapIndex+1}_Scene");
     }

@@ -311,9 +311,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2edbee4236c4939458919be0636d7e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 1
   moveSpeed: 3
   rotateSpeed: 8
+  meleeIdleRange: 1
   meleeAttackRange: 5
   attackDelay: 10
   attackChargeTime: 3

@@ -13,7 +13,6 @@ public class Angel : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("천사 상호작용");
             // UI쪽 천사 특전 실행 코드
         }
     }

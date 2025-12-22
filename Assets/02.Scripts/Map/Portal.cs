@@ -29,7 +29,6 @@ public class Portal : MonoBehaviour
 
     private void AllEnemiesDied(GameObject enemy)
     {
-        Debug.Log(IsGetActiveChild());
         if (IsGetActiveChild()) OpenPortal();
         else ClosePortal();
     }
@@ -48,7 +47,6 @@ public class Portal : MonoBehaviour
 
     public void OpenPortal()
     {
-        Debug.Log("Æ÷Å» ¿ÀÇÂ");
         endPoint.SetActive(true);
         foreach(var m in mr)
         {
@@ -60,7 +58,6 @@ public class Portal : MonoBehaviour
 
     public void ClosePortal()
     {
-        Debug.Log("Æ÷Å» Å¬·ÎÁî");
         endPoint.SetActive(false);
         foreach (var m in mr)
         {
