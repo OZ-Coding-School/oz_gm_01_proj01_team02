@@ -16,8 +16,6 @@ public class CameraAxisController : MonoBehaviour
         if(Mathf.Abs(transform.position.x - player.position.x) > 10f) WarpToPlayer();
         else transform.position = new Vector3(currentAxisX, transform.position.y, player.position.z);
 
-        Debug.Log($"내 카메라 컨트롤러 위치 : {transform.position}");
-        Debug.Log($"내 플레이어 위치 : {player.position}");
     }
 
     public void WarpToPlayer()

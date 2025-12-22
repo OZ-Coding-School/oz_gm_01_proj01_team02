@@ -58,7 +58,7 @@ public class EnemySpawn : MonoBehaviour
 
     private Vector3 DetectStandardPoint()
     {
-        foreach (var point in obstacleSpawnPoints) //find -> update���� ��� ����
+        foreach (var point in obstacleSpawnPoints)
         {
             var current = point.transform;
             if (exploredPoint == null) { exploredPoint = current; continue; }

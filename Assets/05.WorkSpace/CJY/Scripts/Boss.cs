@@ -9,6 +9,7 @@ public class Boss : MonoBehaviour
     NavMeshAgent agent;
     Vector3 startPos;
     Obstacle obst;
+    public Vector3 endPos { get; private set; }
 
     private void OnEnable()
     {
@@ -39,6 +40,7 @@ public class Boss : MonoBehaviour
         yield return new WaitForSeconds(2);
         transform.position = startPos;
         agent.enabled = false;
+        endPos = transform.position;
         ReturnPool();
     }
 }
