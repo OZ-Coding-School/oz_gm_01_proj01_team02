@@ -30,6 +30,7 @@ public class StageSpawner : MonoBehaviour
     bool isBossStage;
 
 
+
     private void Start()
     {
         SpawnPoint = FindObjectsOfType<SpawnPoint>();
