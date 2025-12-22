@@ -226,6 +226,11 @@ GameObject:
   m_Component:
   - component: {fileID: 8600174672721136213}
   - component: {fileID: 531338001785058402}
+  - component: {fileID: 5796064663907652193}
+  - component: {fileID: 5335648562858434148}
+  - component: {fileID: 2112598465492502285}
+  - component: {fileID: 3085488848572089282}
+  - component: {fileID: 1116607357305703860}
   m_Layer: 0
   m_Name: SpiderPBRDefault
   m_TagString: Untagged
@@ -248,6 +253,7 @@ Transform:
   m_Children:
   - {fileID: 8484016568911102383}
   - {fileID: 2499007999843101875}
+  - {fileID: 8979940897237400673}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &531338001785058402
@@ -271,6 +277,134 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &5796064663907652193
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856597109752936936}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.75440586
+  m_Height: 1.5088117
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.49999964, z: 0}
+--- !u!54 &5335648562858434148
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856597109752936936}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
+--- !u!195 &2112598465492502285
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856597109752936936}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &3085488848572089282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856597109752936936}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2edbee4236c4939458919be0636d7e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  moveSpeed: 3
+  rotateSpeed: 8
+  meleeIdleRange: 1
+  meleeAttackRange: 5
+  attackDelay: 10
+  attackChargeTime: 3
+  runSpeed: 10
+  rangedAttackRange: 5
+  spawnTime: 1
+  target: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  enemyBullet: {fileID: 0}
+  bulletPos: {fileID: 8979940897237400673}
+--- !u!114 &1116607357305703860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856597109752936936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97cc5a0c359e94d579473b06670754d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  moveSpeed: 3
+  rotateSpeed: 8
+  meleeIdleRange: 1
+  meleeAttackRange: 5
+  attackDelay: 10
+  attackChargeTime: 3
+  runSpeed: 10
+  rangedAttackRange: 12
+  spawnTime: 1
+  target: {fileID: 9217089472072170428, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  enemyBullet: {fileID: 713443541574270294, guid: 9b6230ae39c5a4d31b91d09cf139bd80, type: 3}
+  bulletPos: {fileID: 8979940897237400673}
 --- !u!1 &898393101635833807
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,6 +436,37 @@ Transform:
   m_Children:
   - {fileID: 4052096473149684623}
   m_Father: {fileID: 7222734057951496044}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1288204335179272553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8979940897237400673}
+  m_Layer: 0
+  m_Name: FirePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8979940897237400673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1288204335179272553}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8600174672721136213}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1309039062294857181
 GameObject:

@@ -894,6 +894,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1357881412578827637}
   - component: {fileID: 5343108293342277954}
+  - component: {fileID: 1029971950154601752}
+  - component: {fileID: 1229159717102633403}
+  - component: {fileID: 4725377732615129917}
+  - component: {fileID: 1813774610304686690}
+  - component: {fileID: 3154909116774289991}
   m_Layer: 0
   m_Name: TurtleShellPBR
   m_TagString: Untagged
@@ -939,6 +944,134 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!136 &1029971950154601752
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8182511139491610100}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5744146
+  m_Height: 1.1488292
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.36862743, z: 0}
+--- !u!54 &1229159717102633403
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8182511139491610100}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 84
+  m_CollisionDetection: 0
+--- !u!195 &4725377732615129917
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8182511139491610100}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 0.5
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1813774610304686690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8182511139491610100}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2edbee4236c4939458919be0636d7e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  moveSpeed: 3
+  rotateSpeed: 8
+  meleeIdleRange: 1
+  meleeAttackRange: 5
+  attackDelay: 10
+  attackChargeTime: 3
+  runSpeed: 10
+  rangedAttackRange: 5
+  spawnTime: 1
+  target: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  enemyBullet: {fileID: 0}
+  bulletPos: {fileID: 0}
+--- !u!114 &3154909116774289991
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8182511139491610100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97cc5a0c359e94d579473b06670754d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  moveSpeed: 3
+  rotateSpeed: 8
+  meleeIdleRange: 1
+  meleeAttackRange: 5
+  attackDelay: 10
+  attackChargeTime: 3
+  runSpeed: 10
+  rangedAttackRange: 12
+  spawnTime: 1
+  target: {fileID: 9217089472072170428, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  enemyBullet: {fileID: 0}
+  bulletPos: {fileID: 0}
 --- !u!1 &8299241817926331298
 GameObject:
   m_ObjectHideFlags: 0
