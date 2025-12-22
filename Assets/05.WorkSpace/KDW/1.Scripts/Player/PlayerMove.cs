@@ -6,15 +6,20 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private JoyStick joystick;
 
     private Rigidbody rb;
+    private Animator anim;
     private PlayerEnemySearch enemySearch;
 
     private Vector3 enemyDir;
 
     public Vector3 EnemyDir => enemyDir;
 
+    //애니메이션
+    private static readonly int moveHash = Animator.StringToHash("IsMoving");
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
         enemySearch = GetComponent<PlayerEnemySearch>();
     }
 
@@ -29,6 +34,8 @@ public class PlayerMove : MonoBehaviour
             //rb.rotation = Quaternion.LookRotation(new Vector3(0, joystick.JoyVector.y, 0));
 
             transform.forward = rb.velocity;
+
+            anim.SetBool(moveHash, true);
         }
         else 
         {
@@ -39,6 +46,8 @@ public class PlayerMove : MonoBehaviour
                 enemyDir = (enemySearch.CloseEnemy.transform.position - transform.position).normalized;
                 transform.forward = enemyDir;
             }
+
+            anim.SetBool(moveHash, false);
         }
     }
 }
