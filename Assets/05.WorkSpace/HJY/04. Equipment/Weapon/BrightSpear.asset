@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: BrightSpear
   m_EditorClassIdentifier: 
   equipmentName: BrightSpear
-  displayName: 
+  displayName: "\uBE0C\uB77C\uC774\uD2B8 \uC2A4\uD53C\uC5B4"
   type: 0
-  icon: {fileID: 21300000, guid: 1a5cb56adbe4d6944a46a36f051a9075, type: 3}
+  icon: {fileID: 21300000, guid: 6f19f14882f4e16469d62030e9d3eb39, type: 3}
   description: "\uC5C4\uCCAD\uB09C \uC5D0\uB108\uC9C0\uB97C \uB2F4\uACE0 \uC788\uC5B4,
     \uC801\uC774 \uC54C\uC544\uCC44\uAE30\uB3C4 \uC804\uC5D0 \uC801\uC744 \uCC98\uCE58\uD569\uB2C8\uB2E4."
   abilityDescription: "\uC801\uC744 \uAE09\uACA9\uD788 \uACF5\uACA9\uD560 \uC218
