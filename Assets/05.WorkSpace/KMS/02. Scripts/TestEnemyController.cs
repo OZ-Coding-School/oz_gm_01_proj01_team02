@@ -6,7 +6,7 @@
 // {
 //     [Header("Stats")]
 //     [SerializeField] private float moveSpeed = 3f;
-//     [SerializeField] private float meleeAttackRange = 2f;
+//     [SerializeField] private float midAttackRange = 2f;
 //     [SerializeField] private float rangedAttackRange = 10f;
 //     [SerializeField] private float attackDelay = 3f;
 //     [SerializeField] private TextEnemyBullet enemyBullet;
@@ -43,9 +43,9 @@
 //                 float dist = Vector3.Distance(transform.position, target.position);
 
 //                 // 근거리 공격
-//                 if (dist <= meleeAttackRange && Time.time >= nextAttackTime)
+//                 if (dist <= midAttackRange && Time.time >= nextAttackTime)
 //                 {
-//                     StartCoroutine(MeleeAttack());
+//                     StartCoroutine(MidAttack());
 //                     nextAttackTime = Time.time + attackDelay;
 //                 }
 //                 // 원거리 공격
@@ -69,7 +69,7 @@
 //             agent.SetDestination(target.position);
 //     }
 
-//     private IEnumerator MeleeAttack()
+//     private IEnumerator MidAttack()
 //     {
 //         agent.enabled = false;
 //         rb.velocity = Vector3.zero;

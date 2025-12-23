@@ -72,7 +72,6 @@ public class EnemyController : MonoBehaviour
     private void OnEnable()
     {
         startPos = transform.position;
-        StartCoroutine(Die());
     }
 
     private void Awake()
@@ -287,12 +286,12 @@ public class EnemyController : MonoBehaviour
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
 
-    IEnumerator Die()
-    {
-        yield return new WaitForSeconds(3);
-        transform.position = startPos;
-        nvAgent.enabled = false;
-        ReturnPool();
-    }
+    //IEnumerator Die()
+    //{
+    //    yield return new WaitForSeconds(3);
+    //    transform.position = startPos;
+    //    nvAgent.enabled = false;
+    //    ReturnPool();
+    //}
 
 }

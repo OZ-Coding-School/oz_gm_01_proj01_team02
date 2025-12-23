@@ -15,4 +15,4 @@ MonoBehaviour:
   talentName: "\uC77C\uC73C\uD0A4\uAC8C \uD558\uB2E4"
   stat:
     statType: 0
-    value: 0
+    value: 100
