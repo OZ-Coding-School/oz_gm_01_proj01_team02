@@ -1,0 +1,82 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using Unity.VisualScripting;
+using UnityEngine;
+
+
+[System.Serializable]
+public class PlayData
+{
+    public int _coin;
+    public int _stage;
+    public int _chapter;
+
+}
+
+public class DataManager : MonoBehaviour
+{
+    public static DataManager instance;
+    public PlayData playData = new();
+
+    private string path;
+    private string fileName = "/save";
+    private string keyWord = "evzxkjnv158ezxcvf^%2agasdf687gb3%g7nbvauoi3@8g8fabn^%zxncvkg18aaetx";
+
+    private void Awake()
+    {
+        instance = this;
+
+        path = Application.persistentDataPath + fileName;
+        Debug.Log(path);
+    }
+
+    public void Save()
+    {
+        string data = JsonUtility.ToJson(playData);
+
+        File.WriteAllText(path, EncryptAndDecrypt(data));
+    }
+
+    public void Load()
+    {
+        if (!File.Exists(path))
+        {
+            Save();
+        }
+
+        string data = File.ReadAllText(path);
+        playData = JsonUtility.FromJson<PlayData>(EncryptAndDecrypt(data));
+    }
+
+    private string EncryptAndDecrypt(string data)
+    {
+        string result = "";
+        for (int i = 0; i < data.Length; i++)
+        {
+            result += (char)(data[i] ^ keyWord[i % keyWord.Length]);
+        }
+
+        return result;
+    }
+
+    public void InitData()
+    {
+        playData._coin = 0;
+        playData._stage = 1;
+        playData._chapter = 1;
+    }
+
+    public void AddData(int coin, int stage, int chapter)
+    {
+        playData._coin = coin;
+        playData._stage = stage;
+        playData._chapter = chapter;
+
+        Debug.Log(playData._coin);
+        Debug.Log(playData._stage);
+        Debug.Log(playData._chapter);
+        Save();
+    }
+}

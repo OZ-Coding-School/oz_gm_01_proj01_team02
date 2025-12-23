@@ -54,15 +54,15 @@ public class ItemSpawner : MonoBehaviour
     {
         itembase = FindObjectsOfType<ItemBase>();
 
-        if (IsGetActiveChild())
-        {
-            foreach(var ib in itembase) ib.Collecting();
-        }
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         EnemyCheck enemycheck = enemy.GetComponent<EnemyCheck>();
         bool isBoss = enemy.TryGetComponent(out Boss boss);
-        Debug.Log("Item ALLEnemiesDied »£√‚");
         SpawnItem(enemycheck.endPos, enemyController.Type, isBoss);
+
+        if (IsGetActiveChild())
+        {
+            CollectAllItems();
+        }
     }
 
     public bool IsGetActiveChild()
@@ -187,5 +187,13 @@ public class ItemSpawner : MonoBehaviour
     }
     #endregion
 
+    private void CollectAllItems()
+    {
+        ItemBase[] activeItems = FindObjectsOfType<ItemBase>();
 
+        foreach (var item in activeItems)
+        {
+            item.Collecting();
+        }
+    }
 }

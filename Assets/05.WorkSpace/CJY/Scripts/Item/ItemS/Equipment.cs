@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Equipment : ItemBase
 {
-    public void ReturnPool()
+    public override void ReturnPool()
     {
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
