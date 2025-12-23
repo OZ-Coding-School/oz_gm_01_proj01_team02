@@ -9,17 +9,17 @@ public class PlayerStatManager : MonoBehaviour
     public static PlayerStatManager Instance;
     public static event Action OnStatChanged;
 
-    // ±âº» ½ºÅÈ
+    // ï¿½âº» ï¿½ï¿½ï¿½ï¿½
     [Header("Base Stats")]
-    public float baseMaxHp = 1000; // ÃÖ´ë Ã¼·Â
-    public float baseAttack = 150; // °ø°Ý·Â
-    public float baseAttackSpeed = 1; // °ø°Ý ¼Óµµ (ºÐ´ç °ø¼Ó) 
-    public float baseCritRate = 0.05f; // Ä¡¸íÅ¸ È®·ü
-    public float baseCritDamage = 2f; // Ä¡¸íÅ¸ ´ë¹ÌÁö
-    public float baseMoveSpeed = 5; // ÀÌµ¿ ¼Óµµ
-    public float baseSuperTime = 0.5f; // ÇÇ°Ý ¹«Àû ½Ã°£ (¿¬¼Ó ÇÇ°Ý ¹æÁö)
+    public float baseMaxHp = 1000; // ï¿½Ö´ï¿½ Ã¼ï¿½ï¿½
+    public float baseAttack = 150; // ï¿½ï¿½ï¿½Ý·ï¿½
+    public float baseAttackSpeed = 1; // ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ (ï¿½Ð´ï¿½ ï¿½ï¿½ï¿½ï¿½) 
+    public float baseCritRate = 0.05f; // Ä¡ï¿½ï¿½Å¸ È®ï¿½ï¿½
+    public float baseCritDamage = 2f; // Ä¡ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ï¿½
+    public float baseMoveSpeed = 5; // ï¿½Ìµï¿½ ï¿½Óµï¿½
+    public float baseSuperTime = 0.5f; // ï¿½Ç°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ (ï¿½ï¿½ï¿½ï¿½ ï¿½Ç°ï¿½ ï¿½ï¿½ï¿½ï¿½)
 
-    // ÇöÀç ½ºÅÈ
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [Header("Current Stats")]
     public float maxHp;
     public float attack;
@@ -29,8 +29,8 @@ public class PlayerStatManager : MonoBehaviour
     public float moveSpeed;
     public float superTime;
 
-    public float dodgeRate; // È¸ÇÇ È®·ü
-    public float coinBonus; // ÄÚÀÎ º¸³Ê½º
+    public float dodgeRate; // È¸ï¿½ï¿½ È®ï¿½ï¿½
+    public float coinBonus; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ê½ï¿½
 
     private void Awake()
     {
@@ -38,19 +38,34 @@ public class PlayerStatManager : MonoBehaviour
         RecalculateStats();
     }
 
-    // ÃÖ½Å ½ºÅÈ °è»ê
+    public void ResetStat()
+    {
+        maxHp = baseMaxHp;
+        attack = baseAttack;
+        attackSpeed = baseAttackSpeed;
+        critRate = baseCritRate;
+        critDamage = baseCritDamage;
+        moveSpeed = baseMoveSpeed;
+        superTime = baseSuperTime;
+
+        dodgeRate = 0;
+        coinBonus = 0;
+    }
+
+    // ï¿½Ö½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     public void RecalculateStats()
     {
         ResetStat();
 
-        // Àåºñ
+
+        // ï¿½ï¿½ï¿½
         foreach (var item in InventoryManager.Instance.equippedItems)
         {
             if (item == null) continue;
             ApplyStats(item.stats);
         }
 
-        // Àç´É
+        // ï¿½ï¿½ï¿½
         foreach (var talent in InventoryManager.Instance.ownedTalents)
         {
             if (talent.level <= 0) continue;
@@ -76,6 +91,7 @@ public class PlayerStatManager : MonoBehaviour
 
         dodgeRate = 0;
         coinBonus = 0;
+
     }
 
     private void ApplyStats(StatValue[] stats)

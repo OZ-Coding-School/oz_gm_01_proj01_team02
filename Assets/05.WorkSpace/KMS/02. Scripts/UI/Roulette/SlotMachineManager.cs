@@ -1,127 +1,236 @@
 using System.Collections;
 using System.Collections.Generic;
+using STH.Characters.Player;
+using STH.ScriptableObjects.Base;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SlotMachineManager : MonoBehaviour
 {
+    [Header("Skill Data")]
+    public List<SkillData> skillDataList;
+
+
+    [Header("UI")]
     public GameObject slotMachineUI;
-    public GameObject[] slotSkillObject;
-    public Button[] slot;
-    public Sprite[] skillSprite;
     public GameObject hpBar;
-    [System.Serializable]
-    public class DisplayItemSlot
-    {
-        public List<Image> slotSprite = new List<Image> ();
-    }
-    public DisplayItemSlot[] displayItemSlots;
     public Image displayResultImage;
 
-    public List<int> startList = new List<int> ();
-    public List<Sprite> resultSpriteList = new List<Sprite>();
-    int itemCnt = 3;
 
+    [Header("Slot Columns")]
+    public RectTransform[] slotColumns;
+
+    [System.Serializable]
+    public class SlotColumn
+    {
+        public Image[] images;
+    }
+    public SlotColumn[] slotImages;
+
+    [Header("Buttons")]
+    public Button[] slotButtons;
+    private SkillData[] resultSkills;
+    private int itemCnt = 3;
+
+
+    private float imageHeight = 50.0f;
+
+
+    
+    // public Button[] slot;
+    // public Sprite[] skillSprite;
+    // [System.Serializable]
+    // public class DisplayItemSlot
+    // {
+    //     public List<Image> slotSprite = new List<Image> ();
+    // }
+    // public DisplayItemSlot[] displayItemSlots;
+
+    // public List<int> startList = new List<int> ();
+    // public List<Sprite> resultSpriteList = new List<Sprite>();
+    
+
+    
 
     void OnEnable()
     {
-        displayResultImage.sprite = null;
         Time.timeScale = 0.0f;
-        
+        displayResultImage.sprite = null;
+
+        resultSkills = new SkillData[slotColumns.Length];
+
+        PlaySlotMachine();
     }
 
-    int FinalSprite(int index)
-    {
-        int totalImages = displayItemSlots[index].slotSprite.Count;
-        float yPos = slotSkillObject[index].transform.localPosition.y;
-        float imageHeight = displayItemSlots[index].slotSprite[0].rectTransform.rect.height;
-        int centralIndex = Mathf.RoundToInt(yPos/ imageHeight);
-
-        centralIndex = Mathf.Clamp(centralIndex, 0, totalImages - 1);
-
-        return centralIndex;
-
-    }
-    
     public void PlaySlotMachine()
     {
-        for ( int i = 0; i < itemCnt * slot.Length; i++)
+        int fixedRepeatCount = 20;
+        for (int i = 0; i < slotButtons.Length; i++)
         {
-            startList.Add(i);
+            slotButtons[i].interactable = false;
+            SetRandomIcons(i);
+            StartCoroutine(StartSlot(i, fixedRepeatCount));
         }
+    }
 
-        for ( int i = 0; i < slot.Length; i++)
+    private void SetRandomIcons(int columnIndex)
+    {
+        Image[] images = slotImages[columnIndex].images;
+
+        for (int i = 0; i < images.Length; i++)
         {
-            for (int j = 0; j < itemCnt; j++)
-            {
-                slot[i].interactable = false;
-
-                int randomIndex = Random.Range (0, startList.Count);
-                
-                displayItemSlots[i].slotSprite[j].sprite = skillSprite[startList[randomIndex]];
-
-                if ( j == 0)
-                {
-                    displayItemSlots[i].slotSprite[itemCnt].sprite = skillSprite[startList[randomIndex]];
-                }
-                startList.RemoveAt (randomIndex);
-            }
+            int randomIndex = Random.Range(0, skillDataList.Count);
+            images[i].sprite = skillDataList[randomIndex].icon;
         }
-        Show();
-        StartCoroutine ( StartSlot(0, (itemCnt*10 +5)*2));
-        StartCoroutine ( StartSlot(1, (itemCnt*10 + 2)*2));
-        StartCoroutine ( StartSlot(2, (itemCnt*14 + 2)*2));
     }
 
     IEnumerator StartSlot(int index, int repeatCount)
     {
+        RectTransform column = slotColumns[index];
 
-        yield return null;
-        for (int i = 0; i < (itemCnt*10 + 5)*2; i++)
+        for (int i = 0; i < repeatCount; i++)
         {
-            slotSkillObject[index].transform.localPosition -= new Vector3 ( 0 , 50f, 0);
-            if (slotSkillObject[index].transform.localPosition.y < 50f)
-            {
-                slotSkillObject[index].transform.localPosition += new Vector3 (0, 150f, 0);
-            }
-            yield return new WaitForSeconds (0.02f);
+            column.localPosition -= new Vector3(0, 50f, 0);
+
+        if (column.localPosition.y < -imageHeight) // 맨 아래 도달하면
+              column.localPosition += new Vector3(0, imageHeight * slotImages[index].images.Length, 0);
+
+          yield return new WaitForSecondsRealtime(0.02f);
         }
 
-        int finalIndex = FinalSprite(index);
-        Sprite finalSprite = displayItemSlots[index].slotSprite[finalIndex].sprite;
+    // 중앙 이미지 선택
+        int finalIndex = GetCenterIndex(index);
+        Sprite finalSprite = slotImages[index].images[finalIndex].sprite;
+        SkillData selectedSkill = skillDataList.Find(s => s.icon == finalSprite);
 
-        if (resultSpriteList.Count <= index)
-            resultSpriteList.Add(finalSprite);
-        else
-            resultSpriteList[index] = finalSprite;
+        resultSkills[index] = selectedSkill;
+        slotButtons[index].interactable = true;
+    }
 
-        
-        
-        slot[index].interactable = true;
+    int GetCenterIndex(int index)
+    {
+        float yPos = slotColumns[index].localPosition.y;
+        float imageHeight = slotImages[index].images[0].rectTransform.rect.height;
+        int centerIndex = Mathf.RoundToInt(Mathf.Abs(yPos) / imageHeight);
+        return Mathf.Clamp(centerIndex, 0, slotImages[index].images.Length - 1);
     }
 
     public void ClickBtn(int index)
     {
-        displayResultImage.sprite = resultSpriteList[index];
-        StartCoroutine(DisableAfterDelay(1f));
         
+        SkillData skill = resultSkills[index];
+        if (skill == null) return;
+        PlayerController player = FindObjectOfType<PlayerController>();
+        skill.Apply(player);
+
+        displayResultImage.sprite = skill.icon;
+        StartCoroutine(DisableAfterDelay(1.0f));
     }
-    
-    private IEnumerator DisableAfterDelay(float delay)
+
+    IEnumerator DisableAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
-        
+        yield return new WaitForSecondsRealtime(delay);
+
         slotMachineUI.SetActive(false);
         hpBar.SetActive(true);
         Time.timeScale = 1.0f;
     }
 
-    public void Show()
-    {
-        hpBar.SetActive(false);
-        slotMachineUI.SetActive(true);
-        displayResultImage.sprite = null;
-    }
+    
+
+
+    // int FinalSprite(int index)
+    // {
+    //     int totalImages = displayItemSlots[index].slotSprite.Count;
+    //     float yPos = skillDataList[index].transform.localPosition.y;
+    //     float imageHeight = displayItemSlots[index].slotSprite[0].rectTransform.rect.height;
+    //     int centralIndex = Mathf.RoundToInt(yPos/ imageHeight);
+
+    //     centralIndex = Mathf.Clamp(centralIndex, 0, totalImages - 1);
+
+    //     return centralIndex;
+
+    // }
+    
+    // public void PlaySlotMachine()
+    // {
+    //     for ( int i = 0; i < itemCnt * slot.Length; i++)
+    //     {
+    //         startList.Add(i);
+    //     }
+
+    //     for ( int i = 0; i < slot.Length; i++)
+    //     {
+    //         for (int j = 0; j < itemCnt; j++)
+    //         {
+    //             slot[i].interactable = false;
+
+    //             int randomIndex = Random.Range (0, startList.Count);
+                
+    //             displayItemSlots[i].slotSprite[j].sprite = skillSprite[startList[randomIndex]];
+
+    //             if ( j == 0)
+    //             {
+    //                 displayItemSlots[i].slotSprite[itemCnt].sprite = skillSprite[startList[randomIndex]];
+    //             }
+    //             startList.RemoveAt (randomIndex);
+    //         }
+    //     }
+    //     Show();
+    //     StartCoroutine ( StartSlot(0, (itemCnt*10 +5)*2));
+    //     StartCoroutine ( StartSlot(1, (itemCnt*10 + 2)*2));
+    //     StartCoroutine ( StartSlot(2, (itemCnt*14 + 2)*2));
+    // }
+
+    // IEnumerator StartSlot(int index, int repeatCount)
+    // {
+
+    //     yield return null;
+    //     for (int i = 0; i < (itemCnt*10 + 5)*2; i++)
+    //     {
+    //         skillDataList[index].transform.localPosition -= new Vector3 ( 0 , 50f, 0);
+    //         if (skillDataList[index].transform.localPosition.y < 50f)
+    //         {
+    //             skillDataList[index].transform.localPosition += new Vector3 (0, 150f, 0);
+    //         }
+    //         yield return new WaitForSeconds (0.02f);
+    //     }
+
+    //     int finalIndex = FinalSprite(index);
+    //     Sprite finalSprite = displayItemSlots[index].slotSprite[finalIndex].sprite;
+
+    //     if (resultSpriteList.Count <= index)
+    //         resultSpriteList.Add(finalSprite);
+    //     else
+    //         resultSpriteList[index] = finalSprite;
+
+        
+        
+    //     slot[index].interactable = true;
+    // }
+
+    // public void ClickBtn(int index)
+    // {
+    //     displayResultImage.sprite = resultSpriteList[index];
+    //     StartCoroutine(DisableAfterDelay(1f));
+        
+    // }
+    
+    // private IEnumerator DisableAfterDelay(float delay)
+    // {
+    //     yield return new WaitForSeconds(delay);
+        
+    //     slotMachineUI.SetActive(false);
+    //     hpBar.SetActive(true);
+    //     Time.timeScale = 1.0f;
+    // }
+
+    // public void Show()
+    // {
+    //     hpBar.SetActive(false);
+    //     slotMachineUI.SetActive(true);
+    //     displayResultImage.sprite = null;
+    // }
 
 
 

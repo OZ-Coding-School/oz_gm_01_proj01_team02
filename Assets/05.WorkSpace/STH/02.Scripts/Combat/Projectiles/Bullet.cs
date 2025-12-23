@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using STH.Core;
 using STH.Characters.Player;
+using STH.Characters.Enemy;
 
 namespace STH.Combat.Projectiles
 {
@@ -82,7 +83,7 @@ namespace STH.Combat.Projectiles
             IDamageable target = other.GetComponent<IDamageable>();
             if (target == null) return;
             if (bulletOwner == TypeEnums.Player && other.GetComponent<PlayerController>()) return;
-            if (bulletOwner == TypeEnums.Enemy && other.GetComponent<EnemyController>()) return;
+            if (bulletOwner == TypeEnums.Enemy && other.GetComponent<Characters.Enemy.EnemyController>()) return;
 
             // 기본 데미지 적용
             target.TakeDamage(damage);
@@ -97,7 +98,7 @@ namespace STH.Combat.Projectiles
             if (pierceCount <= 0)
             {
                 StopAllCoroutines();
-                PoolManager.pool_instance.ReturnPool(this);
+                GameManager.Pool.ReturnPool(this);
             }
             else
             {
@@ -116,7 +117,7 @@ namespace STH.Combat.Projectiles
         IEnumerator ReturnToPoolAfterTime(float delay)
         {
             yield return new WaitForSeconds(delay);
-            PoolManager.pool_instance.ReturnPool(this);
+            GameManager.Pool.ReturnPool(this);
         }
     }
 }
