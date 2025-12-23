@@ -24,7 +24,7 @@ namespace STH.Characters.Player
         [SerializeField] private List<SkillData> testSkills;
 
         private List<SkillData> skills = new List<SkillData>();
-        private List<IFireStrategy> strategies = new List<IFireStrategy>();
+        public List<IFireStrategy> strategies = new List<IFireStrategy>();
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
 
         private PlayerEnemySearch enemySearch;
@@ -48,6 +48,15 @@ namespace STH.Characters.Player
 
         void Start()
         {
+
+             if (bulletPrefab == null)
+    {
+        Debug.LogError("❌ bulletPrefab이 Inspector에 안 들어가 있음");
+    }
+    else
+    {
+        Debug.Log($"✅ CreatePool prefab name: {bulletPrefab.name}");
+    }
             GameManager.Pool.CreatePool(bulletPrefab, 50);
 
             foreach (var skill in testSkills)
@@ -63,7 +72,6 @@ namespace STH.Characters.Player
         private void Update()
         {
             if (isDead) return;
-
             attackTimer += Time.deltaTime;
             if (attackTimer >= 1 / stats.attackSpeed)
             {
@@ -86,10 +94,13 @@ namespace STH.Characters.Player
         // }
 
         private void Attack()
-        {
+        {   
+            Debug.Log($"strategies.Count = {strategies.Count}");
             // 적이 없거나 움직이면 공격 안 함
-            if (enemySearch.CloseEnemy != null && rb.velocity.sqrMagnitude < 0.0001f)
+            if (enemySearch.CloseEnemy != null && rb.velocity.sqrMagnitude < 10f)
             {
+                Debug.Log(rb.velocity.sqrMagnitude);
+
                 if (strategies.Count == 0)
                 {
                     // 기본 단발 공격
@@ -107,8 +118,20 @@ namespace STH.Characters.Player
 
         private void SpawnBulletCallback(Vector3 position, Quaternion rotation)
         {
+            Debug.Log("🔥 SpawnBulletCallback 호출됨");
+            Debug.Log($"bullet active = {bulletPrefab.gameObject.activeSelf}");
+            Debug.Log($"Bullet World Pos: {bulletPrefab.transform.position}");
+            Debug.Log($"Bullet Parent: {bulletPrefab.transform.parent?.name}");
+            Debug.Log($"Bullet Scale: {bulletPrefab.transform.localScale}");
+
             // TODO 생성하지말고 pool에서 꺼내기
             Bullet bullet = GameManager.Pool.GetFromPool(bulletPrefab);
+
+            if (bullet == null)
+            {
+                // Debug.LogError("❌ bullet == null (풀에서 못 꺼냄)");
+                return;
+            }   
 
             if (bullet != null)
             {

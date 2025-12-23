@@ -12,11 +12,10 @@ GameObject:
   - component: {fileID: 6833357780036149652}
   - component: {fileID: 60473813423446776}
   - component: {fileID: 2218376612387765194}
-  - component: {fileID: 1905291961733743585}
   - component: {fileID: 1926378390515568048}
   - component: {fileID: 5994197246078648785}
   - component: {fileID: 5369443312424094733}
-  - component: {fileID: 7573325616360617849}
+  - component: {fileID: 2766353711061790045}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -104,24 +103,12 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1905291961733743585
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4283008687500663904}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092c73780e6f3fa4e8c5cec87e7e999a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1926378390515568048
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,26 +155,31 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!136 &7573325616360617849
-CapsuleCollider:
+--- !u!114 &2766353711061790045
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4283008687500663904}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2edbee4236c4939458919be0636d7e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  moveSpeed: 3
+  rotateSpeed: 8
+  meleeIdleRange: 1
+  meleeAttackRange: 5
+  attackDelay: 10
+  attackChargeTime: 3
+  runSpeed: 10
+  rangedAttackRange: 12
+  spawnTime: 1
+  target: {fileID: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  enemyBullet: {fileID: 0}
+  bulletPos: {fileID: 0}

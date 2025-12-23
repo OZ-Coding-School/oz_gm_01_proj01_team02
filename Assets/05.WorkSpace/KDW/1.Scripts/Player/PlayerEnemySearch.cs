@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class PlayerEnemySearch : MonoBehaviour
 {
-    [Header("Àû °¨Áö")]
-    [SerializeField] private float checkRange;  //Àû°úÀÇ °Å¸®
+    [Header("ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    [SerializeField] private float checkRange;  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
     [SerializeField] private LayerMask enemyLayer;
 
-    private GameObject closeEnemy; //Á¦ÀÏ °¡±î¿î ÀûÀ» ´ã¾ÆµÑ º¯¼ö
+    public GameObject closeEnemy; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æµï¿½ ï¿½ï¿½ï¿½ï¿½
 
     private Vector3 enemyDir;
 
     public GameObject CloseEnemy => closeEnemy;
 
+    
     void Update()
     {
         EnemyCheck();
@@ -21,19 +22,20 @@ public class PlayerEnemySearch : MonoBehaviour
 
     private void EnemyCheck()
     {
-        //¿øÇü ¹üÀ§ ³»¿¡ Á¸ÀçÇÏ´Â Enemyµé Ã¼Å©
+
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ Enemyï¿½ï¿½ Ã¼Å©
         Collider[] Colliders = Physics.OverlapSphere(transform.position, checkRange, enemyLayer);
 
-        //¿øÇü ¹üÀ§ ³»¿¡ Enemy°¡ ÇÏ³ªµµ ¾øÀ¸¸é return 
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Enemyï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ return 
         if (Colliders.Length == 0)
         {
             closeEnemy = null;
             return;
         }
 
-        float minDis = Mathf.Infinity;  //Á¦ÀÏ °¡±î¿î °Å¸® ÀúÀå
-        GameObject nearEnemy = null;    //Á¦ÀÏ °¡±î¿î Àû °»½Å¿ë Áö¿ª º¯¼ö
-        Vector3 currentPos = transform.position;  //ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡
+        float minDis = Mathf.Infinity;  //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+        GameObject nearEnemy = null;    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Å¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        Vector3 currentPos = transform.position;  //ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡
 
         foreach (Collider collider in Colliders)
         {
