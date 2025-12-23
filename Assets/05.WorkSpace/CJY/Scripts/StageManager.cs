@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ public class StageManager : MonoBehaviour
     public const int CHAPTER_FINISH = 15;
 
     [SerializeField] GameObject clearPanel, joyStick;
+    [SerializeField] TextMeshProUGUI chapter, stageNum;
 
     public static event Action<int> OnStageIncrease;
 
@@ -44,8 +46,6 @@ public class StageManager : MonoBehaviour
         OnStageIncrease?.Invoke(currentStage);
         //데이터를 저장.
         GameManager.Data.AddData(TGM.coin, currentStage, int.Parse(chapter[7].ToString()));
-
-
     }
 
     public void InitStageClearCount()
