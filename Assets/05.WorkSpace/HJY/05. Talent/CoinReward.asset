@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56e8807663dd0b1459c1b3f959eda33b, type: 3}
-  m_Name: Growth
+  m_Name: CoinReward
   m_EditorClassIdentifier: 
-  talentName: "\uC77C\uC73C\uD0A4\uAC8C \uD558\uB2E4"
+  talentName: "\uC2DC\uAC04 \uBCF4\uC0C1"
   stat:
-    statType: 0
-    value: 100
+    statType: 12
+    value: 10

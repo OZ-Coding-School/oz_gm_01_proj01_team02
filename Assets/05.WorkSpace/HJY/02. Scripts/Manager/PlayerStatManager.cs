@@ -38,6 +38,32 @@ public class PlayerStatManager : MonoBehaviour
         RecalculateStats();
     }
 
+    // 최신 스탯 계산
+    public void RecalculateStats()
+    {
+        ResetStat();
+
+        // 장비
+        foreach (var item in InventoryManager.Instance.equippedItems)
+        {
+            if (item == null) continue;
+            ApplyStats(item.stats);
+        }
+
+        // 재능
+        foreach (var talent in InventoryManager.Instance.ownedTalents)
+        {
+            if (talent.level <= 0) continue;
+
+            StatValue stat = talent.data.statPerLevel;
+            stat.value *= talent.level;
+
+            ApplyStat(stat);
+        }
+        OnStatChanged?.Invoke();
+
+    }
+
     public void ResetStat()
     {
         maxHp = baseMaxHp;
@@ -50,24 +76,6 @@ public class PlayerStatManager : MonoBehaviour
 
         dodgeRate = 0;
         coinBonus = 0;
-    }
-
-    // 최신 스탯 계산
-    public void RecalculateStats()
-    {
-        ResetStat();
-
-        foreach (var item in InventoryManager.Instance.equippedItems)
-        {
-            if (item == null) continue;
-            ApplyStats(item.stats);
-        }
-
-        foreach (var talent in InventoryManager.Instance.ownedTalents)
-        {
-            ApplyStat(talent.stat);
-        }
-        OnStatChanged?.Invoke();
     }
 
     private void ApplyStats(StatValue[] stats)
@@ -83,17 +91,39 @@ public class PlayerStatManager : MonoBehaviour
     {
         switch (stat.statType)
         {
-            case StatType.MaxHP: maxHp += stat.value; break;
-            case StatType.MaxHpPercent: maxHp *= (1 + stat.value); break;
-            case StatType.Attack: attack += stat.value; break;
-            case StatType.AttackSpeed: attackSpeed += stat.value; break;
-            case StatType.AttackSpeedPercent: attackSpeed *= (1 + stat.value); break;
-            case StatType.CritRate: critRate += stat.value; break;
-            case StatType.CritDamage: critDamage += stat.value; break;
-            case StatType.MoveSpeed: moveSpeed += stat.value; break;
-            case StatType.SuperTime: superTime += stat.value; break;
-            case StatType.DodgeRate: dodgeRate += stat.value; break;
-            case StatType.CoinBonus: coinBonus += stat.value; break;
+            case StatType.MaxHP: 
+                maxHp += stat.value; 
+                break;
+            case StatType.MaxHpPercent: 
+                maxHp *= (1 + stat.value); 
+                break;
+            case StatType.Attack: 
+                attack += stat.value; 
+                break;
+            case StatType.AttackSpeed: 
+                attackSpeed += stat.value; 
+                break;
+            case StatType.AttackSpeedPercent: 
+                attackSpeed *= (1 + stat.value); 
+                break;
+            case StatType.CritRate: 
+                critRate += stat.value; 
+                break;
+            case StatType.CritDamage: 
+                critDamage += stat.value; 
+                break;
+            case StatType.MoveSpeed: 
+                moveSpeed += stat.value; 
+                break;
+            case StatType.SuperTime: 
+                superTime += stat.value; 
+                break;
+            case StatType.DodgeRate: 
+                dodgeRate += stat.value; 
+                break;
+            case StatType.CoinBonus: 
+                coinBonus += stat.value; 
+                break;
         }
     }
 }
