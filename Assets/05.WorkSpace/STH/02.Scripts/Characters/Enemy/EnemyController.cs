@@ -22,7 +22,7 @@ namespace STH.Characters.Enemy
         [SerializeField] private float moveSpeed = 3.0f;    //Enemy �̵��ӵ�
         [SerializeField] private float rotateSpeed = 8.0f;
         [SerializeField] private float maxHp = 450;
-        private float currentHp = 450;
+        private float currentHp;
 
 
         [Header("�ٰŸ� ���� �Ÿ�/��Ÿ��/���� �ӵ�")]
@@ -46,9 +46,12 @@ namespace STH.Characters.Enemy
         [SerializeField] private Bullet enemyBullet;
         [SerializeField] protected Transform bulletPos;
 
+        [SerializeField] private PoolableParticle deathEffect;
+
         private Rigidbody rb;
         private NavMeshAgent nvAgent;
         private Animator animator;
+        private EnemyHitEffect hitEffect;
 
         private float nextAttackTime = 0.0f; //���� ���� �ð� ��Ÿ�� �����
         private bool isDead;
@@ -92,6 +95,7 @@ namespace STH.Characters.Enemy
             rb = GetComponent<Rigidbody>();
             nvAgent = GetComponent<NavMeshAgent>();
             animator = GetComponent<Animator>();
+            hitEffect = GetComponent<EnemyHitEffect>();
 
             if (target == null)
             {
@@ -115,6 +119,8 @@ namespace STH.Characters.Enemy
             {
                 GameManager.Pool.CreatePool(enemyBullet, 50);
             }
+            GameManager.Pool.CreatePool(deathEffect, 20);
+            currentHp = maxHp;
         }
 
         void Update()
@@ -303,10 +309,12 @@ namespace STH.Characters.Enemy
 
         IEnumerator DieCo()
         {
-            yield return new WaitForSeconds(3);
-            transform.position = startPos;
-            nvAgent.enabled = false;
+            yield return new WaitForSeconds(1);
             ReturnPool();
+
+            // 사라지는 이펙트
+            PoolableParticle ga = GameManager.Pool.GetFromPool(deathEffect);
+            ga.transform.position = transform.position;
         }
 
         public void TakeDamage(float amount)
@@ -315,6 +323,8 @@ namespace STH.Characters.Enemy
 
             Debug.Log($"Enemy take damage {amount}");
             currentHp -= amount;
+
+            if (hitEffect != null) hitEffect.PlayHitEffect();
 
             if (currentHp <= 0)
             {
@@ -327,6 +337,8 @@ namespace STH.Characters.Enemy
         {
             isDead = true;
             animator.SetTrigger("Die");
+            StartCoroutine(DieCo());
+
         }
     }
 
