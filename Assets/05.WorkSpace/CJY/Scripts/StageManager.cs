@@ -8,18 +8,41 @@ using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
+    public static StageManager instance;
+
     public const int DEVIL_APPEARS = 5;
     public const int ANGEL_APPEARS = 3;
     public const int STAGE_BRANCH = 5;
     public const int CHAPTER_FINISH = 15;
 
+    [Header("Clear Panel Control")]
     [SerializeField] GameObject clearPanel, joyStick;
     [SerializeField] TextMeshProUGUI chapter, stageNum;
+    bool onClearPanel = false;
 
     public static event Action<int> OnStageIncrease;
 
     public int currentStage { get; private set; } = 1;
     public bool onObstacle { get; private set; } = true;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject); 
+            return; 
+        }
+
+        instance = this;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            OnClearPanel(1, 1, 1);
+        }
+    }
 
     public int Select(string name)
     {
@@ -55,6 +78,11 @@ public class StageManager : MonoBehaviour
 
     public void OnClearPanel(int stage, int chapter, int coin)
     {
+
+        onClearPanel = !onClearPanel;
+        clearPanel.SetActive(onClearPanel);
+        joyStick.SetActive(!onClearPanel);
+
 
     }
 

@@ -28,7 +28,7 @@ public class TestGameManager : MonoBehaviour
     public TestGameState gameState = TestGameState.Playing;
 
 
-    public PlayerController player;
+    public PlayerMove player;
     //public TestPlayer player;
 
     private void Awake()
