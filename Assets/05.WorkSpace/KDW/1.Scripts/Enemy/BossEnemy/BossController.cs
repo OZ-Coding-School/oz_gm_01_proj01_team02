@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class BossController : MonoBehaviour
 {
-    private EnemyState currentState;
+    private BossState currentState;
 
     [Header("적 타입")]
     [SerializeField] private TypeEnums type;  //근거리, 원거리 등 적의 타입
@@ -14,12 +14,13 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private float moveSpeed = 3.0f;    //Enemy 이동속도
     [SerializeField] private float rotateSpeed = 8.0f;
 
-    [Header("근거리 공격 거리/쿨타임/돌진 속도")]
-    [SerializeField] private float meleeIdleRange = 1.0f;   //타겟의 근처에 가면 멈추는 거리
-    [SerializeField] private float meleeAttackRange = 5.0f; //근거리 공격거리
+    [Header("중간보스 공격 거리/쿨타임/돌진 속도,시간")]
+    [SerializeField] private float midIdleRange = 1.0f;   //타겟의 근처에 가면 멈추는 거리
+    [SerializeField] private float midAttackRange = 5.0f; //근거리 공격거리
     [SerializeField] private float attackDelay = 10.0f;      //근거리 공격 쿨타임
     [SerializeField] private float attackChargeTime = 3.0f;
     [SerializeField] private float runSpeed = 10.0f;
+    [SerializeField] private float runTime = 0.5f;
 
     [Header("원거리 공격 거리/쿨타임")]
     [SerializeField] private float rangedAttackRange = 12.0f; //원거리 공격거리
@@ -45,16 +46,16 @@ public class EnemyController : MonoBehaviour
     private Vector3 beforeTargetPos;
 
     //상태 객체들
-    public EnemyState IdleState { get; private set; }
-    public EnemyState ChaseState { get; private set; }
-    public EnemyState AttackState { get; private set; }
+    public BossState IdleState { get; private set; }
+    public BossState ChaseState { get; private set; }
+    public BossState AttackState { get; private set; }
 
     //현재 상태가 어떤 종류인지
     public StateEnums CurrentStateType { get; private set; }
 
     //외부에서 읽을 수 있도록 하는 프로퍼티
-    public float MeleeIdleRange => meleeIdleRange;
-    public float MeleeAttackRange => meleeAttackRange;
+    public float MidIdleRange => midIdleRange;
+    public float MidAttackRange => midAttackRange;
     public float RangedAttackRange => rangedAttackRange;
     public float NextAttackTime => nextAttackTime;
     public Transform Target => target;
@@ -87,20 +88,13 @@ public class EnemyController : MonoBehaviour
 
         nvAgent.speed = moveSpeed;
 
-        //IdleState = new IdleState(this);
-        //ChaseState = new ChaseState(this);
-        //AttackState = new AttackState(this);
-
         EnemyType();
 
         ChangeState(ChaseState);
     }
     private void Start()
     {
-        if (type == TypeEnums.Ranged)
-        {
-            GameManager.Pool.CreatePool(enemyBullet, 50);
-        }
+        GameManager.Pool.CreatePool(enemyBullet, 50);
     }
 
     void Update()
@@ -118,7 +112,7 @@ public class EnemyController : MonoBehaviour
         currentState.FixedUpdateState();
     }
     //현재 상태를 바꿔주는 메서드
-    public void ChangeState(EnemyState newState)
+    public void ChangeState(BossState newState)
     {
         if (currentState == newState) return;
 
@@ -133,16 +127,15 @@ public class EnemyController : MonoBehaviour
     //Enemy 타입 결정
     public void EnemyType()
     {
-        switch(type)
+        switch (type)
         {
-            case TypeEnums.Melee:
-                IdleState = new MeleeIdle(this);
-                ChaseState = new MeleeChase(this);
-                AttackState = new MeleeAttack(this);
+            case TypeEnums.MidBoss:
+                IdleState = new MidBossChase(this);
+                ChaseState = new MidBossChase(this);
+                AttackState = new MidBossAttack(this);
                 break;
-            case TypeEnums.Ranged:
-                ChaseState = new RangedChase(this);
-                AttackState = new RangedAttack(this);
+            case TypeEnums.BigBoss:
+
                 break;
         }
 
@@ -151,6 +144,10 @@ public class EnemyController : MonoBehaviour
     public float DistToPlayer()
     {
         if (target == null) return Mathf.Infinity;
+
+
+
+
 
         return Vector3.Distance(transform.position, target.position);
     }
@@ -174,27 +171,28 @@ public class EnemyController : MonoBehaviour
             nvAgent.SetDestination(target.transform.position);
         }
     }
-    public void MeleeAttack()
+    //중간보스 공격
+    public void MidAttack()
     {
-       if (Time.time < nextAttackTime) return;
-        
+        if (Time.time < nextAttackTime) return;
+
         isAttack = true;
 
         nvAgent.enabled = false; //NebMesh는 기본적으로 매 프레임마다 타겟의 위치를 업데이트하기 때문에, Enemy를 멈추고 타겟의 이전위치를 저장하여 후에 그곳으로 이동할려면 .enable = false로 해야한다.
-       
-        StartCoroutine(AttackCharge());
+
+        StartCoroutine(MidAttackCharge());
 
         //isAttack = false;
 
         nextAttackTime = Time.time + attackDelay;
-        
+
 
     }
     public void RangedAttack()
     {
         nvAgent.enabled = false;
-        nvAgent.velocity = Vector3.zero; 
-        rb.velocity = Vector3.zero; 
+        nvAgent.velocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
 
         rangedTimer += Time.deltaTime;
 
@@ -220,7 +218,8 @@ public class EnemyController : MonoBehaviour
 
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
     }
-    IEnumerator AttackCharge()
+    //중간 보스 공격의 삼단대쉬
+    IEnumerator MidAttackCharge()
     {
         //Debug.Log("공격시작");
         yield return new WaitForSeconds(attackChargeTime); //공격 시작하면 실제로 돌진하기까지의 차지타임
@@ -231,20 +230,45 @@ public class EnemyController : MonoBehaviour
         rb.velocity = Vector3.zero; //Rigidbody 기존 속도를 초기화 하여 돌진 직선 유지
 
         float timer = 0.0f;         //돌진하고 있는 시간(타이머)
-        float attackRunTime = 0.5f; //돌진 총 시간
+        float attackRunTime = runTime; //돌진 총 시간
         rb.isKinematic = false;     //Kinematic이 true이면 미끄럼은 방지되나 벽을 뚫음 그래서 일시적으로 false로 함
-        while (timer < attackRunTime)
-        {
-            rb.MovePosition(rb.position + transform.forward * runSpeed * Time.fixedDeltaTime);
-            timer += Time.fixedDeltaTime;
-            yield return new WaitForFixedUpdate();
+        float dist = DistToPlayer();
 
-            if (isWall)
+        for (int i = 0; i < 3; i++)
+        {
+            Debug.Log("발사!!!!!!!!");
+
+            while (timer < attackRunTime)
             {
-                Debug.Log("벽이당");
+                rb.MovePosition(rb.position + transform.forward * runSpeed * Time.fixedDeltaTime);
+                timer += Time.fixedDeltaTime;
+                yield return new WaitForFixedUpdate();
+
+                if (isWall || dist <= MidIdleRange)
+                {
+                    //Debug.Log("벽이당");
+                    continue;
+                }
+            }
+
+            Vector3 dir = (target.position - transform.position).normalized;
+            dir.y = 0;
+
+            Quaternion lookRotation = Quaternion.LookRotation(dir);
+            transform.rotation = lookRotation;
+
+            timer = 0.0f;
+
+            
+            Debug.Log(dist);
+
+            if (dist <= MidIdleRange)
+            {
+                Debug.Log("끝");
                 break;
             }
         }
+        
 
         isWall = false;
 
@@ -261,10 +285,10 @@ public class EnemyController : MonoBehaviour
         if (type == TypeEnums.Melee)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, meleeAttackRange);
+            Gizmos.DrawWireSphere(transform.position, midAttackRange);
 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, meleeIdleRange);
+            Gizmos.DrawWireSphere(transform.position, midIdleRange);
         }
 
         if (type == TypeEnums.Ranged)
@@ -285,13 +309,4 @@ public class EnemyController : MonoBehaviour
     {
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
-
-    //IEnumerator Die()
-    //{
-    //    yield return new WaitForSeconds(3);
-    //    transform.position = startPos;
-    //    nvAgent.enabled = false;
-    //    ReturnPool();
-    //}
-
 }
