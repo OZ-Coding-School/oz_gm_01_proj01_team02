@@ -16,7 +16,7 @@ namespace STH.ScriptableObjects.Skills
         {
 
             // PlayerController는 CharacterStats를 가지고 있음
-            player.Stats.ApplyStat(statValue);
+            //player.Stats.ApplyStat(statValue);
             player.AddSkill(this);
         }
     }

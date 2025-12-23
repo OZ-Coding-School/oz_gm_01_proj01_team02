@@ -8,7 +8,7 @@ public class GameManager
     private static GameObject _root;
     private static PoolManager _pool;
     private static StageManager _stage;
-    public static int clearStage { get; private set; } = 1;
+    private static DataManager _data;
 
     private static void Init()
     {
@@ -48,22 +48,28 @@ public class GameManager
             return _stage;
         }
     }
-
-    public static void StageIncrease()
+    public static DataManager Data
     {
-        clearStage++;
+        get
+        {
+            CreateManager(ref _data, "DataManager");
+            return _data;
+        }
     }
 
-    public static void InitStageClearCount()
+    public static void PlayerisDead() // 플레이어 사망 시 등장할 메서드
     {
-        clearStage = 0;
-    }
-
-    public static void ClearChapter()
-    {
-        InitStageClearCount();
+        _stage.InitStageClearCount();
         if (_pool != null) _pool.ClearPool();
         SceneManager.LoadScene("TitleScene");
-        Debug.Log(clearStage);
     }
+
+    public static void ClearChapter() // 챕터 클리어시 등장할 메서드
+    {
+        _stage.InitStageClearCount();
+        if (_pool != null) _pool.ClearPool();
+        SceneManager.LoadScene("TitleScene"); // -> 클리어 패널이 나오는게 맞음.
+        Debug.Log(_stage.currentStage);
+    }
+
 }
