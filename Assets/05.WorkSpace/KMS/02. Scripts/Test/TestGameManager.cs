@@ -1,3 +1,4 @@
+using STH.Characters.Player;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -21,16 +22,14 @@ public class TestGameManager : MonoBehaviour
     public int exp;
     public int[] nextExp = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
     public int level = 1;
-    public int coin;
+    public int coin { get; private set; }
 
     [Header("State")]
     public TestGameState gameState = TestGameState.Playing;
 
 
-
-
-
-    public TestPlayer player;
+    public PlayerController player;
+    //public TestPlayer player;
 
     private void Awake()
     {

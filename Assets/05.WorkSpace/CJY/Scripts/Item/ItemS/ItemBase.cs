@@ -48,6 +48,8 @@ public class ItemBase : MonoBehaviour
 
     }
 
-    public virtual void ReturnPool(){ }
+    public virtual void ReturnPool()
+    {
+    }
 
 }

@@ -57,8 +57,6 @@ public class ItemSpawner : MonoBehaviour
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         EnemyCheck enemycheck = enemy.GetComponent<EnemyCheck>();
         bool isBoss = enemy.TryGetComponent(out Boss boss);
-        Debug.Log($"{isBoss} / {enemycheck.endPos} / {enemyController.Type} / {boss is null}");
-        // null ·¹ÆÛ·±½º ¶ä
         SpawnItem(enemycheck.endPos, enemyController.Type, isBoss);
 
         if (IsGetActiveChild())

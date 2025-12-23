@@ -14,6 +14,8 @@ public class Coin : ItemBase
 
     public override void ReturnPool()
     {
+        TestGameManager.Instance.GetExp(10);
+        TestGameManager.Instance.GetCoin(10);
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
 }

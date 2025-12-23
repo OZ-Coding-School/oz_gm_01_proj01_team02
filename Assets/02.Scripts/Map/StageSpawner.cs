@@ -5,13 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-// ���� �Ǵ� ���� ���������� ���̳Ŀ����� ������ �޸��������
-// �������� �Ŵ������� �̺�Ʈ�� �İ� stage ���� ���� ���� ��ȣ�ۿ��� �ʿ���. < �̹������ ����.
-// õ�� : Ư�� �������� �ޱ��ڰ� 5�� ������������ ����
-// �Ǹ� : ������ ���� ����
-// ���ÿ��� �Ϲ���, ��ֹ� ����
-// ���ڸ� 5�� ������������ �Ϲ���, ��ֹ� ���� x õ�� ����
-// 10�������� ���� �Ϲ���, ��ֹ� ���� x ������ ���� �� �Ǹ� ����
 
 public class StageSpawner : MonoBehaviour
 {
@@ -57,57 +50,15 @@ public class StageSpawner : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // �÷��̾� ��ġ �������������� �̵�
             int rand = Random.Range(0, SpawnPoint.Length);
             other.transform.position = SpawnPoint[rand].transform.position;
             DeSpawnObstacle();
 
-            // ȭ�� ���̵��� �ڷ�ƾ
             StartCoroutine(FadeIn());
 
-            // �������� +1 �ϴ� �޼���
             GameManager.Stage.StageIncrease();
 
-            // �ش� ���������� �� �� ��ֹ� ����
             NextStage(GameManager.Stage.currentStage);
-            #region õ��/�Ǹ� ��ȯ �����ڵ�
-            //if (GameManager.Stage.currentStage == 10)
-            //{
-            //    SpawnEnemy(isBossStage);
-
-            //}
-            //else if (GameManager.Stage.currentStage == GameManager.Stage.Select("angel"))
-            //{
-            //    specialLevelUp.ADSpawn(GameManager.Stage.currentStage);
-            //    GameManager.Stage.StageIncrease();
-            //}
-            //else if (GameManager.Stage.currentStage == GameManager.Stage.Select("angel") + 1)
-            //{
-            //    DeSpawnAngel();
-            //    SpawnEnemy(isBossStage);
-            //    DeSpawnObstacle();
-            //    GameManager.Stage.StageIncrease();
-            //}
-            //else if (GameManager.Stage.currentStage == GameManager.Stage.Select("devil"))
-            //{
-            //    SpawnEnemy(isBossStage);
-            //    DeSpawnObstacle();
-            //    GameManager.Stage.StageIncrease();
-            //}
-            //else if (GameManager.Stage.currentStage == GameManager.Stage.Select("devil") + 1)
-            //{
-            //    DeSpawnDevil();
-            //    SpawnEnemy(isBossStage);
-            //    DeSpawnObstacle();
-            //    GameManager.Stage.StageIncrease();
-            //}
-            //else
-            //{
-            //    SpawnEnemy(isBossStage);
-            //    DeSpawnObstacle();
-            //    GameManager.Stage.StageIncrease();
-            //}
-            #endregion
 
             Debug.Log($"현재 스테이지 : {GameManager.Stage.currentStage}");
         }
@@ -129,10 +80,6 @@ public class StageSpawner : MonoBehaviour
             isBossStage = true;
             SpawnEnemy(isBossStage);
 
-        }
-        else if (currentstage > GameManager.Stage.Select("finish"))
-        {
-            GameManager.Stage.InitStageClearCount(); // �������� �ʱ�ȭ
         }
         else
         {
