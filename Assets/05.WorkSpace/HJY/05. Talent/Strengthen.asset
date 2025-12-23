@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 56e8807663dd0b1459c1b3f959eda33b, type: 3}
-  m_Name: New Talent Data 2
+  m_Name: Strengthen
   m_EditorClassIdentifier: 
-  talentName: 
+  talentName: "\uC7A5\uBE44 \uAC15\uD654"
   stat:
-    statType: 0
-    value: 0
+    statType: 11
+    value: 0.03
