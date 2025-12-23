@@ -1,4 +1,4 @@
 public enum TypeEnums
 {
-    Melee, Ranged
+    Melee, Ranged, MidBoss, BigBoss
 }
