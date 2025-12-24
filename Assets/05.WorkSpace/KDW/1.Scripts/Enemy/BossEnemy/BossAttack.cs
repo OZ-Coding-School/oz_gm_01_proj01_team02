@@ -33,3 +33,24 @@ public class MidBossAttack : BossAttack
         boss.MidAttack();
     }
 }
+public class BigBossAttack : BossAttack
+{
+    public BigBossAttack(BossController boss) : base(boss) { }
+
+    public override void UpdateState()
+    {
+        if (boss.Target == null) return;
+
+        float dist = boss.DistToPlayer();
+
+        if (dist > boss.RangedAttackRange)
+        {
+            boss.ChangeState(boss.ChaseState);
+            Debug.Log("원거리추적");
+        }
+
+        boss.LookTo();
+
+        boss.RangedAttack();
+    }
+}
