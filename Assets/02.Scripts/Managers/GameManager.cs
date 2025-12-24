@@ -9,6 +9,7 @@ public class GameManager
     private static PoolManager _pool;
     private static StageManager _stage;
     private static DataManager _data;
+    private static TestGameManager _testgamemanager;
 
     private static void Init()
     {
@@ -57,8 +58,18 @@ public class GameManager
         }
     }
 
+    public static TestGameManager Test
+    {
+        get
+        {
+            CreateManager(ref _testgamemanager, "TestGameManager");
+            return _testgamemanager;
+        }
+    }
+
     public static void PlayerisDead() // 플레이어 사망 시 등장할 메서드
     {
+        GameOver();
         _stage.InitStageClearCount();
         if (_pool != null) _pool.ClearPool();
         SceneManager.LoadScene("TitleScene");
@@ -66,9 +77,20 @@ public class GameManager
 
     public static void ClearChapter() // 챕터 클리어시 등장할 메서드
     {
+        GameOver();
         _stage.InitStageClearCount();
         if (_pool != null) _pool.ClearPool();
         Debug.Log(_stage.currentStage);
+    }
+
+    public static void GameOver()
+    {
+        foreach (var i in Data.collectedItem)
+        {
+            Debug.Log(i.Key);
+            Debug.Log(i.Value);
+        }
+        Stage.OnClearPanel(Test.coin, Test.exp, Stage.currentStage, int.Parse(Stage.chapter[7].ToString()));
     }
 
 }

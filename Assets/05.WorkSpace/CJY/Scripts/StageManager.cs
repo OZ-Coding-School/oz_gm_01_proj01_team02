@@ -16,7 +16,7 @@ public class StageManager : MonoBehaviour
     public const int CHAPTER_FINISH = 15;
 
     TestGameManager TGM;
-    string chapter;
+    public string chapter;
 
    [Header("Clear Panel Control")]
     GameObject clearPanel, joyStick;
@@ -55,7 +55,7 @@ public class StageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            OnClearPanel(TGM.coin, TGM.exp, currentStage, int.Parse(chapter[7].ToString()));
+           GameManager.GameOver();
         }
     }
 
@@ -70,12 +70,7 @@ public class StageManager : MonoBehaviour
 
     public void StageIncrease()
     {
-        if (currentStage >= CHAPTER_FINISH)
-        {
-            GameManager.ClearChapter();
-            OnClearPanel(TGM.coin, TGM.exp, currentStage, int.Parse(chapter[7].ToString()));
-        }
-
+        
         onObstacle = true;
         if (currentStage % STAGE_BRANCH == ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == DEVIL_APPEARS-1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+DEVIL_APPEARS - 1) onObstacle = false;
         currentStage++;

@@ -26,6 +26,10 @@ public class DataManager : MonoBehaviour
     private string fileName = "/save";
     private string keyWord = "evzxkjnv158ezxcvf^%2agasdf687gb3%g7nbvauoi3@8g8fabn^%zxncvkg18aaetx";
 
+    public Dictionary<string, int> collectedItem = new Dictionary<string, int>(); // 획득한 아이템 이름과 갯수.(코인, 경험치 포함)
+    // 인벤토리와 연동하면 될듯.
+    public List<string> collectedItemName = new List<string>();
+
     private void Awake()
     {
         instance = this;
