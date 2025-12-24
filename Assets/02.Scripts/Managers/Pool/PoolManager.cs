@@ -67,7 +67,6 @@ public class PoolManager : MonoBehaviour
         pools.Clear();
         foreach(Transform child in transform)
         {
-            Debug.Log(child.name);
             Destroy(child.gameObject);
         }
 

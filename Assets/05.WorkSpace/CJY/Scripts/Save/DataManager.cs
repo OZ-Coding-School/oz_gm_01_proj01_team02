@@ -1,3 +1,4 @@
+using DG.Tweening.Plugins;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,9 +11,10 @@ using UnityEngine;
 public class PlayData
 {
     public int _coin;
+    public int _exp;
     public int _stage;
     public int _chapter;
-
+    public Dictionary<int, object> itemData = new Dictionary<int, object>(); //-> 장비가 완성되야 추가가능
 }
 
 public class DataManager : MonoBehaviour
@@ -23,6 +25,10 @@ public class DataManager : MonoBehaviour
     private string path;
     private string fileName = "/save";
     private string keyWord = "evzxkjnv158ezxcvf^%2agasdf687gb3%g7nbvauoi3@8g8fabn^%zxncvkg18aaetx";
+
+    public Dictionary<string, int> collectedItem = new Dictionary<string, int>(); // 획득한 아이템 이름과 갯수.(코인, 경험치 포함)
+    // 인벤토리와 연동하면 될듯.
+    public List<string> collectedItemName = new List<string>();
 
     private void Awake()
     {
@@ -64,19 +70,27 @@ public class DataManager : MonoBehaviour
     public void InitData()
     {
         playData._coin = 0;
+        playData._exp = 0;
         playData._stage = 1;
         playData._chapter = 1;
     }
 
-    public void AddData(int coin, int stage, int chapter)
+    public void AddData(int coin, int exp, int stage, int chapter)
     {
         playData._coin = coin;
+        playData._exp = exp;
         playData._stage = stage;
         playData._chapter = chapter;
 
-        Debug.Log(playData._coin);
-        Debug.Log(playData._stage);
-        Debug.Log(playData._chapter);
         Save();
+        Load();
+    }
+
+    public int GetItemCount()
+    {
+        int count = 2;
+        count += playData.itemData.Count;
+
+        return count;
     }
 }

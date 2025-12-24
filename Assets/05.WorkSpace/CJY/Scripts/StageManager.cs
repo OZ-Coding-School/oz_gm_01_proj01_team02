@@ -8,18 +8,56 @@ using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
+    public static StageManager instance;
+
     public const int DEVIL_APPEARS = 5;
     public const int ANGEL_APPEARS = 3;
     public const int STAGE_BRANCH = 5;
     public const int CHAPTER_FINISH = 15;
 
-    [SerializeField] GameObject clearPanel, joyStick;
-    [SerializeField] TextMeshProUGUI chapter, stageNum;
+    TestGameManager TGM;
+    public string chapter;
+
+   [Header("Clear Panel Control")]
+    GameObject clearPanel, joyStick;
+    TextMeshProUGUI chapterTxt, stageNumTxt;
+    bool onClearPanel = false;
 
     public static event Action<int> OnStageIncrease;
 
     public int currentStage { get; private set; } = 1;
     public bool onObstacle { get; private set; } = true;
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject); 
+            return; 
+        }
+
+        instance = this;
+
+        if (StageUIManager.Instance != null) 
+        {
+            this.clearPanel = StageUIManager.Instance.clearPanel;
+            this.joyStick = StageUIManager.Instance.joyStick;
+            this.chapterTxt = StageUIManager.Instance.chapter;
+            this.stageNumTxt = StageUIManager.Instance.stageNum;
+        }
+
+        chapter = SceneManager.GetActiveScene().name;
+        TGM = FindObjectOfType<TestGameManager>();
+
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+           GameManager.GameOver();
+        }
+    }
 
     public int Select(string name)
     {
@@ -32,20 +70,13 @@ public class StageManager : MonoBehaviour
 
     public void StageIncrease()
     {
-        string chapter = SceneManager.GetActiveScene().name;
-        TestGameManager TGM = FindObjectOfType<TestGameManager>();
-        if (currentStage >= CHAPTER_FINISH)
-        {
-            GameManager.ClearChapter();
-            OnClearPanel(TGM.coin, currentStage, int.Parse(chapter[7].ToString()));
-        }
-
+        
         onObstacle = true;
         if (currentStage % STAGE_BRANCH == ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == DEVIL_APPEARS-1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+DEVIL_APPEARS - 1) onObstacle = false;
         currentStage++;
         OnStageIncrease?.Invoke(currentStage);
         //데이터를 저장.
-        GameManager.Data.AddData(TGM.coin, currentStage, int.Parse(chapter[7].ToString()));
+        GameManager.Data.AddData(TGM.coin, TGM.exp, currentStage, int.Parse(chapter[7].ToString()));
     }
 
     public void InitStageClearCount()
@@ -53,9 +84,17 @@ public class StageManager : MonoBehaviour
         currentStage = 1;
     }
 
-    public void OnClearPanel(int stage, int chapter, int coin)
+    public void OnClearPanel(int coin, int exp, int stage, int chapter)
     {
+        chapterTxt.text = "Chapter "+ chapter.ToString();
+        stageNumTxt.text = stage.ToString();
 
+        onClearPanel = !onClearPanel;
+        clearPanel.SetActive(onClearPanel);
+        joyStick.SetActive(!onClearPanel);
+
+
+        
     }
 
 }

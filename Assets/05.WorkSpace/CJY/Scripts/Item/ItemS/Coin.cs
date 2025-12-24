@@ -16,6 +16,22 @@ public class Coin : ItemBase
     {
         TestGameManager.Instance.GetExp(10);
         TestGameManager.Instance.GetCoin(10);
+
+        string cleanName = this.name.Replace("(Clone)", "").Trim();
+
+        if (!GameManager.Data.collectedItemName.Contains(cleanName))
+        {
+            GameManager.Data.collectedItemName.Add(cleanName);
+        }
+        
+        if (!GameManager.Data.collectedItemName.Contains("exp"))
+        {
+            GameManager.Data.collectedItemName.Add("exp");
+        }
+
+        GameManager.Data.collectedItem[cleanName] = TestGameManager.Instance.coin;
+        GameManager.Data.collectedItem["exp"] = TestGameManager.Instance.exp;
+
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
 }

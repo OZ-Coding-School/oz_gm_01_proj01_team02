@@ -67,7 +67,6 @@ public class ItemSpawner : MonoBehaviour
 
     public bool IsGetActiveChild()
     {
-        Debug.Log("남은 적 검사");
         EnemyController[] children = GameManager.Pool.GetComponentsInChildren<EnemyController>(true);
 
         foreach (EnemyController child in children)
@@ -79,7 +78,6 @@ public class ItemSpawner : MonoBehaviour
 
     public void SpawnItem(Vector3 pos, TypeEnums type, bool isBoss)
     {
-        Debug.Log("스폰아이템 호출");
         //코인은 항상 드랍, Equipment, Health 는 랜덤드랍 / 보스에서는 필수드랍
         bool randEquipmentDrop = Random.value > 0.9f ? true : false;
         bool randHealthDrop = Random.value > 0.8f ? true : false;
