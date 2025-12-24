@@ -24,10 +24,8 @@ public class Boss : MonoBehaviour
     {
         if (this.gameObject.activeSelf)
         {
-            //obst.ReturnPool();
         }
         if (!agent.isActiveAndEnabled || !agent.isOnNavMesh) return;
-        //agent.SetDestination(target.transform.position);
         
     }
     public void ReturnPool()

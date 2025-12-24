@@ -33,7 +33,6 @@ public class StageSpawner : MonoBehaviour
         enemySpawn = FindObjectOfType<EnemySpawn>();
         portal = FindObjectsOfType<Portal>();
         specialLevelUp = FindObjectOfType<SpecialLevelUp>();
-        Debug.Log($"현재 스테이지 : {GameManager.Stage.currentStage}");
     }
 
     private void OnEnable()
@@ -60,7 +59,6 @@ public class StageSpawner : MonoBehaviour
 
             NextStage(GameManager.Stage.currentStage);
 
-            Debug.Log($"현재 스테이지 : {GameManager.Stage.currentStage}");
         }
     }
 

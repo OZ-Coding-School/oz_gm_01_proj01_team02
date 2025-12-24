@@ -35,7 +35,6 @@ public class Portal : MonoBehaviour
 
     public bool IsGetActiveChild()
     {
-        Debug.Log("남은 적 검사");
         EnemyController[] children = GameManager.Pool.GetComponentsInChildren<EnemyController>(true);
         
         foreach (EnemyController child in children)
