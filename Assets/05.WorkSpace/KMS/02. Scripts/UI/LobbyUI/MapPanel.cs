@@ -17,6 +17,14 @@ public class MapPanel : MonoBehaviour
     public MapData currentMapData;
 
    
+    private void OnEnable()
+    {
+        if (TestGameManager.Instance != null && TestGameManager.Instance.SelectedMap != null)
+        {
+            currentMapData = TestGameManager.Instance.SelectedMap;
+            UpdateMapCardUI();
+        }
+    }
 
     private void OnMapSelected(MapData data)
     {
@@ -38,6 +46,7 @@ public class MapPanel : MonoBehaviour
 
     // 현재 선택된 mapIndex로 MapData 가져오기
         MapData selectedData = mapSelectPanel.mapCard[mapSelectPanel.mapIndex];
+        TestGameManager.Instance.SetSelectedMap(selectedData);
 
     // MapPanel의 이미지 갱신 직접 호출
         OnMapSelected(selectedData);

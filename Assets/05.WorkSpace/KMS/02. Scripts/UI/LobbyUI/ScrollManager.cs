@@ -19,8 +19,11 @@ public class ScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     bool isDrag;
     int targetIndex;
     public int startIndex = 2;
-    bool firstFrame = true;
-
+    bool firstFrame;
+    void Awake()
+    {
+        firstFrame = true;
+    }
     void Start()
     {
         distance = 1f / (Size - 1);
@@ -30,6 +33,7 @@ public class ScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         targetPos = pos[startIndex];
         curPos = targetPos;
         scrollbar.value = targetPos;
+        tabSlider.value = targetPos;
         
 
          for (int i = 0; i < Size; i++)
@@ -81,6 +85,16 @@ public class ScrollManager : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     void Update()
     {
         
+
+        tabSlider.value = scrollbar.value;
+
+        if (firstFrame)
+        {
+            scrollbar.value = targetPos;
+            tabSlider.value = targetPos;
+            firstFrame = false;
+            return;
+        }
 
         tabSlider.value = scrollbar.value;
 
