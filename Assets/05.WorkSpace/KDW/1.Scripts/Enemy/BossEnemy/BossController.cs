@@ -7,29 +7,34 @@ public class BossController : MonoBehaviour
 {
     private BossState currentState;
 
-    [Header("적 타입")]
-    [SerializeField] private TypeEnums type;  //근거리, 원거리 등 적의 타입
+    [Header("자신의 타입,위치")]
+    [SerializeField] private TypeEnums type;         //보스 몬스터 타입
+    [SerializeField] private Transform target;       //타겟(플레이어)
+
+    [Header("타겟의 콜라이더,레이어/벽 레이어,감지 길이")]
+    [SerializeField] private Collider targetCollider; 
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private LayerMask wallLayer;
+    [SerializeField] private float walllRange;      //벽 감지용 선 길이
 
     [Header("이동/회전")]
     [SerializeField] private float moveSpeed = 3.0f;    //Enemy 이동속도
     [SerializeField] private float rotateSpeed = 8.0f;
 
     [Header("중간보스 공격 거리/쿨타임/돌진 속도,시간")]
-    [SerializeField] private float midIdleRange = 1.0f;   //타겟의 근처에 가면 멈추는 거리
-    [SerializeField] private float midAttackRange = 5.0f; //근거리 공격거리
-    [SerializeField] private float attackDelay = 10.0f;      //근거리 공격 쿨타임
-    [SerializeField] private float attackChargeTime = 3.0f;
-    [SerializeField] private float runSpeed = 10.0f;
-    [SerializeField] private float runTime = 0.5f;
+    [SerializeField] private float midIdleRange = 1.0f;      //타겟의 근처에 가면 멈추는 거리
+    [SerializeField] private float midAttackRange = 5.0f;    //근거리 공격거리
+    [SerializeField] private float attackDelay = 10.0f;      //공격 패턴에 들어가는 시간
+    [SerializeField] private float attackChargeTime = 3.0f;  //공격 패턴에 들어오면 돌진하기 까지의 차지 시간
+    [SerializeField] private float runSpeed = 10.0f;         //돌진 속도
+    [SerializeField] private float runTime = 0.5f;           //돌진 시간
 
-    [Header("원거리 공격 거리/쿨타임")]
+    [Header("원거리 공격 거리/쿨타임/발사 수")]
     [SerializeField] private float rangedAttackRange = 12.0f; //원거리 공격거리
-    [SerializeField] private float spawnTime = 1.0f;  //원거리 공격 쿨타임
+    [SerializeField] private float spawnTime = 1.0f;    //원거리 공격 쿨타임
+    [SerializeField] private int bulletCount = 5;       //한번에 발사할 수
+    [SerializeField] private float spreadAngle = 45.0f; //발사 시 프리팹과의 총각도
     private float rangedTimer = 0.0f; //쿨타임 까지 흐르는 시간
-
-    [Header("타겟")]
-    [SerializeField] private Transform target;  //타겟(플레이어)
-    [SerializeField] private LayerMask playerLayer;
 
     [Header("원거리 공격 프리팹/위치")]
     [SerializeField] private TextEnemyBullet enemyBullet;
@@ -37,6 +42,7 @@ public class BossController : MonoBehaviour
 
     private Rigidbody rb;
     private NavMeshAgent nvAgent;
+    private Collider inCollider; 
 
     private float nextAttackTime = 0.0f; //다음 공격 시간 쿨타임 저장용
     private bool isDead;
@@ -79,6 +85,7 @@ public class BossController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         nvAgent = GetComponent<NavMeshAgent>();
+        inCollider = GetComponent<Collider>();
 
         if (target == null)
         {
@@ -94,7 +101,12 @@ public class BossController : MonoBehaviour
     }
     private void Start()
     {
-        GameManager.Pool.CreatePool(enemyBullet, 50);
+        if (type == TypeEnums.BigBoss)
+        {
+            GameManager.Pool.CreatePool(enemyBullet, 50);
+        }
+
+        rb.freezeRotation = true;
     }
 
     void Update()
@@ -130,12 +142,13 @@ public class BossController : MonoBehaviour
         switch (type)
         {
             case TypeEnums.MidBoss:
-                IdleState = new MidBossChase(this);
+                IdleState = new MidBossIdle(this);
                 ChaseState = new MidBossChase(this);
                 AttackState = new MidBossAttack(this);
                 break;
             case TypeEnums.BigBoss:
-
+                ChaseState = new BigBossChase(this);
+                AttackState = new BigBossAttack(this);
                 break;
         }
 
@@ -145,11 +158,22 @@ public class BossController : MonoBehaviour
     {
         if (target == null) return Mathf.Infinity;
 
+        //타겟의 표면 중 나와 가장 가까운 지점 찾기
+        Vector3 closestOnTarget = targetCollider.ClosestPoint(inCollider.bounds.center);
 
+        //나의 표면 중 타겟과 가장 가까운 지점 찾기
+        Vector3 closestOnBoss = inCollider.ClosestPoint(closestOnTarget);
 
+        return Vector3.Distance(closestOnBoss, closestOnTarget);
+    }
+    //방향 회전
+    public void LookTo()
+    {
+        Vector3 dir = (target.position - transform.position).normalized;
 
+        Quaternion targetRot = Quaternion.LookRotation(dir);
 
-        return Vector3.Distance(transform.position, target.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
     }
     public void Idle()
     {
@@ -194,29 +218,40 @@ public class BossController : MonoBehaviour
         nvAgent.velocity = Vector3.zero;
         rb.velocity = Vector3.zero;
 
+        float angleStep = spreadAngle / (bulletCount - 1); //총 간격/bulletCount만큼 생기는 간격 개수 = 총알 사이 간격
+        float startAngle = -spreadAngle / 2;
+
         rangedTimer += Time.deltaTime;
 
         //공격 쿨타임이 되면 프리팹 발사
         if (rangedTimer >= spawnTime)
         {
-            TextEnemyBullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
-            enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, Quaternion.identity);
-            enemyBullet.transform.forward = transform.forward;
+            //TextEnemyBullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
+            //enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, Quaternion.identity);
+            //enemyBullet.transform.forward = transform.forward;
+            //
+            //rangedTimer = 0.0f; //타이머 초기화
 
+            //프리팹 여러개 동시 발사
+            for(int i = 0; i < bulletCount; i++)
+            {
+                TextEnemyBullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
+
+                float currentAngle = startAngle + (angleStep * i); //현재 프리팹 간격(순서대로 간격 계산)
+
+                Quaternion rotation = transform.rotation * Quaternion.Euler(0, currentAngle, 0);
+
+
+                enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, rotation);
+                //enemyBullet.transform.forward = transform.forward;
+
+                Debug.Log(i);
+            }
             rangedTimer = 0.0f; //타이머 초기화
         }
 
         nvAgent.enabled = true;
         nvAgent.Warp(transform.position);
-    }
-    //방향 회전
-    public void LookTo()
-    {
-        Vector3 dir = (target.position - transform.position).normalized;
-
-        Quaternion targetRot = Quaternion.LookRotation(dir);
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
     }
     //중간 보스 공격의 삼단대쉬
     IEnumerator MidAttackCharge()
@@ -224,54 +259,52 @@ public class BossController : MonoBehaviour
         //Debug.Log("공격시작");
         yield return new WaitForSeconds(attackChargeTime); //공격 시작하면 실제로 돌진하기까지의 차지타임
 
-        //Debug.Log("발사!!!!!!!!");
-
         nvAgent.velocity = Vector3.zero; //NavMeshAgent를 꺼도 남는 잔류 속도 초기화
         rb.velocity = Vector3.zero; //Rigidbody 기존 속도를 초기화 하여 돌진 직선 유지
 
         float timer = 0.0f;         //돌진하고 있는 시간(타이머)
-        float attackRunTime = runTime; //돌진 총 시간
         rb.isKinematic = false;     //Kinematic이 true이면 미끄럼은 방지되나 벽을 뚫음 그래서 일시적으로 false로 함
-        float dist = DistToPlayer();
 
         for (int i = 0; i < 3; i++)
         {
             Debug.Log("발사!!!!!!!!");
-
-            while (timer < attackRunTime)
-            {
-                rb.MovePosition(rb.position + transform.forward * runSpeed * Time.fixedDeltaTime);
-                timer += Time.fixedDeltaTime;
-                yield return new WaitForFixedUpdate();
-
-                if (isWall || dist <= MidIdleRange)
-                {
-                    //Debug.Log("벽이당");
-                    continue;
-                }
-            }
-
-            Vector3 dir = (target.position - transform.position).normalized;
-            dir.y = 0;
-
-            Quaternion lookRotation = Quaternion.LookRotation(dir);
-            transform.rotation = lookRotation;
+            Debug.Log("다음 대쉬 : " + i);
 
             timer = 0.0f;
 
-            
-            Debug.Log(dist);
-
-            if (dist <= MidIdleRange)
+            while (timer < runTime)
             {
-                Debug.Log("끝");
-                break;
+                rb.MovePosition(rb.position + transform.forward * runSpeed * Time.fixedDeltaTime);
+                timer += Time.fixedDeltaTime;
+
+                Collider[] hits = Physics.OverlapSphere(transform.position, walllRange, wallLayer);
+                bool wall = hits.Length > 0;  //벽 감지
+
+                //벽 연속 감지 오류로 공격패턴이 끝나는 것을 방지
+                if (timer < 0.2f)
+                {
+                    yield return new WaitForFixedUpdate();
+                    continue;
+                }
+
+                if (wall || DistToPlayer() <= MidIdleRange)
+                {
+                   //rb.velocity = Vector3.zero;
+                   //rb.angularVelocity = Vector3.zero;
+                   //rb.drag = 0;
+                   //rb.angularDrag = 0;
+                    break;
+                }
+
+                yield return new WaitForFixedUpdate();
             }
+
+            Vector3 dashDir = (target.position - transform.position).normalized;
+            dashDir.y = 0;
+
+            Quaternion lookRotation = Quaternion.LookRotation(dashDir);
+            transform.rotation = lookRotation;
         }
-        
-
-        isWall = false;
-
         rb.isKinematic = true;
         isAttack = false;
         nvAgent.enabled = true;
@@ -282,13 +315,16 @@ public class BossController : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        if (type == TypeEnums.Melee)
+        if (type == TypeEnums.MidBoss)
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, midAttackRange);
 
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, midIdleRange);
+
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, walllRange);
         }
 
         if (type == TypeEnums.Ranged)
@@ -297,14 +333,6 @@ public class BossController : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, rangedAttackRange);
         }
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Wall"))
-        {
-            isWall = true;
-        }
-    }
-
     public void ReturnPool()
     {
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);

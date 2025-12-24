@@ -46,3 +46,22 @@ public class MidBossChase : BossChase
         }
     }
 }
+public class BigBossChase : BossChase
+{
+    public BigBossChase(BossController boss) : base(boss) { }
+
+    public override void UpdateState()
+    {
+        if (boss.Target == null) return;
+
+        float dist = boss.DistToPlayer();
+
+        //보스의 공격 가능한 거리 안에 들어왔으면 공격 상태로 전환
+        if (dist <= boss.RangedAttackRange)
+        {
+            boss.ChangeState(boss.AttackState);
+            Debug.Log("원거리공격");
+            return;
+        }
+    }
+}
