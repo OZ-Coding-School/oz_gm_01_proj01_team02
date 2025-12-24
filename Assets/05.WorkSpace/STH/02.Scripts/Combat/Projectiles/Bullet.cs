@@ -19,14 +19,14 @@ namespace STH.Combat.Projectiles
         [SerializeField] private float speed = 10f;
         [SerializeField] private float lifeTime = 5f;
         [SerializeField] private TypeEnums bulletOwner = TypeEnums.Player;
+        [SerializeField] private LayerMask targetLayer;
 
-        private float damage;
-        private float critRate;
-        private float critDamage;
+        private float critRate = 0f;
+        private float critDamage = 2f;
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
         private int pierceCount = 0;
 
-        public float Damage => damage;
+        public float damage;
         public int PierceCount { get => pierceCount; set => pierceCount = value; }
 
         /// <summary>
@@ -35,42 +35,61 @@ namespace STH.Combat.Projectiles
         /// <param name="dmg">데미지</param>
         /// <param name="mods">적용할 모디파이어 리스트</param>
 
+        // 적 공격 - 치명타 x, mods x
         public void Initialize(float dmg)
         {
-            damage = dmg;
+            SetDamageWithCritical(dmg);
             StartCoroutine(ReturnToPoolAfterTime(lifeTime));
         }
 
-        public void Initialize(float dmg, List<IBulletModifier> mods)
+        // 플레이어 공격 - 치명타 o, mods o
+        public void Initialize(PlayerStatManager stats, List<IBulletModifier> mods)
         {
-            Initialize(dmg);
+            critRate = stats.critRate;
+            critDamage = stats.critDamage;
+            Initialize(stats.attack);
 
             ApplyModifiers(mods);
         }
 
-        public void Initialize(PlayerStatManager stats, List<IBulletModifier> mods)
+        // 치명타 확인, 데미지 설정
+        public void SetDamageWithCritical(float dmg)
         {
-            Initialize(stats.attack);
-            critRate = stats.critRate;
-            critDamage = stats.critDamage;
-
-            // 치명타 계산
             int rand = Random.Range(0, 100);
             if (rand < critRate * 100f)
             {
-                damage *= critDamage;
+                damage = dmg * critDamage;
             }
-
-            ApplyModifiers(mods);
+            else
+            {
+                damage = dmg;
+            }
         }
 
         private void ApplyModifiers(List<IBulletModifier> mods)
         {
-            if (mods != null)
+            modifiers.Clear();
+
+            if (mods == null) return;
+
+            // Stateful modifier는 새 인스턴스 생성, Stateless는 참조 공유
+            foreach (var mod in mods)
             {
-                modifiers = new List<IBulletModifier>(mods);
+                if (mod is IStatefulModifier stateful)
+                {
+                    modifiers.Add(stateful.CreateInstance());
+                }
+                else
+                {
+                    modifiers.Add(mod);
+                }
             }
 
+            // 모든 modifier 초기화
+            foreach (var mod in modifiers)
+            {
+                mod.OnInitialize(this);
+            }
         }
 
         private void Update()
@@ -91,7 +110,7 @@ namespace STH.Combat.Projectiles
             // 모든 모디파이어 효과 발동
             foreach (var modifier in modifiers)
             {
-                modifier.OnHit(this, target);
+                modifier.OnHit(this, target, targetLayer);
             }
 
             // 관통력이 없으면 파괴

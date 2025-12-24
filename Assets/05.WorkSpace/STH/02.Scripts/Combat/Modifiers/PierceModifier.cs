@@ -1,5 +1,6 @@
 using STH.Core;
 using STH.Combat.Projectiles;
+using UnityEngine;
 
 namespace STH.Combat.Modifiers
 {
@@ -9,20 +10,30 @@ namespace STH.Combat.Modifiers
     public class PierceModifier : IBulletModifier
     {
         private readonly int pierceCount;
+        private readonly float attackMultiplier = -0.3f;
 
         /// <summary>
         /// 관통 모디파이어를 생성합니다.
         /// </summary>
         /// <param name="pierceCount">관통 횟수</param>
-        public PierceModifier(int pierceCount)
+        public PierceModifier(int pierceCount, float attackMultiplier = -0.3f)
         {
             this.pierceCount = pierceCount;
+            this.attackMultiplier = attackMultiplier;
         }
 
-        public void OnHit(Bullet bullet, IDamageable target)
+        /// <summary>
+        /// 총알 초기화 시 관통 카운트를 설정합니다.
+        /// </summary>
+        public void OnInitialize(Bullet bullet)
         {
-            // 총알의 관통 카운트 증가 (Bullet에서 차감됨)
             bullet.PierceCount += pierceCount;
+
+        }
+
+        public void OnHit(Bullet bullet, IDamageable target, LayerMask targetLayer)
+        {
+            bullet.SetDamageWithCritical(bullet.damage + bullet.damage * attackMultiplier);
         }
     }
 }
