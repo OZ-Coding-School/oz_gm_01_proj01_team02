@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 2011038525400250427}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.7, z: 0.529}
+  m_LocalPosition: {x: 0, y: 0.8, z: 1.425}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -108,15 +108,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.9180403
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0000009536743
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.82
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
       propertyPath: m_LocalRotation.w
@@ -469,7 +469,10 @@ PrefabInstance:
       addedObject: {fileID: 4246316300709682343}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1864934005898936964}
+      addedObject: {fileID: 927553356095480088}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 225003370005257854}
   m_SourcePrefab: {fileID: 100100000, guid: b7f1071e14f9747e5bb46af0438d5a94, type: 3}
 --- !u!4 &2476825454049577364 stripped
 Transform:
@@ -543,7 +546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 399092f8c64045f44b83b6dd5c68ea3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 10
   joystick: {fileID: 0}
 --- !u!114 &4246316300709682343
 MonoBehaviour:
@@ -561,7 +564,8 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!114 &1864934005898936964
+  closeEnemy: {fileID: 0}
+--- !u!114 &927553356095480088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -570,11 +574,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 8404419110341632262}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9003771893738894687fde595f882518, type: 3}
+  m_Script: {fileID: 11500000, guid: 138ede8ce86004ed89b883bd8a2eae70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 6560412908574568385, guid: 343fc70940929ac408ebfb0cac6d8759, type: 3}
-  bulletPos: {fileID: 6559030558202558702}
+  stats: {fileID: 0}
+  testSkills:
+  - {fileID: 11400000, guid: fcc1edeaec0fc469d945416328e45316, type: 2}
+--- !u!114 &225003370005257854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8404419110341632262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36ad5152911a64c9cb221939f07b2475, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletPrefab: {fileID: 1153233507859069040, guid: ac60a00a314954179a62e61c9369d3e2, type: 3}
+  firePoint: {fileID: 6559030558202558702}
   startSpeed: 1
   nextSpeed: 1
 --- !u!4 &9217089472072170428 stripped

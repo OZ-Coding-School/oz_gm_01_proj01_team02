@@ -27,7 +27,7 @@ namespace STH.Combat.Modifiers
             this.tickInterval = tickInterval;
         }
 
-        public void OnHit(Bullet bullet, IDamageable target)
+        public void OnHit(Bullet bullet, IDamageable target, LayerMask targetLayer)
         {
             TickDamageManager.Instance.Apply(target, damagePerTick, duration, tickInterval);
         }

@@ -282,3 +282,7 @@ MonoBehaviour:
   speed: 10
   lifeTime: 5
   bulletOwner: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  damage: 0

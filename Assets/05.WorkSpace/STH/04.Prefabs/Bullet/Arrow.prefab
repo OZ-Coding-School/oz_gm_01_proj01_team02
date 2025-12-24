@@ -178,4 +178,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  lifeTime: 5
+  lifeTime: 10
+  bulletOwner: 0
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  damage: 0
