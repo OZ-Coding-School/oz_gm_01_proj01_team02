@@ -314,6 +314,7 @@ MonoBehaviour:
   type: 0
   moveSpeed: 3
   rotateSpeed: 8
+  meleeIdleRange: 1
   meleeAttackRange: 5
   attackDelay: 10
   attackChargeTime: 3

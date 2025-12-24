@@ -68,7 +68,6 @@ public class GameManager
     {
         _stage.InitStageClearCount();
         if (_pool != null) _pool.ClearPool();
-        SceneManager.LoadScene("TitleScene"); // -> 클리어 패널이 나오는게 맞음.
         Debug.Log(_stage.currentStage);
     }
 

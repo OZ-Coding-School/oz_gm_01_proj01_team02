@@ -1,3 +1,4 @@
+using DG.Tweening.Plugins;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,9 +11,10 @@ using UnityEngine;
 public class PlayData
 {
     public int _coin;
+    public int _exp;
     public int _stage;
     public int _chapter;
-
+    public Dictionary<int, object> itemData = new Dictionary<int, object>(); //-> 장비가 완성되야 추가가능
 }
 
 public class DataManager : MonoBehaviour
@@ -64,19 +66,27 @@ public class DataManager : MonoBehaviour
     public void InitData()
     {
         playData._coin = 0;
+        playData._exp = 0;
         playData._stage = 1;
         playData._chapter = 1;
     }
 
-    public void AddData(int coin, int stage, int chapter)
+    public void AddData(int coin, int exp, int stage, int chapter)
     {
         playData._coin = coin;
+        playData._exp = exp;
         playData._stage = stage;
         playData._chapter = chapter;
 
-        Debug.Log(playData._coin);
-        Debug.Log(playData._stage);
-        Debug.Log(playData._chapter);
         Save();
+        Load();
+    }
+
+    public int GetItemCount()
+    {
+        int count = 2;
+        count += playData.itemData.Count;
+
+        return count;
     }
 }

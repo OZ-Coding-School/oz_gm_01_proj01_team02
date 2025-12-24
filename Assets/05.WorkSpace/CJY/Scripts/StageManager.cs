@@ -15,9 +15,12 @@ public class StageManager : MonoBehaviour
     public const int STAGE_BRANCH = 5;
     public const int CHAPTER_FINISH = 15;
 
-    [Header("Clear Panel Control")]
-    [SerializeField] GameObject clearPanel, joyStick;
-    [SerializeField] TextMeshProUGUI chapter, stageNum;
+    TestGameManager TGM;
+    string chapter;
+
+   [Header("Clear Panel Control")]
+    GameObject clearPanel, joyStick;
+    TextMeshProUGUI chapterTxt, stageNumTxt;
     bool onClearPanel = false;
 
     public static event Action<int> OnStageIncrease;
@@ -34,13 +37,25 @@ public class StageManager : MonoBehaviour
         }
 
         instance = this;
+
+        if (StageUIManager.Instance != null) 
+        {
+            this.clearPanel = StageUIManager.Instance.clearPanel;
+            this.joyStick = StageUIManager.Instance.joyStick;
+            this.chapterTxt = StageUIManager.Instance.chapter;
+            this.stageNumTxt = StageUIManager.Instance.stageNum;
+        }
+
+        chapter = SceneManager.GetActiveScene().name;
+        TGM = FindObjectOfType<TestGameManager>();
+
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            OnClearPanel(1, 1, 1);
+            OnClearPanel(TGM.coin, TGM.exp, currentStage, int.Parse(chapter[7].ToString()));
         }
     }
 
@@ -55,12 +70,10 @@ public class StageManager : MonoBehaviour
 
     public void StageIncrease()
     {
-        string chapter = SceneManager.GetActiveScene().name;
-        TestGameManager TGM = FindObjectOfType<TestGameManager>();
         if (currentStage >= CHAPTER_FINISH)
         {
             GameManager.ClearChapter();
-            OnClearPanel(TGM.coin, currentStage, int.Parse(chapter[7].ToString()));
+            OnClearPanel(TGM.coin, TGM.exp, currentStage, int.Parse(chapter[7].ToString()));
         }
 
         onObstacle = true;
@@ -68,7 +81,7 @@ public class StageManager : MonoBehaviour
         currentStage++;
         OnStageIncrease?.Invoke(currentStage);
         //데이터를 저장.
-        GameManager.Data.AddData(TGM.coin, currentStage, int.Parse(chapter[7].ToString()));
+        GameManager.Data.AddData(TGM.coin, TGM.exp, currentStage, int.Parse(chapter[7].ToString()));
     }
 
     public void InitStageClearCount()
@@ -76,14 +89,17 @@ public class StageManager : MonoBehaviour
         currentStage = 1;
     }
 
-    public void OnClearPanel(int stage, int chapter, int coin)
+    public void OnClearPanel(int coin, int exp, int stage, int chapter)
     {
+        chapterTxt.text = "Chapter "+ chapter.ToString();
+        stageNumTxt.text = stage.ToString();
 
         onClearPanel = !onClearPanel;
         clearPanel.SetActive(onClearPanel);
         joyStick.SetActive(!onClearPanel);
 
 
+        
     }
 
 }

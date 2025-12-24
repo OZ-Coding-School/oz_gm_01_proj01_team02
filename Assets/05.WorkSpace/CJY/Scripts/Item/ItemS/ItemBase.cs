@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ItemBase : MonoBehaviour
 {
-    PlayerController player;
+    PlayerMove player;
     ItemSpawner spawner;
     [SerializeField] float duration = 1.8f; // 아이템이 빨려들어가는 시간
 
     private void OnEnable()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindObjectOfType<PlayerMove>();
         spawner = FindObjectOfType<ItemSpawner>();
     }
     
@@ -40,11 +40,15 @@ public class ItemBase : MonoBehaviour
             yield return null;
         }
 
-        if(player != null) transform.position = player.transform.position;
-        if (Vector3.Distance(transform.position, player.transform.position) < 0.6f)
+        if(player != null) 
         {
-            ReturnPool(); 
+            transform.position = player.transform.position;
+            if (Vector3.Distance(transform.position, player.transform.position) < 0.6f)
+            {
+                ReturnPool();
+            }
         }
+        
 
     }
 
