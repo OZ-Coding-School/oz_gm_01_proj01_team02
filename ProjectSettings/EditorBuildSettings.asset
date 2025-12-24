@@ -4,17 +4,5 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 1
-    path: Assets/05.WorkSpace/Build/1st_build/TitleScene.unity
-    guid: 27fe6f72d8a17b34189f13a1c24d9ff2
-  - enabled: 1
-    path: Assets/05.WorkSpace/CJY/Scene/InGameMainScenes/Stage_01_Scene.unity
-    guid: 12627b8a4d7dfb54482d73d09ebf3eb6
-  - enabled: 1
-    path: Assets/05.WorkSpace/CJY/Scene/InGameMainScenes/Stage_02_Scene.unity
-    guid: 40bdf92101bf4464faab2b09413f70c0
-  - enabled: 1
-    path: Assets/05.WorkSpace/CJY/Scene/InGameMainScenes/Stage_03_Scene.unity
-    guid: b13f09e6e96d64a4b988a1550fbfe03c
+  m_Scenes: []
   m_configObjects: {}

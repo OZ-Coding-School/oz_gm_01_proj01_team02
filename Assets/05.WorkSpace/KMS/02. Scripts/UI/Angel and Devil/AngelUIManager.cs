@@ -1,35 +1,46 @@
-using System;
+using System.Collections.Generic;
+using STH.Characters.Player;
+using STH.ScriptableObjects.Base;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AngelUIManagers : MonoBehaviour
 {
+
+        [Header("Passive Skill")]
+        public List<SkillData> skillData;
+        public Button passiveButton;
+        public Text passiveText;
+
     
-        [Header("Buttons")]
-        public Button leftBuffButton;
+        [Header("Heal")]
         public Button healButton;
+        public Sprite healSprite;
+        public int healAmount = 200;
 
-
-        [Header("Left Buff UI")]
-        public Image leftBuffIcon;
-        public Text leftBuffText;
+        private SkillData selectedPassive;
+        private PlayerController player;
 
         [Header("Heal UI")]
         public Text healText;
 
 
-        [Header("Buff Data List")]
-        public AngelBuffData[] buffDataList;
-        private AngelBuffData currentBuffData;
-
+        
 
     
         
     void OnEnable()
     {
-        SetupAngelUI();
         Time.timeScale = 0.0f;
+        player = FindObjectOfType<PlayerController>();
+        if (player == null)
+        {
+            Debug.Log("Player 없음");
+        }
+
+        SetupPassive();
+        SetupHeal();
     }
 
     void OnDisable()
@@ -37,38 +48,51 @@ public class AngelUIManagers : MonoBehaviour
         Time.timeScale = 1.0f;
     }
 
-
-    private void SetupAngelUI()
+    private void SetupPassive()
     {
-        currentBuffData = GetRandomBuffData();
+        if (skillData == null || skillData.Count == 0)
+        {
+            Debug.Log("SkillData 없음");
+            return;
+        }
 
-        leftBuffText.text = currentBuffData.displayName;
-        leftBuffIcon.sprite = currentBuffData.icon;
+        selectedPassive = skillData[Random.Range(0, skillData.Count)];
 
-        leftBuffButton.onClick.RemoveAllListeners();
-        leftBuffButton.onClick.AddListener(() => ApplyBuff(currentBuffData));
+        passiveButton.image.sprite = selectedPassive.icon;
+        passiveText.text = selectedPassive.skillName;
+
+        passiveButton.onClick.RemoveAllListeners();
+        passiveButton.onClick.AddListener(OnClickPassive);
+ 
+
+    }
+
+    private void OnClickPassive()
+    {
+        selectedPassive.Apply(player);
+        Close();
+    }
+
+
+    private void SetupHeal()
+    {
+        if (healButton == null) return;
+
+        healButton.image.sprite = healSprite;
 
         healButton.onClick.RemoveAllListeners();
-        healButton.onClick.AddListener(HealPlayer);
-
+        healButton.onClick.AddListener(OnClickHeal);
     }
 
-    private AngelBuffData GetRandomBuffData()
+    private void OnClickHeal()
     {
-
-        int count = buffDataList.Length;
-        return buffDataList[UnityEngine.Random.Range(0, count)];
-    }
-
-    private void ApplyBuff(AngelBuffData data)
-    {
-        Debug.Log($" {data.buffType}");
+        HealPlayer();
         Close();
     }
 
     private void HealPlayer()
     {
-        Close();
+        // player.Heal(healAmount);
     }
 
 

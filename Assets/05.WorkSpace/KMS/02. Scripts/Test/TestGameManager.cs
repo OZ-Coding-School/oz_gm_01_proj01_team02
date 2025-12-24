@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 public class TestGameManager : MonoBehaviour
 {
     public static TestGameManager Instance;
+    private MapPanel mapPanel;
+    public MapData SelectedMap;
 
     [Header("HP")]
     public int maxHp = 500;
@@ -30,23 +32,53 @@ public class TestGameManager : MonoBehaviour
 
     public PlayerController player;
     //public TestPlayer player;
-
+    private void OnEnable()
+    {
+        player = FindObjectOfType<PlayerController>(); 
+        mapPanel = FindObjectOfType<MapPanel>(); 
+        hpBar = FindObjectOfType<SegmentedHpBar>();
+        Canvas canvas = FindObjectOfType<Canvas>();
+        slotMachine = canvas.transform.Find("SlotMachineManager/SlotMachineUI")?.GetComponent<SlotMachineManager>();
+        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
+    }
     private void Awake()
     {
         
-        if (Instance == null) Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+            // SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+                
         else Destroy(gameObject);
+
+        player = FindObjectOfType<PlayerController>(); 
+        mapPanel = FindObjectOfType<MapPanel>(); 
+        hpBar = FindObjectOfType<SegmentedHpBar>();
+        Canvas canvas = FindObjectOfType<Canvas>();
+        slotMachine = canvas.transform.Find("SlotMachineManager/SlotMachineUI")?.GetComponent<SlotMachineManager>();
+        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
 
         Time.timeScale = 1.0f;
         gameState = TestGameState.Playing;
     }
+
+    // private void OnSceneLoaded(Scene scene, LoadS)
 
     private void Start()
     {
         currentHp = maxHp;
         UpdateHpUI();
         gameState = TestGameState.Playing;
+
     }
+
+    public void SetSelectedMap(MapData data)
+    {
+        SelectedMap = data;
+
+    }    
 
 
     private void Update()
@@ -76,6 +108,10 @@ public class TestGameManager : MonoBehaviour
 
     public void Heal(int amount)
     {
+        if (hpBar == null)
+        {
+            return;
+        };
         int newHp = currentHp + amount;
         newHp = Mathf.Clamp(newHp, 0, maxHp);
 
@@ -85,6 +121,10 @@ public class TestGameManager : MonoBehaviour
 
     private void UpdateHpUI()
     {
+        if (hpBar == null)
+        {
+            return;
+        };
         hpBar.SetHp(currentHp);
     }
 
@@ -136,7 +176,7 @@ public class TestGameManager : MonoBehaviour
     public void GoHome()
     {
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene("TitleScene");
+        SceneManager.LoadScene("TitleScene(Build)");
         
     }
 
@@ -149,9 +189,9 @@ public class TestGameManager : MonoBehaviour
         UpdateHpUI();
     }
 
-    public void AddBuff(AngelBuffData buff)
-    {
-        Debug.Log($"악마 계약: {buff.displayName}");
-    }
+    // public void AddBuff(AngelBuffData buff)
+    // {
+    //     Debug.Log($"악마 계약: {buff.displayName}");
+    // }
 
 }

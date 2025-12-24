@@ -2,35 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using STH.Characters.Player;
+using STH.ScriptableObjects.Base;
 
 public class RouletteManager : MonoBehaviour
 {
+
+
+    [Header("UI")]
     public GameObject roulettePlate;
     public GameObject roulettePanel;
+    public Image[] displayItemSlot;
     public Transform needle;
     public Image resultImage;
 
-    public Sprite[] skillSprite;
-    public Image[] displayItemSlot;
-
+    [Header("Skill Data")]
+    public SkillData[] skillDatas;
+    private SkillData resultSkill;
     List<int> startList = new List<int> ();
     List<int> resultIndexList = new List<int> ();
     int itemCnt = 6;
 
-    
-    
-
+    [Header("Rotate")]
+    public float rotateSpeed;
     private bool isStopping = false;
-    public float rotateSpeed = 10.0f;
 
-    void Start()
-    {
-        
-
-    }
 
     private void OnEnable()
     {
+        Time.timeScale = 0.0f;
+
+
+        startList.Clear();
+        resultIndexList.Clear();
+        isStopping = false;
+        rotateSpeed = 10.0f;
+
         for (int i = 0; i < itemCnt; i++)
         {
             startList.Add (i);
@@ -39,57 +46,56 @@ public class RouletteManager : MonoBehaviour
         for (int i = 0; i < itemCnt; i++)
         {
             int randomIndex = Random.Range (0, startList.Count);
-            resultIndexList.Add (startList[randomIndex]);
-            displayItemSlot[i].sprite = skillSprite[startList[randomIndex]];
+            int skillIndex = startList[randomIndex];
+
+            resultIndexList.Add (skillIndex);
+            displayItemSlot[i].sprite = skillDatas[skillIndex].icon;
             startList.RemoveAt(randomIndex);
         }
 
-        resultImage.sprite = displayItemSlot[6].sprite;
         resultImage.color = new Color(resultImage.color.r, resultImage.color.g, resultImage.color.b, 0.0f);
         StartCoroutine (StartRoulette());
     }
 
     IEnumerator StartRoulette()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2f);
         
-        while (true)
+        while (!isStopping)
         {
-            yield return null;
-            
-            if (isStopping)
-            {
-                rotateSpeed = Mathf.Lerp(rotateSpeed, 0, Time.deltaTime*2f);
-            }
-            
-            if (rotateSpeed <= 0.01f) break;
-
             roulettePlate.transform.Rotate(0, 0, rotateSpeed);
-
-            if (rotateSpeed <= 0.01f && isStopping) break;
+            yield return null;
         }
 
-        yield return new WaitForSeconds(1f);
+        while (rotateSpeed > 0.01f)
+        {
+            rotateSpeed = Mathf.MoveTowards(rotateSpeed, 0.0f, Time.unscaledDeltaTime * 1.5f);
+
+            
+        }
+
+        roulettePlate.transform.Rotate(0, 0, rotateSpeed);
+        yield return new WaitForSecondsRealtime(1f);
         Result();
     }
 
     public void StopRoulette()
     {
         isStopping = true;
+
     }
 
     void Result()
     {
         int closetIndex = -1;
-        float closeDis = 500f;
-        float currentDis = 0f;
+        float closetDistance = float.MaxValue;
 
         for (int i = 0; i < itemCnt; i++)
         {
-            currentDis = Vector2.Distance(displayItemSlot[i].transform.position, needle.position);
-            if (closeDis > currentDis)
+            float distance = Vector2.Distance(displayItemSlot[i].transform.position, needle.position);
+            if (distance < closetDistance)
             {
-                closeDis = currentDis;
+                closetDistance = distance;
                 closetIndex = i;
             }
         }
@@ -98,18 +104,35 @@ public class RouletteManager : MonoBehaviour
         if (closetIndex == -1)
         {
             Debug.Log("Error");
+            return;
         }
-        displayItemSlot[itemCnt].sprite = displayItemSlot[closetIndex].sprite;
+        
+        int skillIndex = resultIndexList[closetIndex];
+        resultSkill = skillDatas[skillIndex];
+
+        resultImage.sprite = resultSkill.icon;
         resultImage.color = new Color(resultImage.color.r, resultImage.color.g, resultImage.color.b, 1.0f);
+
+        ApplyResultSkill();
 
         Debug.Log (" LV UP " + resultIndexList[closetIndex]);
 
         StartCoroutine(DisableAfterDelay(2.0f));
     }
 
+    private void ApplyResultSkill()
+    {
+        if (resultSkill == null) return;
+
+        PlayerController player = FindObjectOfType<PlayerController>();
+        if (player == null) return;
+
+        resultSkill.Apply(player);
+    }
+
     IEnumerator DisableAfterDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSecondsRealtime(delay);
         this.gameObject.SetActive(false);
         Time.timeScale = 1.0f;
     }

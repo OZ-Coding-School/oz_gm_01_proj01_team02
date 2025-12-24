@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Pattern_SideFire
   m_EditorClassIdentifier: 
   skillName: SideFire
-  icon: {fileID: 21300000, guid: e9182e1858ca6904e9757ea4fefe8005, type: 3}
+  icon: {fileID: 21300000, guid: 3a022ab6068e2a141917403c1bb5e486, type: 3}
   count: 3
   angle: 180

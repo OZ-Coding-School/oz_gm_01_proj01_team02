@@ -59,23 +59,23 @@ public class PlayerStatManager : MonoBehaviour
 
 
         // ���
-        foreach (var item in InventoryManager.Instance.equippedItems)
-        {
-            if (item == null) continue;
-            ApplyStats(item.stats);
-        }
+        // foreach (var item in InventoryManager.Instance.equippedItems)
+        // {
+        //     if (item == null) continue;
+        //     ApplyStats(item.stats);
+        // }
 
-        // ���
-        foreach (var talent in InventoryManager.Instance.ownedTalents)
-        {
-            if (talent.level <= 0) continue;
+        // // ���
+        // foreach (var talent in InventoryManager.Instance.ownedTalents)
+        // {
+        //     if (talent.level <= 0) continue;
 
-            StatValue stat = talent.data.statPerLevel;
-            stat.value *= talent.level;
+        //     StatValue stat = talent.data.statPerLevel;
+        //     stat.value *= talent.level;
 
-            ApplyStat(stat);
-        }
-        OnStatChanged?.Invoke();
+        //     ApplyStat(stat);
+        // }
+        // OnStatChanged?.Invoke();
 
     }
 
