@@ -7,10 +7,14 @@ public class Coin : ItemBase
     [SerializeField]
     float rotationSpeedX, rotationSpeedY, rotationSpeedZ;
 
+    public AudioClip coinSound;
+    
+
     void Update()
     {
         transform.Rotate(rotationSpeedX, rotationSpeedY, rotationSpeedZ);
     }
+
 
     public override void ReturnPool()
     {
@@ -32,6 +36,9 @@ public class Coin : ItemBase
         GameManager.Data.collectedItem[cleanName] = TestGameManager.Instance.coin;
         GameManager.Data.collectedItem["exp"] = TestGameManager.Instance.exp;
 
+        Vector3 playPosition = Camera.main.transform.position;
+
+        AudioSource.PlayClipAtPoint(coinSound, playPosition);
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
 }

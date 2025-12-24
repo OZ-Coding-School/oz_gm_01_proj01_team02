@@ -14,7 +14,7 @@ public class PlayData
     public int _exp;
     public int _stage;
     public int _chapter;
-    public Dictionary<int, object> itemData = new Dictionary<int, object>(); //-> 장비가 완성되야 추가가능
+    public Dictionary<int, object> _equipment = new Dictionary<int, object>(); //-> 장비가 완성되야 추가가능
 }
 
 public class DataManager : MonoBehaviour
@@ -89,7 +89,7 @@ public class DataManager : MonoBehaviour
     public int GetItemCount()
     {
         int count = 2;
-        count += playData.itemData.Count;
+        count += playData._equipment.Count;
 
         return count;
     }

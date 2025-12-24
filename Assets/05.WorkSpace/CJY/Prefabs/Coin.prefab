@@ -84,7 +84,7 @@ MonoBehaviour:
   rotationSpeedX: 0
   rotationSpeedY: 0.5
   rotationSpeedZ: 0
-  healingAmount: 5
+  coinSound: {fileID: 8300000, guid: 09aa3da2c311b274fa0d7f218272c46b, type: 3}
 --- !u!136 &9193820930399638247
 CapsuleCollider:
   m_ObjectHideFlags: 0
