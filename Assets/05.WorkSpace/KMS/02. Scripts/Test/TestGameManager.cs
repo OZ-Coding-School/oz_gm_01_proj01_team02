@@ -43,14 +43,14 @@ public class TestGameManager : MonoBehaviour
     private void Awake()
     {
         
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            // SceneManager.sceneLoaded += OnSceneLoaded;
-        }
+        //if (Instance == null)
+        //{
+        //    Instance = this;
+        //    DontDestroyOnLoad(gameObject);
+        //    // SceneManager.sceneLoaded += OnSceneLoaded;
+        //}
                 
-        else Destroy(gameObject);
+        //else Destroy(gameObject);
 
         player = FindObjectOfType<PlayerController>(); 
         mapPanel = FindObjectOfType<MapPanel>(); 

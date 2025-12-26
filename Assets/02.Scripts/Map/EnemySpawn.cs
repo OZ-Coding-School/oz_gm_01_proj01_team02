@@ -15,9 +15,10 @@ public enum EnemyType
 public class EnemySpawn : MonoBehaviour
 {
     [Header("Enemy Spawn Setting")]
-    //[SerializeField] private List<Enemy> enemyPrefab;
-    [SerializeField] private List<EnemyController> enemyPrefab;
-    [SerializeField] private Boss bossPrefab;
+    [SerializeField] private List<EnemyController> meleeEnemyPrefab;
+    [SerializeField] private List<EnemyController> rangedEnemyPrefab;
+    [SerializeField] private List<EnemyController> bossPrefab;
+    //[SerializeField] private Boss bossPrefab;
     [SerializeField] LayerMask[] layerMasks;
 
     [Header("Enemy Spawn Point Explore Setting")]
@@ -42,11 +43,18 @@ public class EnemySpawn : MonoBehaviour
             parent = new GameObject("Enemy_Pool").transform;
             parent.SetParent(gmInit, false);
         }
-        foreach (var prefab in enemyPrefab)
+        foreach (var prefab in meleeEnemyPrefab)
         {
             GameManager.Pool.CreatePool(prefab, PREFAB_COUNT, parent);
         }
-        GameManager.Pool.CreatePool(bossPrefab, 1, parent);
+        foreach (var prefab in rangedEnemyPrefab)
+        {
+            GameManager.Pool.CreatePool(prefab, PREFAB_COUNT, parent);
+        }
+        foreach(var prefab in bossPrefab)
+        {
+            GameManager.Pool.CreatePool(prefab, 1, parent);
+        }
         
         StartCoroutine(DelaySpawn(false));
     }
@@ -111,21 +119,26 @@ public class EnemySpawn : MonoBehaviour
     {
         if (count >= max) return;
         EnemyController enemy = null;
-        Boss boss = null;
+        EnemyController boss = null;
 
         switch (type)
         {
             case EnemyType.Short:
-                enemy = GameManager.Pool.GetFromPool(enemyPrefab[0]);
+                int randMelee = Random.Range(0, meleeEnemyPrefab.Count);
+                enemy = GameManager.Pool.GetFromPool(meleeEnemyPrefab[randMelee]);
                 break;
             case EnemyType.Long:
-                enemy = GameManager.Pool.GetFromPool(enemyPrefab[1]);
+                int randRange = Random.Range(0, rangedEnemyPrefab.Count);
+                enemy = GameManager.Pool.GetFromPool(rangedEnemyPrefab[randRange]);
                 break;
             case EnemyType.Random:
-                enemy = Random.value > 0.5f ? GameManager.Pool.GetFromPool(enemyPrefab[0]) : GameManager.Pool.GetFromPool(enemyPrefab[1]);
+                int randMon1 = Random.Range(0, meleeEnemyPrefab.Count);
+                int randMon2 = Random.Range(0, rangedEnemyPrefab.Count);
+                enemy = Random.value > 0.5f ? GameManager.Pool.GetFromPool(meleeEnemyPrefab[randMon1]) : GameManager.Pool.GetFromPool(rangedEnemyPrefab[randMon2]);
                 break;
             case EnemyType.Boss:
-                boss = GameManager.Pool.GetFromPool(bossPrefab);
+                int currentChapter = GameManager.Data.playData._chapter;
+                boss = GameManager.Pool.GetFromPool(bossPrefab[currentChapter - 1]);
                 break;
         }
         if (enemy == null && boss == null) return;
@@ -141,7 +154,7 @@ public class EnemySpawn : MonoBehaviour
         GoEnemySpawn(DetectStandardPoint(), boss);
     }
 
-    private void EnemyInit(EnemyType type, Vector3 pos, EnemyController enemy = null, Boss boss = null)
+    private void EnemyInit(EnemyType type, Vector3 pos, EnemyController enemy = null, EnemyController boss = null)
     {
         NavMeshAgent agent = null;
         EnemyCheck check = null;

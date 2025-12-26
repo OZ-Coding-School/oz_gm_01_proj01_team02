@@ -9,7 +9,6 @@ public class SpecialLevelUp : MonoBehaviour
     [SerializeField] Angel angelPrefab;
     [SerializeField] Devil devilPrefab;
     [SerializeField] private GameObject player;
-    private float distanceToPlayer = 15f;
     Transform spawnpoint;
     ObstacleSpawnPoint[] spawnPoints;
 
@@ -71,6 +70,7 @@ public class SpecialLevelUp : MonoBehaviour
 
     private void DevilSpawn(GameObject enemy)
     {
+        Debug.Log("æ«∏∂º“»Ø»£√‚");
         Devil[] children = GameManager.Pool.GetComponentsInChildren<Devil>(true);
 
         foreach (Devil child in children)
@@ -81,6 +81,7 @@ public class SpecialLevelUp : MonoBehaviour
         {
             return;
         }
+        Debug.Log("æ«∏∂º“»Ø");
         ADSpawn(GameManager.Stage.currentStage);
     }
 
