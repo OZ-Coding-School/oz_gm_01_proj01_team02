@@ -80,9 +80,9 @@ namespace STH.Characters.Player
             skills.Add(newSkill);
         }
 
-        public void TakeDamage(float amount)
+        public void TakeDamage(float amount, bool isCritical = false)
         {
-
+            Debug.Log($"Player Take Damage: {amount}, Critical: {isCritical}");
         }
 
         public void Die()

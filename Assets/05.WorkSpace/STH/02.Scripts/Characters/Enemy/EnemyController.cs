@@ -4,6 +4,7 @@ using System.Collections;
 using STH.Combat.Projectiles;
 using STH.ScriptableObjects.Base;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 
 namespace STH.Characters.Enemy
@@ -43,10 +44,14 @@ namespace STH.Characters.Enemy
         [SerializeField] private Transform target;  //Ÿ��(�÷��̾�)
         [SerializeField] private LayerMask playerLayer;
         [SerializeField] private float damage = 200;
+        private Vector3 targetDir;
 
         [Header("bullet")]
         [SerializeField] private Bullet enemyBullet;
         [SerializeField] protected Transform bulletPos;
+        [SerializeField] private List<AttackPatternSO> bulletPatterns;
+        private List<IFireStrategy> fireStrategies = new List<IFireStrategy>();
+        private Bullet patternBulletPrefab;
 
         [SerializeField] private PoolableParticle deathEffect;
 
@@ -123,6 +128,14 @@ namespace STH.Characters.Enemy
             }
             GameManager.Pool.CreatePool(deathEffect, 20);
             currentHp = maxHp;
+
+            bulletPatterns.ForEach(pattern =>
+            {
+                IFireStrategy strategy = pattern.CreateStrategy();
+                fireStrategies.Add(strategy);
+                GameManager.Pool.CreatePool(pattern.BulletPrefab, 50);
+                Debug.Log($"Enemy Bullet Pool Created {pattern.BulletPrefab.name}");
+            });
         }
 
         void Update()
@@ -212,6 +225,7 @@ namespace STH.Characters.Enemy
 
 
         }
+
         public void RangedAttack()
         {
             nvAgent.enabled = false;
@@ -223,9 +237,20 @@ namespace STH.Characters.Enemy
             //���� ��Ÿ���� �Ǹ� ������ �߻�
             if (rangedTimer >= spawnTime)
             {
-                Bullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
-                enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, bulletPos.rotation);
-                enemyBullet.Initialize(damage);
+                if (fireStrategies.Count == 0)
+                {
+                    patternBulletPrefab = enemyBullet;
+                    // 기본 공격
+                    SpawnBulletCallback(bulletPos.position, bulletPos.rotation);
+                }
+                else
+                {
+                    for (int i = 0; i < fireStrategies.Count; i++)
+                    {
+                        patternBulletPrefab = bulletPatterns[i].BulletPrefab;
+                        fireStrategies[i].Fire(bulletPos, SpawnBulletCallback);
+                    }
+                }
 
                 rangedTimer = 0.0f; //Ÿ�̸� �ʱ�ȭ
                 animator.SetTrigger("DoAttack");
@@ -234,12 +259,25 @@ namespace STH.Characters.Enemy
             nvAgent.enabled = true;
             nvAgent.Warp(transform.position);
         }
+
+        private void SpawnBulletCallback(Vector3 position, Quaternion rotation)
+        {
+            Bullet bullet = GameManager.Pool.GetFromPool(patternBulletPrefab);
+            if (bullet != null)
+            {
+                bullet.transform.SetLocalPositionAndRotation(position, rotation);
+                targetDir.y = 0;
+                bullet.transform.forward = targetDir;
+                bullet.Initialize(damage);
+            }
+        }
+
         //���� ȸ��
         public void LookTo()
         {
-            Vector3 dir = (target.position - transform.position).normalized;
+            targetDir = (target.position - transform.position).normalized;
 
-            Quaternion targetRot = Quaternion.LookRotation(dir);
+            Quaternion targetRot = Quaternion.LookRotation(targetDir);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
         }
@@ -319,14 +357,14 @@ namespace STH.Characters.Enemy
             ga.transform.position = transform.position;
         }
 
-        public void TakeDamage(float amount)
+        public void TakeDamage(float amount, bool isCritical = false)
         {
             if (currentHp <= 0) return;
 
             Debug.Log($"Enemy take damage {amount}");
             currentHp -= amount;
 
-            if (hitEffect != null) hitEffect.PlayHitEffect();
+            if (hitEffect != null) hitEffect.PlayHitEffect(isCritical);
 
             if (currentHp <= 0)
             {
