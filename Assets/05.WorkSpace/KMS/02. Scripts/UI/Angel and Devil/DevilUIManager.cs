@@ -45,9 +45,16 @@ public class DevilUIManager : MonoBehaviour
 
     public void AcceptDevilDeal()
     {
-        // TestGameManager.Instance.DecreaseMaxHp(200);
-        selectedBuff.Apply(player);
-        gameObject.SetActive(false);
+        PlayerStatManager statManager = PlayerStatManager.Instance;
+        if (statManager != null)
+        {
+            statManager.permanentmaxHpBonus -= 200.0f;
+            statManager.RecalculateStats();
+
+            selectedBuff.Apply(player);
+            gameObject.SetActive(false);
+        }
+        
     }
 
     public void RejectDevilDeal()
