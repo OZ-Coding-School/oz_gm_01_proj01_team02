@@ -320,7 +320,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         ga.transform.position = transform.position;
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, bool isCritical = false)
     {
         if (currentHp <= 0) return;
 
