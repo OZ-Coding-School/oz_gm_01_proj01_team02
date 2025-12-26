@@ -9,7 +9,8 @@ namespace STH.Core
         /// 데미지를 받습니다.
         /// </summary>
         /// <param name="amount">데미지량</param>
-        void TakeDamage(float amount);
+        /// <param name="isCritical">크리티컬 여부</param>
+        void TakeDamage(float amount, bool isCritical = false);
 
         /// <summary>
         /// 사망 처리를 합니다.

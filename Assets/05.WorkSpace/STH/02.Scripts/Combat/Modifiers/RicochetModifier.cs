@@ -54,7 +54,7 @@ namespace STH.Combat.Modifiers
                 bullet.PierceCount++; // 튕길 때는 파괴되지 않도록
                 remainingBounces--;
 
-                bullet.SetDamageWithCritical(bullet.damage + bullet.damage * attackMultiplier); // 치명타 다시 계산
+                bullet.SetDamageAndCritical(bullet.damage + bullet.damage * attackMultiplier); // 치명타 다시 계산
             }
         }
 

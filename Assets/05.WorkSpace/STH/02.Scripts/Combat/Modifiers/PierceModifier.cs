@@ -33,7 +33,7 @@ namespace STH.Combat.Modifiers
 
         public void OnHit(Bullet bullet, IDamageable target, LayerMask targetLayer)
         {
-            bullet.SetDamageWithCritical(bullet.damage + bullet.damage * attackMultiplier);
+            bullet.SetDamageAndCritical(bullet.damage + bullet.damage * attackMultiplier);
         }
     }
 }

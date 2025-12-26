@@ -6,15 +6,15 @@ using STH.Combat.Modifiers;
 namespace STH.ScriptableObjects.Skills.Modifiers
 {
     /// <summary>
-    /// 독 스킬 데이터 - 총알에 독 효과 추가
+    /// 화상 스킬 데이터 - 총알에 화상 효과 추가
     /// </summary>
-    [CreateAssetMenu(fileName = "Modifier_Poison", menuName = "STH/Skills/Modifiers/Poison")]
-    public class PoisonSkillData : SkillData
+    [CreateAssetMenu(fileName = "Modifier_Fire", menuName = "STH/Skills/Modifiers/Fire")]
+    public class FireSkillData : SkillData
     {
         [Header("Modifier Settings")]
-        public float AttackMultiplier = 0.35f; // 공격력 계수
-        public float duration = 5f;
-        public float tickInterval = 1f;
+        public float AttackMultiplier = 0.2f; // 공격력 계수
+        public float duration = 3f;
+        public float tickInterval = 0.5f;
 
         public override void Apply(PlayerController player)
         {
@@ -23,6 +23,5 @@ namespace STH.ScriptableObjects.Skills.Modifiers
             player.AddSkill(this);
             Debug.Log("modifier apply");
         }
-        // 
     }
 }

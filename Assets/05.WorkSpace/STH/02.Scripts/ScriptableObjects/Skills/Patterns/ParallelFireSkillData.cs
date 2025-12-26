@@ -9,16 +9,16 @@ namespace STH.ScriptableObjects.Skills
     /// <summary>
     /// 패턴 스킬 데이터 - 발사 패턴을 추가함
     /// </summary>
-    [CreateAssetMenu(fileName = "Pattern_FanFire", menuName = "STH/Skills/FanFireSkill")]
-    public class FanFireSkillData : SkillData
+    [CreateAssetMenu(fileName = "Pattern_ParallelFire", menuName = "STH/Skills/ParallelFireSkill")]
+    public class ParalleSkillData : SkillData
     {
         [Header("Pattern Settings")]
         public int count = 3;
-        public float angle = 30f;
+        public float spacing = 30f;
 
         public override void Apply(PlayerController player)
         {
-            player.AddStrategy(new FanFireStrategy(count, angle));
+            player.AddStrategy(new ParallelFireStrategy(count, spacing));
             player.AddSkill(this);
         }
     }

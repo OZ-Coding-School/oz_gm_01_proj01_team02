@@ -25,6 +25,7 @@ namespace STH.Combat.Projectiles
         private float critDamage = 2f;
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
         private int pierceCount = 0;
+        private bool isCritical = false;
 
         public float damage;
         public int PierceCount { get => pierceCount; set => pierceCount = value; }
@@ -38,7 +39,7 @@ namespace STH.Combat.Projectiles
         // 적 공격 - 치명타 x, mods x
         public void Initialize(float dmg)
         {
-            SetDamageWithCritical(dmg);
+            SetDamageAndCritical(dmg);
             StartCoroutine(ReturnToPoolAfterTime(lifeTime));
         }
 
@@ -53,16 +54,18 @@ namespace STH.Combat.Projectiles
         }
 
         // 치명타 확인, 데미지 설정
-        public void SetDamageWithCritical(float dmg)
+        public void SetDamageAndCritical(float dmg)
         {
+            damage = dmg;
+
             int rand = Random.Range(0, 100);
             if (rand < critRate * 100f)
             {
-                damage = dmg * critDamage;
+                isCritical = true;
             }
             else
             {
-                damage = dmg;
+                isCritical = false;
             }
         }
 
@@ -105,7 +108,16 @@ namespace STH.Combat.Projectiles
             if (bulletOwner == TypeEnums.Enemy && other.GetComponent<Characters.Enemy.EnemyController>()) return;
 
             // 기본 데미지 적용
-            target.TakeDamage(damage);
+
+            if (isCritical)
+            {
+                float totalCritDamage = damage * critDamage;
+                target.TakeDamage(totalCritDamage, isCritical);
+            }
+            else
+            {
+                target.TakeDamage(damage);
+            }
 
             // 모든 모디파이어 효과 발동
             foreach (var modifier in modifiers)

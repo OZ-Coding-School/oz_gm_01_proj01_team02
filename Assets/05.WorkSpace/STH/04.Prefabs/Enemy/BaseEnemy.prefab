@@ -186,7 +186,10 @@ MonoBehaviour:
   hitColor: {r: 1, g: 1, b: 1, a: 1}
   hitFresnelPower: 5
   flashAmount: 0.2
+  shakeDuration: 0.15
+  shakeMagnitude: 0.1
   hitParticle: {fileID: 7908550029408796944, guid: 2006a793ca66a4c06ad3ba4e399f5b80, type: 3}
+  cameraTransform: {fileID: 0}
 --- !u!114 &7930657910752134326
 MonoBehaviour:
   m_ObjectHideFlags: 0

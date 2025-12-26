@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2da53b41c214345a09f0e9a4ed591d16, type: 3}
-  m_Name: Stat_NewStat 3
+  m_Script: {fileID: 11500000, guid: d1c65bf2a15ca4d9db84fd78fd4d758f, type: 3}
+  m_Name: Pattern_Circle
   m_EditorClassIdentifier: 
-  skillName: CriticalRateUp
-  icon: {fileID: 21300000, guid: 02f95e9fdc9b1e449896e31160e855f1, type: 3}
-  statValue:
-    statType: 3
-    value: 0.1
+  bulletPrefab: {fileID: 6497575979653811519, guid: 9b6230ae39c5a4d31b91d09cf139bd80, type: 3}
+  count: 10
