@@ -39,7 +39,6 @@ public class TestGameManager : MonoBehaviour
         player = FindObjectOfType<PlayerController>(); 
         mapPanel = FindObjectOfType<MapPanel>(); 
         hpBar = FindObjectOfType<SegmentedHpBar>();
-        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
     }
     private void Awake()
     {
@@ -57,7 +56,6 @@ public class TestGameManager : MonoBehaviour
         mapPanel = FindObjectOfType<MapPanel>(); 
         hpBar = FindObjectOfType<SegmentedHpBar>();
         
-        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
 
         Time.timeScale = 1.0f;
         gameState = TestGameState.Playing;
