@@ -17,13 +17,13 @@ public class AngelUIManagers : MonoBehaviour
         [Header("Heal")]
         public Button healButton;
         public Sprite healSprite;
-        public int healAmount = 200;
+        public float healAmount = 500.0f;
 
         private SkillData selectedPassive;
         private PlayerController player;
+        private PlayerHealth playerHp;
 
-        [Header("Heal UI")]
-        public Text healText;
+        
 
 
         
@@ -37,7 +37,16 @@ public class AngelUIManagers : MonoBehaviour
         if (player == null)
         {
             Debug.Log("Player 없음");
+            return;
         }
+
+        playerHp = player.GetComponent<PlayerHealth>();
+        if (playerHp == null)
+        {
+            Debug.Log("PlayerHealth 없음");
+            return;
+        }
+        
 
         SetupPassive();
         SetupHeal();
@@ -92,7 +101,7 @@ public class AngelUIManagers : MonoBehaviour
 
     private void HealPlayer()
     {
-        // player.Heal(healAmount);
+        playerHp.Heal(healAmount);
     }
 
 

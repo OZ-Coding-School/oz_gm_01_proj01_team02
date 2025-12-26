@@ -19,8 +19,9 @@ public class PlayerStatManager : MonoBehaviour
 
     // 영구 재능 스탯
     [Header("Permanent Bonus Stats")]
-    public float permanentHpBonus;
+    public float permanentmaxHpBonus;
     public float permanentAttackBonus;
+
 
     // 현재 스탯
     [Header("Current Stats")]
@@ -62,8 +63,9 @@ public class PlayerStatManager : MonoBehaviour
         ResetStat();
 
         // 영구 재능
-        maxHp += permanentHpBonus;
+        maxHp += permanentmaxHpBonus;
         attack += permanentAttackBonus;
+    
 
         // InventoryManager가 준비 안 됐으면 여기서 종료!
         if (InventoryManager.Instance == null)
