@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e8807663dd0b1459c1b3f959eda33b, type: 3}
   m_Name: Strengthen
   m_EditorClassIdentifier: 
+  talentType: 6
   talentName: "\uC7A5\uBE44 \uAC15\uD654"
-  stat:
-    statType: 11
+  description: "\uC7A5\uBE44\uC758 \uAE30\uBCF8 \uC2A4\uD0EF\uC744 3%\uC529 \uC0C1\uC2B9"
+  icon: {fileID: 21300000, guid: fdef54dd38c3c114f8f024c27ab6a5e8, type: 3}
+  maxLevel: 10
+  statPerLevel:
+    statType: 14
     value: 0.03

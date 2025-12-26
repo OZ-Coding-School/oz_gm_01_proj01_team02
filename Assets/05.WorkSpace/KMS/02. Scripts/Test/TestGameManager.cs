@@ -29,8 +29,9 @@ public class TestGameManager : MonoBehaviour
     [Header("State")]
     public TestGameState gameState = TestGameState.Playing;
 
+    public PlayerController player; // 에러가 떠서 일단 막아놓은 임시 코드임
 
-    public PlayerMove player;
+    // public PlayerMove player; -> 이게 원래 코드임
     //public TestPlayer player;
     private void OnEnable()
     {

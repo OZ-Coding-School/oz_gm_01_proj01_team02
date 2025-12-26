@@ -20,5 +20,10 @@ public class TalentData: ScriptableObject
     // 레벨업 시 얻을 스탯
     [Header("Stat")]
     public StatValue statPerLevel;
+
+    // 영구 재능
+    [Header("Permanent Talent Cost")]
+    public int baseCost;      // 처음에 필요한 비용
+    public int costIncrease;  // 업그레이드 시 비용
 }
 

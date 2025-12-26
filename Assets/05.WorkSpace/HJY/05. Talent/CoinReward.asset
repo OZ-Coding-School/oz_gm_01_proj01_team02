@@ -12,7 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e8807663dd0b1459c1b3f959eda33b, type: 3}
   m_Name: CoinReward
   m_EditorClassIdentifier: 
+  talentType: 7
   talentName: "\uC2DC\uAC04 \uBCF4\uC0C1"
-  stat:
+  description: "1\uBD84\uB9C8\uB2E4 2\uCF54\uC778\uC744 \uBCF4\uB108\uC2A4\uB85C
+    \uC5BB\uC74C"
+  icon: {fileID: 21300000, guid: 187abff1cdfb9cd4a887537c8b7328a5, type: 3}
+  maxLevel: 10
+  statPerLevel:
     statType: 12
-    value: 10
+    value: 2
