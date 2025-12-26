@@ -32,13 +32,13 @@ public class TalentManager : MonoBehaviour
         }
     }
 
-    // ¾÷±×·¹ÀÌµå ºñ¿ë
+    // ï¿½ï¿½ï¿½×·ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½
     public int GetUpgradeCost(PermanentTalent talent)
     {
         return talent.baseCost + talent.level * talent.costIncrease;
     }
 
-    // Àç´É ¾÷±×·¹ÀÌµå
+    // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½×·ï¿½ï¿½Ìµï¿½
     public bool UpgradeTalent(string talentId)
     {
         PermanentTalent talent = talents.Find(t => t.talentId == talentId);
@@ -57,7 +57,7 @@ public class TalentManager : MonoBehaviour
         return true;
     }
 
-    // Àç´É È¿°ú Àû¿ë
+    // ï¿½ï¿½ï¿½ È¿ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void ApplyTalentEffect(PermanentTalent talent)
     {
         switch (talent.talentId)
@@ -68,15 +68,15 @@ public class TalentManager : MonoBehaviour
                 break;
 
             case "HP":
-                PlayerStatManager.Instance.permanentHpBonus =
-                    talent.level * 20;
+                // // PlayerStatManager.Instance.permanentHpBonus =
+                //     talent.level * 20;
                 break;
         }
 
         PlayerStatManager.Instance.RecalculateStats();
     }
 
-    // ÀúÀå
+    // ï¿½ï¿½ï¿½ï¿½
     private void SaveTalents()
     {
         foreach (var t in talents)
@@ -86,7 +86,7 @@ public class TalentManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // ºÒ·¯¿À±â
+    // ï¿½Îµï¿½
     private void LoadTalents()
     {
         foreach (var t in talents)

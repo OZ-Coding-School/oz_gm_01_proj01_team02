@@ -7,16 +7,18 @@ public class Follow : MonoBehaviour
 
     RectTransform rect;
     public Vector3 screenOffset = new Vector3(0, 0, 0);
+    private PlayerHealth player;
 
     void Awake()
     {
-        rect = GetComponent<RectTransform>();    
+        rect = GetComponent<RectTransform>(); 
+        player = FindObjectOfType<PlayerHealth>();   
         
     }
 
     void FixedUpdate()
     {
-        rect.position = Camera.main.WorldToScreenPoint(TestGameManager.Instance.player.transform.position) + screenOffset;       
+        rect.position = Camera.main.WorldToScreenPoint(player.transform.position) + screenOffset;       
 
     }
 }

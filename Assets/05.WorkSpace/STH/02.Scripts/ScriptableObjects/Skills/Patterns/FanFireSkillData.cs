@@ -20,8 +20,6 @@ namespace STH.ScriptableObjects.Skills
         {
             player.AddStrategy(new FanFireStrategy(count, angle));
             player.AddSkill(this);
-            Debug.Log("pattern apply");
-
         }
     }
 }

@@ -43,9 +43,10 @@ GameObject:
   - component: {fileID: 7671255076646498223}
   - component: {fileID: 1716572706890041353}
   - component: {fileID: 9065915326168383926}
-  - component: {fileID: 3472652183054962509}
+  - component: {fileID: 553866206687059592}
   - component: {fileID: 1017804098816513003}
   - component: {fileID: 7930657910752134326}
+  - component: {fileID: 2848700956764366976}
   m_Layer: 6
   m_Name: BaseEnemy
   m_TagString: Enemy
@@ -139,7 +140,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &3472652183054962509
+--- !u!114 &553866206687059592
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +149,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8719331883189165325}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97cc5a0c359e94d579473b06670754d2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2edbee4236c4939458919be0636d7e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
@@ -186,7 +187,10 @@ MonoBehaviour:
   hitColor: {r: 1, g: 1, b: 1, a: 1}
   hitFresnelPower: 5
   flashAmount: 0.2
+  shakeDuration: 0.15
+  shakeMagnitude: 0.1
   hitParticle: {fileID: 7908550029408796944, guid: 2006a793ca66a4c06ad3ba4e399f5b80, type: 3}
+  cameraTransform: {fileID: 0}
 --- !u!114 &7930657910752134326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,5 +201,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1437b7da0ca71449cb449ce83119c74d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2848700956764366976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8719331883189165325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f71213d5d874c43ba701213f0373cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

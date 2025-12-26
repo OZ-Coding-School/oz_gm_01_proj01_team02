@@ -1,5 +1,6 @@
 using UnityEngine;
 using STH.Core;
+using STH.Combat.Projectiles;
 
 namespace STH.ScriptableObjects.Base
 {
@@ -9,9 +10,9 @@ namespace STH.ScriptableObjects.Base
     public abstract class AttackPatternSO : ScriptableObject
     {
         [Header("Projectile")]
-        [SerializeField] private GameObject bulletPrefab;
+        [SerializeField] private Bullet bulletPrefab;
 
-        public GameObject BulletPrefab => bulletPrefab;
+        public Bullet BulletPrefab => bulletPrefab;
 
         /// <summary>
         /// 발사 전략을 생성합니다.

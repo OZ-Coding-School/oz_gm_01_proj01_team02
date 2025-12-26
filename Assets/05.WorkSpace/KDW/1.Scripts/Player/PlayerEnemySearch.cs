@@ -7,6 +7,8 @@ public class PlayerEnemySearch : MonoBehaviour
     [Header("�� ����")]
     [SerializeField] private float checkRange;  //������ �Ÿ�
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private TargetIndicator indicatorPrefab;
+    private Transform indicatorInstance;
 
     public GameObject closeEnemy; //���� ����� ���� ��Ƶ� ����
 
@@ -14,10 +16,25 @@ public class PlayerEnemySearch : MonoBehaviour
 
     public GameObject CloseEnemy => closeEnemy;
 
-    
+    void Awake()
+    {
+        // 원을 하나만 생성해서 미리 꺼둠
+        indicatorInstance = Instantiate(indicatorPrefab).transform;
+        indicatorInstance.gameObject.SetActive(false);
+    }
+
     void Update()
     {
         EnemyCheck();
+    }
+
+    void LateUpdate()
+    {
+        // 타겟이 있으면 원을 타겟 발밑으로 이동
+        if (closeEnemy != null && indicatorInstance.gameObject.activeSelf)
+        {
+            indicatorInstance.position = closeEnemy.transform.position;
+        }
     }
 
     private void EnemyCheck()
@@ -30,6 +47,7 @@ public class PlayerEnemySearch : MonoBehaviour
         if (Colliders.Length == 0)
         {
             closeEnemy = null;
+            indicatorInstance.gameObject.SetActive(false);
             return;
         }
 
@@ -55,6 +73,7 @@ public class PlayerEnemySearch : MonoBehaviour
             }
         }
         closeEnemy = nearEnemy;
+        indicatorInstance.gameObject.SetActive(true);
     }
     private void OnDrawGizmosSelected()
     {

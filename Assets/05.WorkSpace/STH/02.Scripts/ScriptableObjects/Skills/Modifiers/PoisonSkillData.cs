@@ -23,5 +23,6 @@ namespace STH.ScriptableObjects.Skills.Modifiers
             player.AddSkill(this);
             Debug.Log("modifier apply");
         }
+        // 
     }
 }

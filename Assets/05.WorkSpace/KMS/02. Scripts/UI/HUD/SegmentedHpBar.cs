@@ -7,12 +7,12 @@ public class SegmentedHpBar : MonoBehaviour
 {
 
     [Header("HP")]
-    public int maxHp;
-    public int currentHp;
+    public float targetHp;
+    public float targetMaxHp;
     private float displayHp;
     private float displayBackHp;
 
-    public int segmentCount = 7;
+    public int segmentCount = 15;
     private Image[] fillUnits;
     private Image[] backUnits;
 
@@ -25,14 +25,21 @@ public class SegmentedHpBar : MonoBehaviour
 
     [Header("Animation")]
     public float hpAnimSpeed = 100.0f;
-    public float backAnimSpeed = 50.0f;
+    public float backAnimSpeed = 80.0f;
     private Coroutine hpAnimCoroutine;
 
+    public PlayerHealth playerHp;
 
 
-    private bool isInitialized = false;
+    private bool isInitialized = false; 
 
-    void Start()
+    private void Awake()
+    {
+        if (playerHp == null)
+        playerHp = FindObjectOfType<PlayerHealth>();
+    }
+
+    private void Start()
     {
         fillUnits = new Image[segmentCount];
         backUnits = new Image[segmentCount];
@@ -44,49 +51,62 @@ public class SegmentedHpBar : MonoBehaviour
             backUnits[i] = Instantiate(hpBackUnitPrefab, hpBackRoot);
         }
 
-        currentHp = TestGameManager.Instance.currentHp;
-        maxHp = TestGameManager.Instance.maxHp;
-
-        displayHp = currentHp;
-        displayBackHp = currentHp;
-
         isInitialized = true;
 
-        UpdateUIWithValue(displayHp, displayBackHp);
+    
+
+        if (playerHp != null)
+        OnHpChanged(playerHp.CurrentHp, playerHp.MaxHp, true);
     
     }
 
-    
-    void Update()
+
+    private void OnEnable()
     {
-        int gmHp = TestGameManager.Instance.currentHp;
-
-        if (gmHp != currentHp)
-        {
-            SetHp(gmHp);
-        }
+        if (playerHp == null) return;
+        playerHp.OnHpChanged += OnHpChangedEvent;
 
     }
 
-    public void SetHp(int hp)
+    private void OnDisable()
+    {
+        if (playerHp == null) return;
+        playerHp.OnHpChanged -= OnHpChangedEvent;
+    }
+
+    private void OnHpChanged(float current, float max, bool instant = false)
     {
         if (!isInitialized) return;
-        currentHp = Mathf.Clamp(hp, 0, maxHp);
+
+        targetHp = current;
+        targetMaxHp = max;
 
         if (hpAnimCoroutine != null)
+        StopCoroutine(hpAnimCoroutine);
+
+        if (instant)
         {
-            StopCoroutine(hpAnimCoroutine);
+            displayHp = targetHp;
+            displayBackHp = targetHp;
+            UpdateUIWithValue(displayHp, displayBackHp);
         }
-        
-        
-        hpAnimCoroutine = StartCoroutine(AnimateHp());
+        else
+        {
+            hpAnimCoroutine = StartCoroutine(AnimateHp());
+        }
     }
 
+    private void OnHpChangedEvent(float current, float max)
+    {
+        OnHpChanged(current, max, false);
+    }
+
+    
     IEnumerator AnimateHp()
     {
-        while (!Mathf.Approximately(displayHp, currentHp) || !Mathf.Approximately(displayBackHp, displayHp))
+        while (!Mathf.Approximately(displayHp, targetHp) || !Mathf.Approximately(displayBackHp, displayHp))
         {
-            displayHp = Mathf.MoveTowards(displayHp, currentHp, hpAnimSpeed * Time.deltaTime);
+            displayHp = Mathf.MoveTowards(displayHp, targetHp, hpAnimSpeed * Time.deltaTime);
 
             displayBackHp = Mathf.MoveTowards(displayBackHp, displayHp, backAnimSpeed * Time.deltaTime);
         
@@ -95,7 +115,7 @@ public class SegmentedHpBar : MonoBehaviour
             yield return null;
         }
 
-        displayHp = currentHp;
+        displayHp = targetHp;
         displayBackHp = displayHp;
         UpdateUIWithValue(displayHp, displayBackHp);
     }
@@ -103,19 +123,24 @@ public class SegmentedHpBar : MonoBehaviour
 
     void UpdateUIWithValue(float frontamount, float backAmount)
     {
-        float frontRatio = frontamount / maxHp;
-        float backRatio = backAmount / maxHp;
+        float frontRatio = frontamount / targetMaxHp;
+        float backRatio = backAmount / targetMaxHp;
+
 
         for (int i = 0; i < segmentCount; i++)
         {
-            float unitStart = (float)i / segmentCount;
-            float unitEnd = (float)(i + 1) / segmentCount;
+            int index = segmentCount - 1 - i;
+            
+
+            float unitStart = (float)index / segmentCount;
+            float unitEnd = (float)(index + 1) / segmentCount;
 
             float fillScale = Mathf.Clamp01((frontRatio - unitStart) / (unitEnd - unitStart));
-            fillUnits[i].transform.localScale = new Vector3(fillScale, 1, 1);
+            fillUnits[index].transform.localScale = new Vector3(fillScale, 1.0f, 1.0f);
 
             float backScale = Mathf.Clamp01((backRatio - unitStart) / (unitEnd - unitStart));
-            backUnits[i].transform.localScale = new Vector3(backScale, 1, 1);       
+            backUnits[index].transform.localScale = new Vector3(backScale, 1.0f, 1.0f);
+     
         }
     }
 }

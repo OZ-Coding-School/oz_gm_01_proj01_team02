@@ -81,7 +81,7 @@ public class EquipmentDetailPanel : MonoBehaviour
     private void AfterChange()
     {
         // 플레이어 스탯 갱신
-        FindObjectOfType<PlayerStatUI>()?.Refresh();
+        //FindObjectOfType<PlayerStatUI>()?.Refresh();
 
         // 내 컬렉션 UI 갱신
         FindObjectOfType<InventoryUI>()?.RefreshAll();
