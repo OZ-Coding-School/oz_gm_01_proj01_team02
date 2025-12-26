@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e8807663dd0b1459c1b3f959eda33b, type: 3}
   m_Name: Honour
   m_EditorClassIdentifier: 
+  talentType: 8
   talentName: "\uC601\uAD11"
-  stat:
-    statType: 6
+  description: "\uC2DC\uC791 \uC2DC \uC2A4\uD0AC \uC120\uD0DD"
+  icon: {fileID: 21300000, guid: 4bfac74c264b16a4f9e40ab515f46161, type: 3}
+  maxLevel: 10
+  statPerLevel:
+    statType: 0
     value: 0

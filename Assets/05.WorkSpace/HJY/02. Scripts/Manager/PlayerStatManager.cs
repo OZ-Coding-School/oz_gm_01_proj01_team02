@@ -2,24 +2,27 @@
 using UnityEngine;
 using System;
 
-
-
 public class PlayerStatManager : MonoBehaviour
 {
     public static PlayerStatManager Instance;
     public static event Action OnStatChanged;
 
-    // �⺻ ����
+    // 기본 스탯  
     [Header("Base Stats")]
-    public float baseMaxHp = 1000; // �ִ� ü��
-    public float baseAttack = 150; // ���ݷ�
-    public float baseAttackSpeed = 1; // ���� �ӵ� (�д� ����) 
-    public float baseCritRate = 0.05f; // ġ��Ÿ Ȯ��
-    public float baseCritDamage = 2f; // ġ��Ÿ �����
-    public float baseMoveSpeed = 5; // �̵� �ӵ�
-    public float baseSuperTime = 0.5f; // �ǰ� ���� �ð� (���� �ǰ� ����)
+    public float baseMaxHp = 1000; // 최대 체력
+    public float baseAttack = 150;    // 공격력
+    public float baseAttackSpeed = 1; // 공격 속도
+    public float baseCritRate = 0.05f; // 치명타 확률
+    public float baseCritDamage = 2f; // 치명타 대미지
+    public float baseMoveSpeed = 5; // 이동 속도
+    public float baseSuperTime = 0.5f; // 피격 무적 시간 -> 연속 피격 방지를 위함
 
-    // ���� ����
+    // 영구 재능 스탯
+    [Header("Permanent Bonus Stats")]
+    public float permanentHpBonus;
+    public float permanentAttackBonus;
+
+    // 현재 스탯
     [Header("Current Stats")]
     public float maxHp;
     public float attack;
@@ -29,8 +32,8 @@ public class PlayerStatManager : MonoBehaviour
     public float moveSpeed;
     public float superTime;
 
-    public float dodgeRate; // ȸ�� Ȯ��
-    public float coinBonus; // ���� ���ʽ�
+    public float dodgeRate; // 회피율
+    public float coinBonus; // 코인 보너스
 
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class PlayerStatManager : MonoBehaviour
         RecalculateStats();
     }
 
+    // 초기화
     public void ResetStat()
     {
         maxHp = baseMaxHp;
@@ -52,80 +56,106 @@ public class PlayerStatManager : MonoBehaviour
         coinBonus = 0;
     }
 
-    // �ֽ� ���� ���
+    // 계산
     public void RecalculateStats()
     {
         ResetStat();
 
+        // 영구 재능
+        maxHp += permanentHpBonus;
+        attack += permanentAttackBonus;
 
-        // ���
-        // foreach (var item in InventoryManager.Instance.equippedItems)
-        // {
-        //     if (item == null) continue;
-        //     ApplyStats(item.stats);
-        // }
+        // InventoryManager가 준비 안 됐으면 여기서 종료!
+        if (InventoryManager.Instance == null)
+        {
+            OnStatChanged?.Invoke();
+            return;
+        }
 
-        // // ���
-        // foreach (var talent in InventoryManager.Instance.ownedTalents)
-        // {
-        //     if (talent.level <= 0) continue;
+        // 장비 스탯
+        if (InventoryManager.Instance.equippedItems != null)
+        {
+            foreach (var item in InventoryManager.Instance.equippedItems)
+            {
+                if (item == null) continue;
+                ApplyStats(item.stats);
+            }
+        }
 
-        //     StatValue stat = talent.data.statPerLevel;
-        //     stat.value *= talent.level;
+        // 인게임 재능 스탯
+        if (InventoryManager.Instance.ownedTalents != null)
+        {
+            foreach (var talent in InventoryManager.Instance.ownedTalents)
+            {
+                if (talent == null || talent.level <= 0) continue;
 
-        //     ApplyStat(stat);
-        // }
-        // OnStatChanged?.Invoke();
+                StatValue stat = talent.data.statPerLevel;
+                stat.value *= talent.level;
 
+                ApplyStat(stat);
+            }
+        }
+        // 스탯이 바뀐 걸 알림!
+        OnStatChanged?.Invoke();
     }
 
+    // 호출
     private void ApplyStats(StatValue[] stats)
     {
         foreach (var stat in stats)
         {
             ApplyStat(stat);
         }
-
     }
 
+    // 스탯 적용
     public void ApplyStat(StatValue stat)
     {
         switch (stat.statType)
         {
             case StatType.MaxHP:
-                maxHp += stat.value;
+                maxHp += stat.value; // 최대 체력에 값 더하기
                 break;
+
             case StatType.MaxHpPercent:
-                maxHp *= (1 + stat.value);
+                maxHp *= (1 + stat.value); // 최대 체력에 비율 곱하기
                 break;
+
             case StatType.Attack:
-                attack += stat.value;
+                attack += stat.value; // 공격력 증가
                 break;
+
             case StatType.AttackSpeed:
-                attackSpeed += stat.value;
+                attackSpeed += stat.value; // 공격 속도 증가
                 break;
+
             case StatType.AttackSpeedPercent:
-                attackSpeed *= (1 + stat.value);
+                attackSpeed *= (1 + stat.value); // 공격 속도 비율 증가
                 break;
-            case StatType.CritRate:
-                critRate += stat.value;
+
+            case StatType.CritRate: 
+                critRate += stat.value; // 치명타 확률 증가
                 break;
-            case StatType.CritDamage:
-                critDamage += stat.value;
+
+            case StatType.CritDamage: 
+                critDamage += stat.value; // 치명타 대미지 증가
                 break;
-            case StatType.MoveSpeed:
-                moveSpeed += stat.value;
+
+            case StatType.MoveSpeed: 
+                moveSpeed += stat.value; // 이동 속도 증가
                 break;
-            case StatType.SuperTime:
-                superTime += stat.value;
+
+            case StatType.SuperTime: 
+                superTime += stat.value; // 피격 무적 시간 증가
                 break;
-            case StatType.DodgeRate:
-                dodgeRate += stat.value;
+
+            case StatType.DodgeRate: 
+                dodgeRate += stat.value; // 회피율 증가
                 break;
-            case StatType.CoinBonus:
-                coinBonus += stat.value;
+
+            case StatType.CoinBonus: 
+                coinBonus += stat.value; // 코인 보너스 증가
                 break;
         }
     }
 }
-

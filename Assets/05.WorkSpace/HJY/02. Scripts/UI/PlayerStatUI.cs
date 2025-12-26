@@ -23,8 +23,8 @@ public class PlayerStatUI : MonoBehaviour
     {
         var stat = PlayerStatManager.Instance;
 
-        //hpText.text = $"HP : {stat.maxHp}";
-        //attackText.text = $"ATK : {stat.attack}";
+        hpText.text = $"HP : {stat.maxHp}";
+        attackText.text = $"ATK : {stat.attack}";
     }
 }
 
