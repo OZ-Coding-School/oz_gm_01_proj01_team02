@@ -38,7 +38,8 @@ public class PlayerStatManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        RecalculateStats();
+        ResetStat();        // 기본값 세팅
+        RecalculateStats(); // 재계산한 현재 스탯 반영
     }
 
     // 초기화

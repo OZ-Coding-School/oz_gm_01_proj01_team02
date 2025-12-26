@@ -86,7 +86,7 @@ public class TalentManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // 로드
+    // 불러오기
     private void LoadTalents()
     {
         foreach (var t in talents)

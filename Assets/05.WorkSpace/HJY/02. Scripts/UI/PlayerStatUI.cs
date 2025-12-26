@@ -11,7 +11,11 @@ public class PlayerStatUI : MonoBehaviour
     private void OnEnable()
     {
         PlayerStatManager.OnStatChanged += Refresh;
-        Refresh();
+    }
+
+    private void Start()
+    {
+        Refresh(); // 기본값을 우선 직접 불러옴
     }
 
     private void OnDisable()
@@ -22,9 +26,9 @@ public class PlayerStatUI : MonoBehaviour
     public void Refresh()
     {
         var stat = PlayerStatManager.Instance;
-
-        hpText.text = $"HP : {stat.maxHp}";
-        attackText.text = $"ATK : {stat.attack}";
+      
+        hpText.text = $"{stat.maxHp}";
+        attackText.text = $"{stat.attack}";
     }
 }
 

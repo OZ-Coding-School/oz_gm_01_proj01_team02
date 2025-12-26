@@ -11,6 +11,7 @@ public enum StatType
     CritDamage,
     MoveSpeed,
     SuperTime,
+    None,
 
     // 방어 및 보조
     DodgeRate,

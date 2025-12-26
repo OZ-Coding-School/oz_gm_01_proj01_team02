@@ -1,19 +1,22 @@
 
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 public class EquipmentDetailPanel : MonoBehaviour
 {
     public static EquipmentDetailPanel Instance;
 
-    public TextMeshProUGUI nameText;
+    [Header("UI References")]
+    public TextMeshProUGUI nameText;                // 장비 이름
+    public TextMeshProUGUI descriptionText;         // 장비 설명
+    public TextMeshProUGUI abilityDescriptionText;  // 효과 설명
+
     public Button actionButton;
     public TextMeshProUGUI buttonText;
 
     // 장비 설명 패널 닫기
-    public Button closeBtn; 
+    public Button closeBtn;
 
     private EquipmentData current;
 
@@ -35,7 +38,13 @@ public class EquipmentDetailPanel : MonoBehaviour
     public void Show(EquipmentData data)
     {
         current = data;
-        nameText.text = data.equipmentName;
+
+        // 한글로 된 장비 이름
+        nameText.text = data.displayName;
+
+        // 설명 텍스트
+        descriptionText.text = data.description;
+        abilityDescriptionText.text = data.abilityDescription;
 
         RefreshButton();
         gameObject.SetActive(true);
@@ -47,14 +56,13 @@ public class EquipmentDetailPanel : MonoBehaviour
 
         if (InventoryManager.Instance.IsEquipped(current))
         {
-            buttonText.text = "장비 해제"; // 혹은 해제로 단어 대체
+            buttonText.text = "해제"; // 혹은 장비 해제로 단어 대체
             actionButton.onClick.AddListener(Unequip);
         }
         else
         {
-            buttonText.text = "장비"; // 혹은 착용으로 단어 대체
+            buttonText.text = "착용"; // 혹은 장비로 단어 대체
             actionButton.onClick.AddListener(Equip);
-            buttonText.text = "장비";
         }
     }
 
