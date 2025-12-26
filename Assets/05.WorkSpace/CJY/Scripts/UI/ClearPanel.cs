@@ -62,6 +62,7 @@ public class ClearPanel : MonoBehaviour
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             SceneManager.LoadScene("TitleScene(Build)");
+            
         }
     }
 

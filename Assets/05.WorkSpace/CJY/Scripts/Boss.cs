@@ -34,7 +34,8 @@ public class Boss : MonoBehaviour
 
     ////    if (GameManager.Stage.currentStage >= GameManager.Stage.Select("finish"))
     ////    {
-    ////        GameManager.ClearChapter();
+    ////        GameManager.
+    ///Chapter();
     ////    }
     ////}
 

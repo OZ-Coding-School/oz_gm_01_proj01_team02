@@ -44,8 +44,9 @@ public class PoolManager : MonoBehaviour
 
         var pool = box as ObjectPool<T>;
 
-        if(pool != null) return pool.Dequeue();
+        if (pool != null) return pool.Dequeue();
         else return null;
+
     }
 
     public void ReturnPool<T>(T instance) where T : MonoBehaviour
