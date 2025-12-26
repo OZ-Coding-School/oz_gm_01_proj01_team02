@@ -25,13 +25,13 @@ public class ObjectPool<T> where T : MonoBehaviour
             }
     }
 
-
     public T Dequeue()
     {
-        if(pool.Count == 0) return null;
+        if (pool.Count == 0) return null;
         var inst = pool.Dequeue();
         inst.gameObject.SetActive(true);
         return inst;
+
     }
 
     public void Enqueue(T instance)

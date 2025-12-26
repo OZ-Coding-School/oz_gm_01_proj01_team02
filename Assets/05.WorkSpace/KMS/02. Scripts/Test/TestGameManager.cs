@@ -39,25 +39,23 @@ public class TestGameManager : MonoBehaviour
         player = FindObjectOfType<PlayerController>(); 
         mapPanel = FindObjectOfType<MapPanel>(); 
         hpBar = FindObjectOfType<SegmentedHpBar>();
-        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
     }
     private void Awake()
     {
-        
+
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-            // SceneManager.sceneLoaded += OnSceneLoaded;
+            //DontDestroyOnLoad(gameObject);
+            //// SceneManager.sceneLoaded += OnSceneLoaded;
         }
-                
-        else Destroy(gameObject);
+
+        //else Destroy(gameObject);
 
         player = FindObjectOfType<PlayerController>(); 
         mapPanel = FindObjectOfType<MapPanel>(); 
         hpBar = FindObjectOfType<SegmentedHpBar>();
         
-        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
 
         Time.timeScale = 1.0f;
         gameState = TestGameState.Playing;
