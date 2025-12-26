@@ -62,7 +62,13 @@ public class GameManager
     {
         get
         {
-            CreateManager(ref _testgamemanager, "TestGameManager");
+            if (_testgamemanager != null) return _testgamemanager;
+            _testgamemanager = Object.FindObjectOfType<TestGameManager>();
+
+            if (_testgamemanager == null)
+            {
+                CreateManager(ref _testgamemanager, "TestGameManager");
+            }
             return _testgamemanager;
         }
     }
