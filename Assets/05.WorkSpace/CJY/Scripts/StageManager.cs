@@ -48,6 +48,7 @@ public class StageManager : MonoBehaviour
 
         chapter = SceneManager.GetActiveScene().name;
         TGM = FindObjectOfType<TestGameManager>();
+        Debug.Log("현재 스테이지 : " + currentStage);
 
     }
 
@@ -70,10 +71,11 @@ public class StageManager : MonoBehaviour
 
     public void StageIncrease()
     {
-        
+       
         onObstacle = true;
         if (currentStage % STAGE_BRANCH == ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == DEVIL_APPEARS-1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+DEVIL_APPEARS - 1) onObstacle = false;
         currentStage++;
+        Debug.Log("현재 스테이지 : " + currentStage);
         OnStageIncrease?.Invoke(currentStage);
         //데이터를 저장.
         GameManager.Data.AddData(TGM.coin, TGM.exp, currentStage, int.Parse(chapter[7].ToString()));
@@ -92,9 +94,6 @@ public class StageManager : MonoBehaviour
         onClearPanel = !onClearPanel;
         clearPanel.SetActive(onClearPanel);
         joyStick.SetActive(!onClearPanel);
-
-
-        
     }
 
 }

@@ -25,13 +25,10 @@ public class PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
-
         if (joystick.JoyVector.x != 0 || joystick.JoyVector.y != 0)
         {
             rb.velocity = new Vector3(joystick.JoyVector.x * moveSpeed, rb.velocity.y, joystick.JoyVector.y * moveSpeed);
-            //rb.rotation = Quaternion.LookRotation(new Vector3(0, joystick.JoyVector.y, 0));
+            rb.rotation = Quaternion.LookRotation(new Vector3(0, joystick.JoyVector.y, 0));
 
             transform.forward = rb.velocity;
 
@@ -49,5 +46,10 @@ public class PlayerMove : MonoBehaviour
 
             anim.SetBool(moveHash, false);
         }
+    }
+
+    private void LateUpdate()
+    {
+        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
     }
 }

@@ -36,8 +36,6 @@ public class SlotMachineManager : MonoBehaviour
     private float imageHeight = 50.0f;
 
 
-    
-
     void OnEnable()
     {
         Time.timeScale = 0.0f;
@@ -50,6 +48,7 @@ public class SlotMachineManager : MonoBehaviour
 
     public void PlaySlotMachine()
     {
+        slotMachineUI.SetActive(true);
         int fixedRepeatCount = 20;
         for (int i = 0; i < slotButtons.Length; i++)
         {
@@ -118,6 +117,7 @@ public class SlotMachineManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(delay);
 
         slotMachineUI.SetActive(false);
+        gameObject.SetActive(false);
         hpBar.SetActive(true);
         Time.timeScale = 1.0f;
     }
