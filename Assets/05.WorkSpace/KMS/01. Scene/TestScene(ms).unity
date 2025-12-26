@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2133,8 +2133,9 @@ MonoBehaviour:
   maxHp: 500
   currentHp: 0
   hpBar: {fileID: 488229328}
-  slotMachine: {fileID: 0}
+  slotMachine: {fileID: 870605005}
   pauseUI: {fileID: 1837048263}
+  canvas: {fileID: 63738126}
   exp: 0
   nextExp: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   level: 1
@@ -5103,11 +5104,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1478767942}
   m_CullTransparentMesh: 1
---- !u!4 &1486997610 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6559030558202558702, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
-  m_PrefabInstance: {fileID: 2001008705}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1495811628
 GameObject:
   m_ObjectHideFlags: 0
@@ -6462,6 +6458,8 @@ MonoBehaviour:
   baseCritDamage: 2
   baseMoveSpeed: 5
   baseSuperTime: 0.5
+  permanentHpBonus: 0
+  permanentAttackBonus: 0
   maxHp: 0
   attack: 0
   attackSpeed: 0
@@ -7134,8 +7132,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 1718750736}
-  bulletPrefab: {fileID: 1153233507859069040, guid: ac60a00a314954179a62e61c9369d3e2, type: 3}
-  firePoint: {fileID: 1486997610}
   testSkills: []
 --- !u!1 &1907950363
 GameObject:
@@ -7691,6 +7687,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 927553356095480088, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+      propertyPath: stats
+      value: 
+      objectReference: {fileID: 1718750736}
     - target: {fileID: 1864934005898936964, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
       propertyPath: m_Enabled
       value: 0

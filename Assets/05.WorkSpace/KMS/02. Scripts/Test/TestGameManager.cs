@@ -19,6 +19,7 @@ public class TestGameManager : MonoBehaviour
     public SegmentedHpBar hpBar;
     public SlotMachineManager slotMachine;
     public GameObject pauseUI;
+    [SerializeField] Canvas canvas;
 
     [Header("HUD")]
     public int exp;
@@ -38,28 +39,23 @@ public class TestGameManager : MonoBehaviour
         player = FindObjectOfType<PlayerController>(); 
         mapPanel = FindObjectOfType<MapPanel>(); 
         hpBar = FindObjectOfType<SegmentedHpBar>();
-        Canvas canvas = FindObjectOfType<Canvas>();
-        slotMachine = canvas.transform.Find("SlotMachineManager/SlotMachineUI")?.GetComponent<SlotMachineManager>();
-        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
     }
     private void Awake()
     {
-        
+
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-            // SceneManager.sceneLoaded += OnSceneLoaded;
+            //DontDestroyOnLoad(gameObject);
+            //// SceneManager.sceneLoaded += OnSceneLoaded;
         }
-                
-        else Destroy(gameObject);
+
+        //else Destroy(gameObject);
 
         player = FindObjectOfType<PlayerController>(); 
         mapPanel = FindObjectOfType<MapPanel>(); 
         hpBar = FindObjectOfType<SegmentedHpBar>();
-        Canvas canvas = FindObjectOfType<Canvas>();
-        slotMachine = canvas.transform.Find("SlotMachineManager/SlotMachineUI")?.GetComponent<SlotMachineManager>();
-        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
+        
 
         Time.timeScale = 1.0f;
         gameState = TestGameState.Playing;
@@ -80,7 +76,6 @@ public class TestGameManager : MonoBehaviour
         SelectedMap = data;
 
     }    
-
 
     private void Update()
     {
@@ -139,7 +134,7 @@ public class TestGameManager : MonoBehaviour
         {
             level++;
             exp = 0;
-
+            slotMachine.gameObject.SetActive(true);
             slotMachine.PlaySlotMachine();
         }
     }

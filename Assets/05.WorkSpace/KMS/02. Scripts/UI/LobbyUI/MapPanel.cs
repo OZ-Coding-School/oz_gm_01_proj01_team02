@@ -72,8 +72,6 @@ public class MapPanel : MonoBehaviour
         Debug.Log($"[MapPanel] MapCard 동기화: {mapCard.mapName}, 씬: {mapCard.sceneName}");
     
     }
-
-
     public void OpenMapSelectPanel()
     {
 

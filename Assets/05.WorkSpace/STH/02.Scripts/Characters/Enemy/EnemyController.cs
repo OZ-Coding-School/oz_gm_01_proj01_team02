@@ -12,6 +12,8 @@ namespace STH.Characters.Enemy
     /// <summary>
     /// 적 컨트롤러 - SO에서 전략 하나를 받아와서 사용
     /// </summary>
+    /// 
+
     public class EnemyController : MonoBehaviour, IDamageable
     {
         private EnemyState currentState;
@@ -343,7 +345,6 @@ namespace STH.Characters.Enemy
         public void ReturnPool()
         {
             GameManager.Pool.ReturnPool(this);
-            // if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
         }
 
         IEnumerator DieCo()
@@ -374,12 +375,12 @@ namespace STH.Characters.Enemy
 
         public void Die()
         {
+            Debug.Log(this.name + " 사망");
             isDead = true;
             animator.SetTrigger("Die");
             StartCoroutine(DieCo());
 
         }
     }
-
 
 }
