@@ -9,9 +9,9 @@ public abstract class BossIdle : BossState
         get { return StateEnums.Idle; }
     }
 }
-public class MidBossIdle : BossIdle
+public class DashBossIdle : BossIdle
 {
-    public MidBossIdle(BossController boss) : base(boss) { }
+    public DashBossIdle(BossController boss) : base(boss) { }
 
     public override void UpdateState()
     {
@@ -19,7 +19,7 @@ public class MidBossIdle : BossIdle
 
         float dist = boss.DistToPlayer();
 
-        if (dist > boss.MidIdleRange && Time.time < boss.NextAttackTime)
+        if (dist > boss.IdleRange && Time.time < boss.NextAttackTime)
         {
             Debug.Log("대기 -> 추적");
             boss.ChangeState(boss.ChaseState);

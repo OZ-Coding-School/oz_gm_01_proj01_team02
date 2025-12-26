@@ -34,7 +34,7 @@ public class TestGameManager : MonoBehaviour
     //public TestPlayer player;
     private void OnEnable()
     {
-        player = FindObjectOfType<PlayerController>(); 
+        //player = FindObjectOfType<PlayerController>(); 
         mapPanel = FindObjectOfType<MapPanel>(); 
         hpBar = FindObjectOfType<SegmentedHpBar>();
         Canvas canvas = FindObjectOfType<Canvas>();
@@ -53,7 +53,7 @@ public class TestGameManager : MonoBehaviour
                 
         else Destroy(gameObject);
 
-        player = FindObjectOfType<PlayerController>(); 
+        //player = FindObjectOfType<PlayerController>(); 
         mapPanel = FindObjectOfType<MapPanel>(); 
         hpBar = FindObjectOfType<SegmentedHpBar>();
         Canvas canvas = FindObjectOfType<Canvas>();

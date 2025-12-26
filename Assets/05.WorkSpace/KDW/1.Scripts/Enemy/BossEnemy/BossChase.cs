@@ -20,9 +20,9 @@ public abstract class BossChase : BossState
         }
     }
 }
-public class MidBossChase : BossChase
+public class DashBossChase : BossChase
 {
-    public MidBossChase(BossController boss) : base(boss) { }
+    public DashBossChase(BossController boss) : base(boss) { }
 
     public override void UpdateState()
     {
@@ -31,13 +31,13 @@ public class MidBossChase : BossChase
         float dist = boss.DistToPlayer();
 
         //근거리 적의 공격 가능한 거리 안에 들어왔으면 공격 상태로 전환
-        if (dist <= boss.MidAttackRange && Time.time >= boss.NextAttackTime)
+        if (dist <= boss.DashAttackRange && Time.time >= boss.NextAttackTime)
         {
             boss.ChangeState(boss.AttackState);
             Debug.Log("근거리공격");
             return;
         }
-        else if (dist <= boss.MidIdleRange && Time.time < boss.NextAttackTime && !boss.IsAttack)
+        else if (dist <= boss.IdleRange && Time.time < boss.NextAttackTime && !boss.IsAttack)
         {
             Debug.Log("멈춰");
             Debug.Log(boss.IsAttack);
@@ -46,9 +46,9 @@ public class MidBossChase : BossChase
         }
     }
 }
-public class BigBossChase : BossChase
+public class DandelionBossChase : BossChase
 {
-    public BigBossChase(BossController boss) : base(boss) { }
+    public DandelionBossChase(BossController boss) : base(boss) { }
 
     public override void UpdateState()
     {

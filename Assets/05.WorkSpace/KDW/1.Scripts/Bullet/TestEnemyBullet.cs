@@ -33,6 +33,7 @@ public class TextEnemyBullet : MonoBehaviour
         if (other.CompareTag("Wall"))
         {
             ReturnPool();
+            Debug.Log("∫Æ¿Ã¥Á");
         }
     }
     private void ReturnPool()

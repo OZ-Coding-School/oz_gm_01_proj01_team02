@@ -12,7 +12,7 @@ public class BossController : MonoBehaviour
     [SerializeField] private Transform target;       //타겟(플레이어)
 
     [Header("타겟의 콜라이더,레이어/벽 레이어,감지 길이")]
-    [SerializeField] private Collider targetCollider; 
+    [SerializeField] private Collider targetCollider;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private LayerMask wallLayer;
     [SerializeField] private float walllRange;      //벽 감지용 선 길이
@@ -21,9 +21,11 @@ public class BossController : MonoBehaviour
     [SerializeField] private float moveSpeed = 3.0f;    //Enemy 이동속도
     [SerializeField] private float rotateSpeed = 8.0f;
 
-    [Header("중간보스 공격 거리/쿨타임/돌진 속도,시간")]
-    [SerializeField] private float midIdleRange = 1.0f;      //타겟의 근처에 가면 멈추는 거리
-    [SerializeField] private float midAttackRange = 5.0f;    //근거리 공격거리
+    [Header("타겟에 가까이 가면 멈추는거리")]
+    [SerializeField] private float idleRange = 1.0f;      //타겟의 근처에 가면 멈추는 거리
+
+    [Header("대쉬 보스 공격 거리/쿨타임/돌진 속도,시간")]
+    [SerializeField] private float dashAttackRange = 5.0f;    //근거리 공격거리
     [SerializeField] private float attackDelay = 10.0f;      //공격 패턴에 들어가는 시간
     [SerializeField] private float attackChargeTime = 3.0f;  //공격 패턴에 들어오면 돌진하기 까지의 차지 시간
     [SerializeField] private float runSpeed = 10.0f;         //돌진 속도
@@ -37,7 +39,7 @@ public class BossController : MonoBehaviour
     private float rangedTimer = 0.0f; //쿨타임 까지 흐르는 시간
 
     [Header("원거리 공격 프리팹/위치")]
-    [SerializeField] private TextEnemyBullet enemyBullet;
+    [SerializeField] private DandelionBullet dandelionBullet;
     [SerializeField] protected Transform bulletPos;
 
     private Rigidbody rb;
@@ -60,8 +62,8 @@ public class BossController : MonoBehaviour
     public StateEnums CurrentStateType { get; private set; }
 
     //외부에서 읽을 수 있도록 하는 프로퍼티
-    public float MidIdleRange => midIdleRange;
-    public float MidAttackRange => midAttackRange;
+    public float IdleRange => idleRange;
+    public float DashAttackRange => dashAttackRange;
     public float RangedAttackRange => rangedAttackRange;
     public float NextAttackTime => nextAttackTime;
     public Transform Target => target;
@@ -101,9 +103,9 @@ public class BossController : MonoBehaviour
     }
     private void Start()
     {
-        if (type == TypeEnums.BigBoss)
+        if (type == TypeEnums.DandelionBoss)
         {
-            GameManager.Pool.CreatePool(enemyBullet, 50);
+            GameManager.Pool.CreatePool(dandelionBullet, 50);
         }
 
         rb.freezeRotation = true;
@@ -141,14 +143,14 @@ public class BossController : MonoBehaviour
     {
         switch (type)
         {
-            case TypeEnums.MidBoss:
-                IdleState = new MidBossIdle(this);
-                ChaseState = new MidBossChase(this);
-                AttackState = new MidBossAttack(this);
+            case TypeEnums.DashBoss:
+                IdleState = new DashBossIdle(this);
+                ChaseState = new DashBossChase(this);
+                AttackState = new DashBossAttack(this);
                 break;
-            case TypeEnums.BigBoss:
-                ChaseState = new BigBossChase(this);
-                AttackState = new BigBossAttack(this);
+            case TypeEnums.DandelionBoss:
+                ChaseState = new DandelionBossChase(this);
+                AttackState = new DandelionBossAttack(this);
                 break;
         }
 
@@ -195,8 +197,8 @@ public class BossController : MonoBehaviour
             nvAgent.SetDestination(target.transform.position);
         }
     }
-    //중간보스 공격
-    public void MidAttack()
+    //대쉬 보스 공격
+    public void DashAttack()
     {
         if (Time.time < nextAttackTime) return;
 
@@ -204,7 +206,7 @@ public class BossController : MonoBehaviour
 
         nvAgent.enabled = false; //NebMesh는 기본적으로 매 프레임마다 타겟의 위치를 업데이트하기 때문에, Enemy를 멈추고 타겟의 이전위치를 저장하여 후에 그곳으로 이동할려면 .enable = false로 해야한다.
 
-        StartCoroutine(MidAttackCharge());
+        StartCoroutine(DashAttackCharge());
 
         //isAttack = false;
 
@@ -212,7 +214,7 @@ public class BossController : MonoBehaviour
 
 
     }
-    public void RangedAttack()
+    public void DandelionShotAttack()
     {
         nvAgent.enabled = false;
         nvAgent.velocity = Vector3.zero;
@@ -223,27 +225,27 @@ public class BossController : MonoBehaviour
 
         rangedTimer += Time.deltaTime;
 
+        if (bulletCount <= 1)
+        {
+            angleStep = 0f;
+            startAngle = 0f;  
+        }
+
         //공격 쿨타임이 되면 프리팹 발사
         if (rangedTimer >= spawnTime)
         {
-            //TextEnemyBullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
-            //enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, Quaternion.identity);
-            //enemyBullet.transform.forward = transform.forward;
-            //
-            //rangedTimer = 0.0f; //타이머 초기화
-
             //프리팹 여러개 동시 발사
             for(int i = 0; i < bulletCount; i++)
             {
-                TextEnemyBullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
+                DandelionBullet dandelionBullet = GameManager.Pool.GetFromPool(this.dandelionBullet);
 
                 float currentAngle = startAngle + (angleStep * i); //현재 프리팹 간격(순서대로 간격 계산)
 
                 Quaternion rotation = transform.rotation * Quaternion.Euler(0, currentAngle, 0);
 
 
-                enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, rotation);
-                //enemyBullet.transform.forward = transform.forward;
+                dandelionBullet.transform.SetLocalPositionAndRotation(bulletPos.position, rotation);
+                //dandelionBullet.transform.forward = transform.forward;
 
                 Debug.Log(i);
             }
@@ -253,8 +255,8 @@ public class BossController : MonoBehaviour
         nvAgent.enabled = true;
         nvAgent.Warp(transform.position);
     }
-    //중간 보스 공격의 삼단대쉬
-    IEnumerator MidAttackCharge()
+    //대쉬 보스 공격의 삼단대쉬
+    IEnumerator DashAttackCharge()
     {
         //Debug.Log("공격시작");
         yield return new WaitForSeconds(attackChargeTime); //공격 시작하면 실제로 돌진하기까지의 차지타임
@@ -287,7 +289,7 @@ public class BossController : MonoBehaviour
                     continue;
                 }
 
-                if (wall || DistToPlayer() <= MidIdleRange)
+                if (wall || DistToPlayer() <= IdleRange)
                 {
                    //rb.velocity = Vector3.zero;
                    //rb.angularVelocity = Vector3.zero;
@@ -315,19 +317,19 @@ public class BossController : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        if (type == TypeEnums.MidBoss)
+        if (type == TypeEnums.DashBoss)
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, midAttackRange);
+            Gizmos.DrawWireSphere(transform.position, dashAttackRange);
 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, midIdleRange);
+            Gizmos.DrawWireSphere(transform.position, idleRange);
 
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, walllRange);
         }
 
-        if (type == TypeEnums.Ranged)
+        if (type == TypeEnums.DandelionBoss)
         {
             Gizmos.color = Color.blue;
             Gizmos.DrawWireSphere(transform.position, rangedAttackRange);

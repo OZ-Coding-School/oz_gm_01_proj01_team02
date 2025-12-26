@@ -11,9 +11,9 @@ public abstract class BossAttack : BossState
         get { return StateEnums.Attack; }
     }
 }
-public class MidBossAttack : BossAttack
+public class DashBossAttack : BossAttack
 {
-    public MidBossAttack(BossController boss) : base(boss) { }
+    public DashBossAttack(BossController boss) : base(boss) { }
 
     public override void UpdateState()
     {
@@ -21,7 +21,7 @@ public class MidBossAttack : BossAttack
 
         float dist = boss.DistToPlayer();
 
-        if (dist > boss.MidAttackRange || Time.time < boss.NextAttackTime)
+        if (dist > boss.DashAttackRange || Time.time < boss.NextAttackTime)
         {
             boss.ChangeState(boss.ChaseState);
             //Debug.Log("근거리추적");
@@ -30,12 +30,12 @@ public class MidBossAttack : BossAttack
 
     public override void FixedUpdateState()
     {
-        boss.MidAttack();
+        boss.DashAttack();
     }
 }
-public class BigBossAttack : BossAttack
+public class DandelionBossAttack : BossAttack
 {
-    public BigBossAttack(BossController boss) : base(boss) { }
+    public DandelionBossAttack(BossController boss) : base(boss) { }
 
     public override void UpdateState()
     {
@@ -51,6 +51,6 @@ public class BigBossAttack : BossAttack
 
         boss.LookTo();
 
-        boss.RangedAttack();
+        boss.DandelionShotAttack();
     }
 }
