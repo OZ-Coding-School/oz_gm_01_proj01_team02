@@ -12,7 +12,7 @@ public class SegmentedHpBar : MonoBehaviour
     private float displayHp;
     private float displayBackHp;
 
-    public int segmentCount = 7;
+    public int segmentCount = 15;
     private Image[] fillUnits;
     private Image[] backUnits;
 

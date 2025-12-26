@@ -1,58 +1,69 @@
+ï»¿using STH.Characters.Enemy;
+using STH.Combat.Projectiles;
+using STH.Core;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IDamageable
 {
     private EnemyState currentState;
 
-    [Header("Àû Å¸ÀÔ")]
-    [SerializeField] private TypeEnums type;  //±Ù°Å¸®, ¿ø°Å¸® µî ÀûÀÇ Å¸ÀÔ
+    [Header("ï¿½ï¿½ Å¸ï¿½ï¿½")]
+    [SerializeField] private TypeEnums type;  //ï¿½Ù°Å¸ï¿½, ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½
 
-    [Header("ÀÌµ¿/È¸Àü")]
-    [SerializeField] private float moveSpeed = 3.0f;    //Enemy ÀÌµ¿¼Óµµ
+    [Header("ï¿½Ìµï¿½/È¸ï¿½ï¿½")]
+    [SerializeField] private float moveSpeed = 3.0f;    //Enemy ï¿½Ìµï¿½ï¿½Óµï¿½
     [SerializeField] private float rotateSpeed = 8.0f;
+    [SerializeField] private float maxHp = 450;
+    private float currentHp;
 
-    [Header("±Ù°Å¸® °ø°İ °Å¸®/ÄğÅ¸ÀÓ/µ¹Áø ¼Óµµ")]
-    [SerializeField] private float meleeIdleRange = 1.0f;   //Å¸°ÙÀÇ ±ÙÃ³¿¡ °¡¸é ¸ØÃß´Â °Å¸®
-    [SerializeField] private float meleeAttackRange = 5.0f; //±Ù°Å¸® °ø°İ°Å¸®
-    [SerializeField] private float attackDelay = 10.0f;      //±Ù°Å¸® °ø°İ ÄğÅ¸ÀÓ
+
+    [Header("ï¿½Ù°Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½/ï¿½ï¿½Å¸ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½")]
+    [SerializeField] private float meleeIdleRange = 1.0f;   //Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß´ï¿½ ï¿½Å¸ï¿½
+    [SerializeField] private float meleeAttackRange = 5.0f; //ï¿½Ù°Å¸ï¿½ ï¿½ï¿½ï¿½İ°Å¸ï¿½
+    [SerializeField] private float attackDelay = 10.0f;      //ï¿½Ù°Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½
     [SerializeField] private float attackChargeTime = 3.0f;
     [SerializeField] private float runSpeed = 10.0f;
 
-    [Header("¿ø°Å¸® °ø°İ °Å¸®/ÄğÅ¸ÀÓ")]
-    [SerializeField] private float rangedAttackRange = 12.0f; //¿ø°Å¸® °ø°İ°Å¸®
-    [SerializeField] private float spawnTime = 1.0f;  //¿ø°Å¸® °ø°İ ÄğÅ¸ÀÓ
-    private float rangedTimer = 0.0f; //ÄğÅ¸ÀÓ ±îÁö Èå¸£´Â ½Ã°£
+    [Header("ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½/ï¿½ï¿½Å¸ï¿½ï¿½")]
+    [SerializeField] private float rangedAttackRange = 12.0f; //ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½İ°Å¸ï¿½
+    [SerializeField] private float spawnTime = 1.0f;  //ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½
+    private float rangedTimer = 0.0f; //ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½å¸£ï¿½ï¿½ ï¿½Ã°ï¿½
 
-    [Header("Å¸°Ù")]
-    [SerializeField] private Transform target;  //Å¸°Ù(ÇÃ·¹ÀÌ¾î)
+    [Header("Å¸ï¿½ï¿½")]
+    [SerializeField] private Transform target;  //Å¸ï¿½ï¿½(ï¿½Ã·ï¿½ï¿½Ì¾ï¿½)
     [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private float damage = 200;
 
-    [Header("¿ø°Å¸® °ø°İ ÇÁ¸®ÆÕ/À§Ä¡")]
-    [SerializeField] private TextEnemyBullet enemyBullet;
+    [Header("bullet")]
+    [SerializeField] private Bullet enemyBullet;
     [SerializeField] protected Transform bulletPos;
+
+    [SerializeField] private PoolableParticle deathEffect;
 
     private Rigidbody rb;
     private NavMeshAgent nvAgent;
+    private Animator animator;
+    private EnemyHitEffect hitEffect;
 
-    private float nextAttackTime = 0.0f; //´ÙÀ½ °ø°İ ½Ã°£ ÄğÅ¸ÀÓ ÀúÀå¿ë
+    private float nextAttackTime = 0.0f; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     private bool isDead;
-    private bool isAttack; //°ø°İ(µ¹Áø) ÁßÀÏ ¶§ È®ÀÎ
-    private bool isWall;   //º® Ãæµ¹ È®ÀÎ
+    private bool isAttack; //ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È®ï¿½ï¿½
+    private bool isWall;   //ï¿½ï¿½ ï¿½æµ¹ È®ï¿½ï¿½
 
     private Vector3 beforeTargetPos;
 
-    //»óÅÂ °´Ã¼µé
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½
     public EnemyState IdleState { get; private set; }
     public EnemyState ChaseState { get; private set; }
     public EnemyState AttackState { get; private set; }
 
-    //ÇöÀç »óÅÂ°¡ ¾î¶² Á¾·ùÀÎÁö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â°ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     public StateEnums CurrentStateType { get; private set; }
 
-    //¿ÜºÎ¿¡¼­ ÀĞÀ» ¼ö ÀÖµµ·Ï ÇÏ´Â ÇÁ·ÎÆÛÆ¼
+    //ï¿½ÜºÎ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¼
     public float MeleeIdleRange => meleeIdleRange;
     public float MeleeAttackRange => meleeAttackRange;
     public float RangedAttackRange => rangedAttackRange;
@@ -72,13 +83,14 @@ public class EnemyController : MonoBehaviour
     private void OnEnable()
     {
         startPos = transform.position;
-        StartCoroutine(Die());
     }
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         nvAgent = GetComponent<NavMeshAgent>();
+        animator = GetComponent<Animator>();
+        hitEffect = GetComponent<EnemyHitEffect>();
 
         if (target == null)
         {
@@ -102,13 +114,15 @@ public class EnemyController : MonoBehaviour
         {
             GameManager.Pool.CreatePool(enemyBullet, 50);
         }
+        GameManager.Pool.CreatePool(deathEffect, 20);
+        currentHp = maxHp;
     }
 
     void Update()
     {
         if (isDead) return;
 
-        //ÇöÀç »óÅÂ¿¡ ¸Â´Â UpdateState¸¦ ½ÇÇà
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½Â´ï¿½ UpdateStateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         currentState.UpdateState();
     }
     private void FixedUpdate()
@@ -118,7 +132,7 @@ public class EnemyController : MonoBehaviour
         if (!nvAgent.enabled) return;
         currentState.FixedUpdateState();
     }
-    //ÇöÀç »óÅÂ¸¦ ¹Ù²ãÁÖ´Â ¸Ş¼­µå
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â¸ï¿½ ï¿½Ù²ï¿½ï¿½Ö´ï¿½ ï¿½Ş¼ï¿½ï¿½ï¿½
     public void ChangeState(EnemyState newState)
     {
         if (currentState == newState) return;
@@ -131,10 +145,10 @@ public class EnemyController : MonoBehaviour
 
         currentState.Enter();
     }
-    //Enemy Å¸ÀÔ °áÁ¤
+    //Enemy Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void EnemyType()
     {
-        switch(type)
+        switch (type)
         {
             case TypeEnums.Melee:
                 IdleState = new MeleeIdle(this);
@@ -148,7 +162,7 @@ public class EnemyController : MonoBehaviour
         }
 
     }
-    //ÇÃ·¹ÀÌ¾î±îÁöÀÇ °Å¸®
+    //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½
     public float DistToPlayer()
     {
         if (target == null) return Mathf.Infinity;
@@ -163,7 +177,7 @@ public class EnemyController : MonoBehaviour
         nvAgent.enabled = true;
         nvAgent.Warp(transform.position);
     }
-    //ÇÃ·¹ÀÌ¾î ÃßÀû
+    //ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void Chase()
     {
         if (!nvAgent.enabled) return;
@@ -177,42 +191,43 @@ public class EnemyController : MonoBehaviour
     }
     public void MeleeAttack()
     {
-       if (Time.time < nextAttackTime) return;
-        
+        if (Time.time < nextAttackTime) return;
+
         isAttack = true;
 
-        nvAgent.enabled = false; //NebMesh´Â ±âº»ÀûÀ¸·Î ¸Å ÇÁ·¹ÀÓ¸¶´Ù Å¸°ÙÀÇ À§Ä¡¸¦ ¾÷µ¥ÀÌÆ®ÇÏ±â ¶§¹®¿¡, Enemy¸¦ ¸ØÃß°í Å¸°ÙÀÇ ÀÌÀüÀ§Ä¡¸¦ ÀúÀåÇÏ¿© ÈÄ¿¡ ±×°÷À¸·Î ÀÌµ¿ÇÒ·Á¸é .enable = false·Î ÇØ¾ßÇÑ´Ù.
-       
+        nvAgent.enabled = false; //NebMeshï¿½ï¿½ ï¿½âº»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, Enemyï¿½ï¿½ ï¿½ï¿½ï¿½ß°ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ä¿ï¿½ ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½ï¿½Ò·ï¿½ï¿½ï¿½ .enable = falseï¿½ï¿½ ï¿½Ø¾ï¿½ï¿½Ñ´ï¿½.
+
         StartCoroutine(AttackCharge());
 
         //isAttack = false;
 
         nextAttackTime = Time.time + attackDelay;
-        
+
 
     }
     public void RangedAttack()
     {
         nvAgent.enabled = false;
-        nvAgent.velocity = Vector3.zero; 
-        rb.velocity = Vector3.zero; 
+        // nvAgent.velocity = Vector3.zero;
+        // rb.velocity = Vector3.zero;
 
         rangedTimer += Time.deltaTime;
 
-        //°ø°İ ÄğÅ¸ÀÓÀÌ µÇ¸é ÇÁ¸®ÆÕ ¹ß»ç
+        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½
         if (rangedTimer >= spawnTime)
         {
-            TextEnemyBullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
-            enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, Quaternion.identity);
-            enemyBullet.transform.forward = transform.forward;
+            Bullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
+            enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, bulletPos.rotation);
+            enemyBullet.Initialize(damage);
 
-            rangedTimer = 0.0f; //Å¸ÀÌ¸Ó ÃÊ±âÈ­
+            rangedTimer = 0.0f; //Å¸ï¿½Ì¸ï¿½ ï¿½Ê±ï¿½È­
+            animator.SetTrigger("DoAttack");
         }
 
         nvAgent.enabled = true;
         nvAgent.Warp(transform.position);
     }
-    //¹æÇâ È¸Àü
+    //ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½
     public void LookTo()
     {
         Vector3 dir = (target.position - transform.position).normalized;
@@ -223,17 +238,17 @@ public class EnemyController : MonoBehaviour
     }
     IEnumerator AttackCharge()
     {
-        //Debug.Log("°ø°İ½ÃÀÛ");
-        yield return new WaitForSeconds(attackChargeTime); //°ø°İ ½ÃÀÛÇÏ¸é ½ÇÁ¦·Î µ¹ÁøÇÏ±â±îÁöÀÇ Â÷ÁöÅ¸ÀÓ
+        //Debug.Log("ï¿½ï¿½ï¿½İ½ï¿½ï¿½ï¿½");
+        yield return new WaitForSeconds(attackChargeTime); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Å¸ï¿½ï¿½
 
-        //Debug.Log("¹ß»ç!!!!!!!!");
+        //Debug.Log("ï¿½ß»ï¿½!!!!!!!!");
 
-        nvAgent.velocity = Vector3.zero; //NavMeshAgent¸¦ ²¨µµ ³²´Â ÀÜ·ù ¼Óµµ ÃÊ±âÈ­
-        rb.velocity = Vector3.zero; //Rigidbody ±âÁ¸ ¼Óµµ¸¦ ÃÊ±âÈ­ ÇÏ¿© µ¹Áø Á÷¼± À¯Áö
+        nvAgent.velocity = Vector3.zero; //NavMeshAgentï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ü·ï¿½ ï¿½Óµï¿½ ï¿½Ê±ï¿½È­
+        rb.velocity = Vector3.zero; //Rigidbody ï¿½ï¿½ï¿½ï¿½ ï¿½Óµï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        float timer = 0.0f;         //µ¹ÁøÇÏ°í ÀÖ´Â ½Ã°£(Å¸ÀÌ¸Ó)
-        float attackRunTime = 0.5f; //µ¹Áø ÃÑ ½Ã°£
-        rb.isKinematic = false;     //KinematicÀÌ trueÀÌ¸é ¹Ì²ô·³Àº ¹æÁöµÇ³ª º®À» ¶ÕÀ½ ±×·¡¼­ ÀÏ½ÃÀûÀ¸·Î false·Î ÇÔ
+        float timer = 0.0f;         //ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½Ö´ï¿½ ï¿½Ã°ï¿½(Å¸ï¿½Ì¸ï¿½)
+        float attackRunTime = 0.5f; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã°ï¿½
+        rb.isKinematic = false;     //Kinematicï¿½ï¿½ trueï¿½Ì¸ï¿½ ï¿½Ì²ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç³ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ falseï¿½ï¿½ ï¿½ï¿½
         while (timer < attackRunTime)
         {
             rb.MovePosition(rb.position + transform.forward * runSpeed * Time.fixedDeltaTime);
@@ -242,7 +257,7 @@ public class EnemyController : MonoBehaviour
 
             if (isWall)
             {
-                Debug.Log("º®ÀÌ´ç");
+                Debug.Log("ï¿½ï¿½ï¿½Ì´ï¿½");
                 break;
             }
         }
@@ -253,8 +268,8 @@ public class EnemyController : MonoBehaviour
         isAttack = false;
         nvAgent.enabled = true;
         nvAgent.Warp(transform.position);
-        //nvAgent.enabled = fals¿¡¼­ NavMeshAgent´Â Rigidbody·Î ÀÌµ¿½ÃÅ² À§Ä¡¸¦ µû¶ó°¡Áö ¸øÇÔ
-        //±×·¡¼­ ±×·¯ÇÑ ¾î±ß³²À» ÇØ°áÇÏ±â À§ÇØ .Warp·Î Rigidbody·Î ÀÌµ¿½ÃÅ² À§Ä¡·Î ÀÌµ¿
+        //nvAgent.enabled = falsï¿½ï¿½ï¿½ï¿½ NavMeshAgentï¿½ï¿½ Rigidbodyï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å² ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        //ï¿½×·ï¿½ï¿½ï¿½ ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½ß³ï¿½ï¿½ï¿½ ï¿½Ø°ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ .Warpï¿½ï¿½ Rigidbodyï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å² ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ìµï¿½
 
     }
     private void OnDrawGizmos()
@@ -284,15 +299,50 @@ public class EnemyController : MonoBehaviour
 
     public void ReturnPool()
     {
-        if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
+        GameManager.Pool.ReturnPool(this);
+        bool hasBoss = gameObject.TryGetComponent<Boss>(out _);
+        if (hasBoss)
+        {
+            if (GameManager.Stage.currentStage >= GameManager.Stage.Select("finish"))
+            {
+                GameManager.ClearChapter();
+            }
+        }
     }
 
-    IEnumerator Die()
+    IEnumerator DieCo()
     {
-        yield return new WaitForSeconds(3);
-        transform.position = startPos;
-        nvAgent.enabled = false;
+        yield return new WaitForSeconds(1);
         ReturnPool();
+
+        // ì‚¬ë¼ì§€ëŠ” ì´í™íŠ¸
+        PoolableParticle ga = GameManager.Pool.GetFromPool(deathEffect);
+        ga.transform.position = transform.position;
     }
 
+    public void TakeDamage(float amount)
+    {
+        if (currentHp <= 0) return;
+
+        Debug.Log($"Enemy take damage {amount}");
+        currentHp -= amount;
+
+        if (hitEffect != null) hitEffect.PlayHitEffect();
+
+        if (currentHp <= 0)
+        {
+            currentHp = 0;
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log(this.name + " ì‚¬ë§");
+        isDead = true;
+        animator.SetTrigger("Die");
+        StartCoroutine(DieCo());
+
+    }
 }
+

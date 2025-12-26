@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2131,7 +2131,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedMap: {fileID: 0}
-  player: {fileID: 1878476903}
+  maxHp: 500
+  currentHp: 0
+  hpBar: {fileID: 488229328}
+  slotMachine: {fileID: 870605005}
+  pauseUI: {fileID: 1837048263}
+  canvas: {fileID: 63738126}
   exp: 0
   nextExp: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   level: 1

@@ -14,6 +14,11 @@ public class TestGameManager : MonoBehaviour
 
     
 
+    [Header("UI")]
+    public SegmentedHpBar hpBar;
+    public SlotMachineManager slotMachine;
+    public GameObject pauseUI;
+    [SerializeField] Canvas canvas;
 
     [Header("HUD")]
     public int exp;
@@ -24,18 +29,29 @@ public class TestGameManager : MonoBehaviour
 
 
 
-    
+    // public PlayerMove player; -> 이게 원래 코드임
+    //public TestPlayer player;
+    private void OnEnable()
+    {
+        player = FindObjectOfType<PlayerController>(); 
+        mapPanel = FindObjectOfType<MapPanel>(); 
+        hpBar = FindObjectOfType<SegmentedHpBar>();
+    }
     private void Awake()
     {
-        
+
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-            SceneManager.sceneLoaded += OnSceneLoaded;
+            //DontDestroyOnLoad(gameObject);
+            //// SceneManager.sceneLoaded += OnSceneLoaded;
         }
-                
-        else Destroy(gameObject);
+
+        //else Destroy(gameObject);
+
+        player = FindObjectOfType<PlayerController>(); 
+        mapPanel = FindObjectOfType<MapPanel>(); 
+        hpBar = FindObjectOfType<SegmentedHpBar>();
         
 
         Time.timeScale = 1.0f;
@@ -59,7 +75,6 @@ public class TestGameManager : MonoBehaviour
         SelectedMap = data;
     }    
 
-
     private void Update()
     {
         
@@ -79,8 +94,8 @@ public class TestGameManager : MonoBehaviour
         {
             level++;
             exp = 0;
-
-            UIManager.Instance.slotMachine.PlaySlotMachine();
+            slotMachine.gameObject.SetActive(true);
+            slotMachine.PlaySlotMachine();
         }
     }
 
