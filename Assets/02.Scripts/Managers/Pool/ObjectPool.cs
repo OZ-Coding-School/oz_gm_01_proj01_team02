@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> where T : MonoBehaviour
+public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
 {
     private T prefab;
     private Queue<T> pool = new Queue<T>();
@@ -39,5 +39,18 @@ public class ObjectPool<T> where T : MonoBehaviour
         if(instance == null) return;
         instance.gameObject.SetActive(false);
         pool.Enqueue(instance);
+    }
+
+    public void ReturnAllObjects()
+    {
+        pool.Clear();
+
+        foreach(Transform child in Root)
+        {
+            child.gameObject.SetActive(false);
+
+            T component = child.GetComponent<T>();
+            if(component != null) pool.Enqueue(component);
+        }
     }
 }

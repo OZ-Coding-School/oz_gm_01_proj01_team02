@@ -65,10 +65,9 @@ public class PoolManager : MonoBehaviour
 
     public void ClearPool()
     {
-        pools.Clear();
-        foreach(Transform child in transform)
+        foreach(var entry in pools)
         {
-            Destroy(child.gameObject);
+            if (entry.Value is IObjectPool pool) pool.ReturnAllObjects();
         }
 
         Debug.Log("모든 풀이 초기화 되었음.");

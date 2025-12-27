@@ -47,17 +47,17 @@ public class UIManager : MonoBehaviour
 
         if (canvas == null) return;
 
-        hpBar = canvas.GetComponent<SegmentedHpBar>();
-        slotMachine = canvas.transform.Find("SlotMachineManager/SlotMachineUI")?.GetComponent<SlotMachineManager>();
-        pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
-        pauseButton = canvas.transform.Find("StopButton")?.GetComponent<Button>();
+        //hpBar = canvas.GetComponent<SegmentedHpBar>();
+        //slotMachine = canvas.transform.Find("SlotMachineManager/SlotMachineUI")?.GetComponent<SlotMachineManager>();
+        //pauseUI = canvas.transform.Find("PauseUI")?.gameObject;
+        //pauseButton = canvas.transform.Find("StopButton")?.GetComponent<Button>();
         
-        Button[] buttons = pauseUI.GetComponentsInChildren<Button>(true);
-        foreach (var btn in buttons)
-        {
-            if (btn.name == "ResumeButton") resumeButton = btn;
-            if (btn.name == "HomeButton") homeButton = btn;
-        }
+        //Button[] buttons = pauseUI.GetComponentsInChildren<Button>(true);
+        //foreach (var btn in buttons)
+        //{
+        //    if (btn.name == "ResumeButton") resumeButton = btn;
+        //    if (btn.name == "HomeButton") homeButton = btn;
+        //}
 
         ConnectButtonEvents();
     }
@@ -69,7 +69,7 @@ public class UIManager : MonoBehaviour
         if (homeButton != null) homeButton.onClick.AddListener(GoHome);
     }
 
-    private void TogglePause()
+    public void TogglePause()
     {
         if (pauseUI != null)
         pauseUI.SetActive(!pauseUI.activeSelf);
@@ -77,13 +77,13 @@ public class UIManager : MonoBehaviour
         Time.timeScale = pauseUI.activeSelf ? 0 : 1;
     }
 
-    private void ResumeGame()
+    public void ResumeGame()
     {
         if (pauseUI != null) pauseUI.SetActive(false);
         Time.timeScale = 1.0f;
     }
 
-    private void GoHome()
+    public void GoHome()
     {
         Time.timeScale = 1.0f;
         SceneManager.LoadScene("TitleScene(Build)");

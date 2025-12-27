@@ -13,8 +13,8 @@ EditorBuildSettings:
     guid: a80c78a3c0dece94f912bc9d556ac379
   - enabled: 1
     path: Assets/05.WorkSpace/Build/2nd_build/Scene/InGame/Stage_02_Scene.unity
-    guid: cf5a43140db5d864d994b3a06df0ece3
+    guid: 65ab01a438346374d87696b3a5028f7d
   - enabled: 1
     path: Assets/05.WorkSpace/Build/2nd_build/Scene/InGame/Stage_03_Scene.unity
-    guid: 3d3d5b4169fea094eab72fcdcbfd2391
+    guid: 9e1e285c687d56f45941d8c90927716b
   m_configObjects: {}
