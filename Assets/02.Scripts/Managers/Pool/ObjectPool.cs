@@ -27,10 +27,34 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
 
     public T Dequeue()
     {
-        if (pool.Count == 0) return null;
+        if(pool.Count == 0)
+        {
+            var newInst = Object.Instantiate(prefab, Root);
+            newInst.name = prefab.name;
+            newInst.gameObject.SetActive(true);
+            return newInst;
+        }
+
         var inst = pool.Dequeue();
+
+        while(inst == null)
+        {
+            if(pool.Count == 0)
+            {
+                var newInst = Object.Instantiate (prefab, Root);
+                newInst.name = prefab.name;
+                newInst.gameObject.SetActive(true);
+                return newInst;
+            }
+            inst = pool.Dequeue();
+        }
         inst.gameObject.SetActive(true);
         return inst;
+
+        //if (pool.Count == 0) return null;
+        //var inst = pool.Dequeue();
+        //inst.gameObject.SetActive(true);
+        //return inst;
 
     }
 
@@ -43,6 +67,12 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
 
     public void ReturnAllObjects()
     {
+        if(Root == null)
+        {
+            pool.Clear();
+            return;
+        }
+
         pool.Clear();
 
         foreach(Transform child in Root)

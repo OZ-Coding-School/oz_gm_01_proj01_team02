@@ -12,7 +12,6 @@ public class TextClickButton : MonoBehaviour
             Debug.LogError("MapData가 연결되지 않았습니다!");
             return;
         }
-        GameManager.Pool.ClearPool();
         // 씬 이동
         SceneManager.LoadScene(mapData.sceneName);
     }
