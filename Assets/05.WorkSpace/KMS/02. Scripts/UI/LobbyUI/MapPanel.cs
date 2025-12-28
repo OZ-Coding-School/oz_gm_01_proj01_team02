@@ -4,74 +4,77 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class MapPanel : MonoBehaviour
 {
+    [Header("UI References")]
     public MapSelectPanel mapSelectPanel;
     public GameObject mapSelPanel;
     public GameObject tab;
     public GameObject[] otherPanels;
-    public Image mapCardImage;
-    public MapData mapCard;
-    public Text mapCardText;
-    public MapData currentMapData;
+
+    [Header("MapCard UI")]
+    public MapCardView mapCardView;
+
+    [Header("PlayerData")]
+    public PlayerData playerData;
+    public MapData selectedData;
+
+    
 
    
-    private void OnEnable()
+    private void Awake()
     {
-        if (TestGameManager.Instance != null && TestGameManager.Instance.SelectedMap != null)
+        if (playerData != null)
         {
-            currentMapData = TestGameManager.Instance.SelectedMap;
-            UpdateMapCardUI();
+            playerData.OnSelectedMapChanged += OnMapSelected;
+
+            if (playerData.selectedMap != null)
+            {
+                OnMapSelected(playerData.selectedMap);
+            }   
         }
+    }
+    
+    public void OnDestroy()
+    {
+        if (playerData != null)
+        playerData.OnSelectedMapChanged -= OnMapSelected;
     }
 
     private void OnMapSelected(MapData data)
     {
-            Debug.Log($"MapPanel.OnMapSelected 호출: mapName={data.mapName}, sprite={data.mapSprite?.name}");
-        if (mapCardImage == null)
-            Debug.LogError("MapPanel의 mapCardImage가 Inspector에서 연결되지 않았습니다!");
-        else
-            mapCardImage.sprite = data.mapSprite;
-            Debug.Log("MapPanel의 맵카드이미지 연결됨");
+        if (mapCardView != null)
+        {
+            mapCardView.Set(data);
+        }
     }
 
     public void OnClickConfirmButton()
     {
-         if (mapSelectPanel == null)
+         if (mapSelectPanel == null) 
     {
         Debug.Log("MapSelectPanel이 연결되지 않았습니다");
         return;
     }
 
     // 현재 선택된 mapIndex로 MapData 가져오기
-        MapData selectedData = mapSelectPanel.mapCard[mapSelectPanel.mapIndex];
-        TestGameManager.Instance.SetSelectedMap(selectedData);
-
-    // MapPanel의 이미지 갱신 직접 호출
-        OnMapSelected(selectedData);
-    }
-    
-    public void UpdateMapCardUI()
-    {
-        if (currentMapData == null) return;
-
-        // MapCard(MapPanel 내부) 데이터 동기화
-        mapCard.mapName = currentMapData.mapName;
-        mapCard.sceneName = currentMapData.sceneName;
-        mapCard.mapSprite = currentMapData.mapSprite;
-
-        // UI 갱신
-        if (mapCardImage != null)
-            mapCardImage.sprite = mapCard.mapSprite;
+        selectedData = mapSelectPanel.mapCard[mapSelectPanel.mapIndex].data;
         
-        if (mapCardText != null)
-            mapCardText.text = mapCard.mapName;
+        if (playerData != null)
+        {
+            playerData.SetSelectedMap(selectedData);
+        }
 
-
-        Debug.Log($"[MapPanel] MapCard 동기화: {mapCard.mapName}, 씬: {mapCard.sceneName}");
-    
+        if (mapCardView != null)
+        {
+            mapCardView.Set(selectedData);
+            Debug.Log($"[MapPanel] Selected Index: {mapSelectPanel.mapIndex}, MapCardView data: {mapCardView.GetData().mapName}");
+        }
     }
+    
+
     public void OpenMapSelectPanel()
     {
 

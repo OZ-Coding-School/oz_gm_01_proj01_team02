@@ -28,15 +28,23 @@ public class StageManager : MonoBehaviour
     public int currentStage { get; private set; } = 1;
     public bool onObstacle { get; private set; } = true;
 
-    private void Awake()
+    private void OnEnable()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject); 
-            return; 
-        }
 
-        instance = this;
+        if (instance == null) instance = this;
+        //else
+        //{
+        //    Destroy(gameObject);
+        //    return;
+
+        //}
+        ////if (instance != null && instance != this)
+        ////{
+        ////    Destroy(gameObject); 
+        ////    return; 
+        ////}
+
+        //instance = this;
 
         if (StageUIManager.Instance != null) 
         {
@@ -90,6 +98,7 @@ public class StageManager : MonoBehaviour
     {
         chapterTxt.text = "Chapter "+ chapter.ToString();
         stageNumTxt.text = stage.ToString();
+        Debug.Log(clearPanel is null);
 
         onClearPanel = !onClearPanel;
         clearPanel.SetActive(onClearPanel);

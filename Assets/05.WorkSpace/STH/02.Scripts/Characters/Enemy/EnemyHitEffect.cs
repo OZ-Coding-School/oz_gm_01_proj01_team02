@@ -49,7 +49,7 @@ namespace STH.Characters.Enemy
 
         void Start()
         {
-            GameManager.Pool.CreatePool(hitParticle, 20);
+            GameManager.Pool.CreatePool(hitParticle, 50);
         }
 
         [ContextMenu("Test Hit")]
