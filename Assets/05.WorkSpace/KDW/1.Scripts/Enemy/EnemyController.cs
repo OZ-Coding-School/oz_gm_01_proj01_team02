@@ -83,6 +83,31 @@ public class EnemyController : MonoBehaviour, IDamageable
     private void OnEnable()
     {
         startPos = transform.position;
+        isDead = false;
+        currentHp = maxHp;
+        isAttack = false;
+        isWall = false;
+        rangedTimer = 0.0f;
+
+        if (target == null)
+        {
+            GameObject go = GameObject.FindGameObjectWithTag("Player");
+            if (go != null) target = go.transform;
+        }
+
+        if (rb != null)
+        {
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity  = Vector3.zero;
+            rb.isKinematic = true;
+        }
+
+        Collider col = GetComponent<Collider>();
+        if(col != null)
+        {
+            col.enabled = true;
+        }
+        if (ChaseState != null) ChangeState(ChaseState);
     }
 
     private void Awake()
@@ -92,11 +117,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
         hitEffect = GetComponent<EnemyHitEffect>();
 
-        if (target == null)
-        {
-            GameObject go = GameObject.FindGameObjectWithTag("Player");
-            if (go != null) target = go.transform;
-        }
+        
 
         nvAgent.speed = moveSpeed;
 
@@ -115,7 +136,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             GameManager.Pool.CreatePool(enemyBullet, 50);
         }
         GameManager.Pool.CreatePool(deathEffect, 20);
-        currentHp = maxHp;
+        //currentHp = maxHp;
     }
 
     void Update()
@@ -313,11 +334,14 @@ public class EnemyController : MonoBehaviour, IDamageable
     IEnumerator DieCo()
     {
         yield return new WaitForSeconds(1);
-        ReturnPool();
-
         // 사라지는 이펙트
-        PoolableParticle ga = GameManager.Pool.GetFromPool(deathEffect);
-        ga.transform.position = transform.position;
+        if (deathEffect != null )
+        {
+            PoolableParticle ga = GameManager.Pool.GetFromPool(deathEffect);
+            if(ga != null) ga.transform.position = transform.position;
+        }
+
+        ReturnPool();
     }
 
     public void TakeDamage(float amount, bool isCritical = false)
