@@ -9,12 +9,15 @@ EditorBuildSettings:
     path: Assets/05.WorkSpace/Build/2nd_build/Scene/Title/TitleScene(Build).unity
     guid: e2c6a931d7aa14747ad68ebf865f85b7
   - enabled: 1
-    path: Assets/05.WorkSpace/Build/2nd_build/Scene/InGame/Stage_01_Scene.unity
-    guid: a80c78a3c0dece94f912bc9d556ac379
+    path: Assets/05.WorkSpace/KMS/01. Scene/TitleScene(kms).unity
+    guid: 0ba4ca550a6d83a478bc7a30b6faef3f
   - enabled: 1
-    path: Assets/05.WorkSpace/Build/2nd_build/Scene/InGame/Stage_02_Scene.unity
-    guid: cf5a43140db5d864d994b3a06df0ece3
+    path: Assets/05.WorkSpace/KMS/01. Scene/TextGameScene/Stage_01_Scene(kms).unity
+    guid: 09e0633d2b94ea548bc97118394c9ead
   - enabled: 1
-    path: Assets/05.WorkSpace/Build/2nd_build/Scene/InGame/Stage_03_Scene.unity
-    guid: 3d3d5b4169fea094eab72fcdcbfd2391
+    path: Assets/05.WorkSpace/KMS/01. Scene/TextGameScene/Stage_02_Scene(kms).unity
+    guid: 742083bd73d4d1440b6110035f76fcd4
+  - enabled: 1
+    path: Assets/05.WorkSpace/KMS/01. Scene/TextGameScene/Stage_03_Scene(kms).unity
+    guid: bd527d473b32a8a4da56014caeadd418
   m_configObjects: {}

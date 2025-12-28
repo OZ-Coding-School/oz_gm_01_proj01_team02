@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -969,8 +969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedMap: {fileID: 0}
-  maxHp: 500
-  currentHp: 0
+  player: {fileID: 1141983737}
   hpBar: {fileID: 204315989}
   slotMachine: {fileID: 837891918}
   pauseUI: {fileID: 1434303559}
@@ -978,8 +977,6 @@ MonoBehaviour:
   exp: 0
   nextExp: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   level: 1
-  gameState: 0
-  player: {fileID: 1141983737}
 --- !u!4 &141004556
 Transform:
   m_ObjectHideFlags: 0
@@ -1502,8 +1499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 735ca21db09c54348ad89841dbf57d1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 500
-  currentHp: 500
+  targetHp: 0
+  targetMaxHp: 0
   segmentCount: 15
   hpFillRoot: {fileID: 1144195607}
   hpBackRoot: {fileID: 214615172}
@@ -1511,6 +1508,7 @@ MonoBehaviour:
   hpBackUnitPrefab: {fileID: 8761225383309016098, guid: c69efff3164168b49a2f421752f8edd9, type: 3}
   hpAnimSpeed: 100
   backAnimSpeed: 50
+  playerHp: {fileID: 0}
 --- !u!1 &210157797
 GameObject:
   m_ObjectHideFlags: 0
@@ -2353,6 +2351,10 @@ PrefabInstance:
       propertyPath: joystick
       value: 
       objectReference: {fileID: 1968276422}
+    - target: {fileID: 4246316300709682343, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+      propertyPath: indicatorPrefab
+      value: 
+      objectReference: {fileID: 3719406561228788987, guid: 0ac4a64cdee76454a89fb0da49389293, type: 3}
     - target: {fileID: 4965201272291341052, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2445,8 +2447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SelectedMap: {fileID: 0}
-  maxHp: 500
-  currentHp: 0
+  player: {fileID: 0}
   hpBar: {fileID: 0}
   slotMachine: {fileID: 0}
   pauseUI: {fileID: 0}
@@ -2454,8 +2455,6 @@ MonoBehaviour:
   exp: 0
   nextExp: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   level: 1
-  gameState: 0
-  player: {fileID: 0}
 --- !u!4 &350686910
 Transform:
   m_ObjectHideFlags: 0
@@ -3339,7 +3338,7 @@ MonoBehaviour:
   baseCritDamage: 2
   baseMoveSpeed: 5
   baseSuperTime: 0.5
-  permanentHpBonus: 0
+  permanentmaxHpBonus: 0
   permanentAttackBonus: 0
   maxHp: 0
   attack: 0
@@ -4861,7 +4860,6 @@ MonoBehaviour:
   healButton: {fileID: 564951592}
   healSprite: {fileID: 21300000, guid: 9d36f6a60a9ee724d900a167baa2eb2a, type: 3}
   healAmount: 200
-  healText: {fileID: 1077516848}
 --- !u!114 &705818416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8031,6 +8029,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3022338318115374490, guid: 855ebcdad0398454cab6c3b3492431b8, type: 3}
+      propertyPath: m_Name
+      value: Enviroment_Stage_2
+      objectReference: {fileID: 0}
     - target: {fileID: 8420400992196268424, guid: 855ebcdad0398454cab6c3b3492431b8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40
@@ -8070,10 +8072,6 @@ PrefabInstance:
     - target: {fileID: 8420400992196268424, guid: 855ebcdad0398454cab6c3b3492431b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3022338318115374490, guid: 855ebcdad0398454cab6c3b3492431b8, type: 3}
-      propertyPath: m_Name
-      value: Enviroment_Stage_2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
