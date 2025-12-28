@@ -77,7 +77,7 @@ public class GameManager
     {
         GameOver();
         _stage.InitStageClearCount();
-        SceneManager.LoadScene("TitleScene");
+        SceneManager.LoadScene("TitleScene(kms)");
     }
 
     public static void ClearChapter() // é�� Ŭ����� ������ �޼���

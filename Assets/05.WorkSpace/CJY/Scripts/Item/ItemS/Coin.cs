@@ -18,8 +18,8 @@ public class Coin : ItemBase
 
     public override void ReturnPool()
     {
-        TestGameManager.Instance.GetExp(10);
-        TestGameManager.Instance.GetCoin(10);
+        //TestGameManager.Instance.GetExp(10);
+        //TestGameManager.Instance.GetCoin(10);
 
         string cleanName = this.name.Replace("(Clone)", "").Trim();
 
@@ -33,8 +33,8 @@ public class Coin : ItemBase
             GameManager.Data.collectedItemName.Add("exp");
         }
 
-        GameManager.Data.collectedItem[cleanName] = TestGameManager.Instance.coin;
-        GameManager.Data.collectedItem["exp"] = TestGameManager.Instance.exp;
+        //GameManager.Data.collectedItem[cleanName] = TestGameManager.Instance.coin;
+        //GameManager.Data.collectedItem["exp"] = TestGameManager.Instance.exp;
 
         Vector3 playPosition = Camera.main.transform.position;
 

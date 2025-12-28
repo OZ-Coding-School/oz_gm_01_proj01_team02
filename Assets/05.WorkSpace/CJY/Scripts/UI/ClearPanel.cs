@@ -61,7 +61,7 @@ public class ClearPanel : MonoBehaviour
         if(!canSkip) return;
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
-            SceneManager.LoadScene("TitleScene(Build)");
+            SceneManager.LoadScene("TitleScene(kms)");
             
         }
     }
