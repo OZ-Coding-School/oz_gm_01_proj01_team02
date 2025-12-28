@@ -86,7 +86,6 @@ public class PoolManager : MonoBehaviour
             if (entry.Value is IObjectPool pool) pool.ReturnAllObjects();
         }
 
-        pools.Clear();
         Debug.Log("모든 풀이 초기화 되었음.");
     }
 }

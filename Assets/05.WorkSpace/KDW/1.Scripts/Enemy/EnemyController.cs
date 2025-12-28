@@ -89,7 +89,13 @@ public class EnemyController : MonoBehaviour, IDamageable
         isWall = false;
         rangedTimer = 0.0f;
 
-        if(rb != null)
+        if (target == null)
+        {
+            GameObject go = GameObject.FindGameObjectWithTag("Player");
+            if (go != null) target = go.transform;
+        }
+
+        if (rb != null)
         {
             rb.velocity = Vector3.zero;
             rb.angularVelocity  = Vector3.zero;
@@ -111,11 +117,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
         hitEffect = GetComponent<EnemyHitEffect>();
 
-        if (target == null)
-        {
-            GameObject go = GameObject.FindGameObjectWithTag("Player");
-            if (go != null) target = go.transform;
-        }
+        
 
         nvAgent.speed = moveSpeed;
 
