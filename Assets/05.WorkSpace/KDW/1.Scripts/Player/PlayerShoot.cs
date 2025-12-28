@@ -84,6 +84,10 @@ public class PlayerShoot : MonoBehaviour
 
             StartCoroutine(ShootAnimation());
         }
+        else
+        {
+            StopCoroutine(ShootAnimation());
+        }
     }
     private void BulletCreat()
     {
