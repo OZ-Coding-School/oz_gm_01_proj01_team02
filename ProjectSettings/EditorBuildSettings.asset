@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/05.WorkSpace/KMS/01. Scene/TitleScene(kms).unity
     guid: 0ba4ca550a6d83a478bc7a30b6faef3f
   - enabled: 1
+    path: Assets/05.WorkSpace/KDW/Stage_01_Scene.unity
+    guid: a80c78a3c0dece94f912bc9d556ac379
+  - enabled: 1
     path: Assets/05.WorkSpace/KMS/01. Scene/TextGameScene/Stage_01_Scene(kms).unity
     guid: 09e0633d2b94ea548bc97118394c9ead
   - enabled: 1

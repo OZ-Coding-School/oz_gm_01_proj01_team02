@@ -39,9 +39,10 @@ public class PlayerEnemySearch : MonoBehaviour
 
     private void EnemyCheck()
     {
-
         //���� ���� ���� �����ϴ� Enemy�� üũ
         Collider[] Colliders = Physics.OverlapSphere(transform.position, checkRange, enemyLayer);
+
+        Debug.Log(Colliders.Length);
 
         //���� ���� ���� Enemy�� �ϳ��� ������ return 
         if (Colliders.Length == 0)
@@ -61,7 +62,7 @@ public class PlayerEnemySearch : MonoBehaviour
 
             RaycastHit hit;
             enemyDir = collider.transform.position - transform.position;
-            bool isHit = Physics.Raycast(transform.position, enemyDir, out hit, enemyLayer);
+            bool isHit = Physics.Raycast(transform.position, enemyDir, out hit, checkRange, enemyLayer);
 
             if (isHit && hit.transform.CompareTag("Enemy"))
             {

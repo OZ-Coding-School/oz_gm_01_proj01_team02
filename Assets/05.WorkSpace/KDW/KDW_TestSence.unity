@@ -570,6 +570,10 @@ PrefabInstance:
       propertyPath: spawnTime
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4246316300709682343, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
+      propertyPath: indicatorPrefab
+      value: 
+      objectReference: {fileID: 3719406561228788987, guid: 0ac4a64cdee76454a89fb0da49389293, type: 3}
     - target: {fileID: 8404419110341632262, guid: 58fe1703e6c5a48e594aa5c0b3518843, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2325,6 +2329,8 @@ MonoBehaviour:
   baseCritDamage: 2
   baseMoveSpeed: 5
   baseSuperTime: 0.5
+  permanentmaxHpBonus: 0
+  permanentAttackBonus: 0
   maxHp: 0
   attack: 0
   attackSpeed: 0
@@ -3051,6 +3057,7 @@ MonoBehaviour:
   type: 0
   moveSpeed: 3
   rotateSpeed: 8
+  maxHp: 450
   meleeIdleRange: 2
   meleeAttackRange: 5
   attackDelay: 10
@@ -3062,8 +3069,10 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
+  damage: 200
   enemyBullet: {fileID: 0}
   bulletPos: {fileID: 0}
+  deathEffect: {fileID: 0}
 --- !u!54 &2001598450
 Rigidbody:
   m_ObjectHideFlags: 0
