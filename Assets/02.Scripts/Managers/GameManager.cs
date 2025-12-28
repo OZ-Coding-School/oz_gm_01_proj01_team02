@@ -73,7 +73,7 @@ public class GameManager
         }
     }
 
-    public static void PlayerisDead() // ÇÃ·¹ÀÌ¾î »ç¸Á ½Ã µîÀåÇÒ ¸Þ¼­µå
+    public static void PlayerisDead() // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     {
         GameOver();
         _stage.InitStageClearCount();
@@ -81,7 +81,7 @@ public class GameManager
         SceneManager.LoadScene("TitleScene");
     }
 
-    public static void ClearChapter() // Ã©ÅÍ Å¬¸®¾î½Ã µîÀåÇÒ ¸Þ¼­µå
+    public static void ClearChapter() // Ã©ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¼ï¿½ï¿½ï¿½
     {
         GameOver();
         _stage.InitStageClearCount();

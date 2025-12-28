@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MapSelectPanel : MonoBehaviour, IEndDragHandler
 {
     public Scrollbar scrollbar;
-    public MapData[] mapCard;
+    public MapCardView[] mapCard;
     public MapPanel mapPanel;
     
     private float[] positions = { 0f, 0.5f, 1f };
@@ -14,8 +14,6 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
     public int currentIndex;
     private bool isSnapping = false;
     private float target;
-
-    // public int currentSelectedIndex;
 
     [Header("UI 여닫용")]
     public GameObject mapSelectPanel;
@@ -44,29 +42,19 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
 
     }
 
-    private void Start()
-    {
-        
-        SelectMap(mapIndex);
-    }
+
 
     public void ConfirmSelectedMap()
     {
         Debug.Log($"[Confirm] mapIndex: {mapIndex}, currentIndex: {currentIndex}, this: {gameObject.name}");
-        MapData data = mapCard[mapIndex];
+        MapData data = mapCard[mapIndex].data;
         
     }
 
     public void SelectMap(int index)
     {
         currentIndex = index;
-        MapData data = mapCard[index];
-        
-        if (mapPanel != null)
-        {
-            mapPanel.currentMapData = data;
-            mapPanel.UpdateMapCardUI();
-        }
+        mapIndex = index;
 
         
     }
@@ -105,7 +93,16 @@ public class MapSelectPanel : MonoBehaviour, IEndDragHandler
             }
     }
 
-    
+    public int GetMapIndex(MapData data)
+    {
+        for (int i = 0; i < mapCard.Length; i++)
+        {
+            if (mapCard[i] == data)
+                return i;
+        }
+
+        return 0;
+    }
      public void CloseMapSelectPanel()
     {
 

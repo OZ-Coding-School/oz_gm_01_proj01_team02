@@ -22,13 +22,14 @@ public class PlayerHealth : MonoBehaviour
         
         if (player == null)
         player = GetComponent<PlayerController>();
+        currentHp = MaxHp;
+        
         
     }
 
     private void Start()
     {
-        currentHp = MaxHp;
-        NotifyHpChanged();
+        
     }
 
     private void Update()

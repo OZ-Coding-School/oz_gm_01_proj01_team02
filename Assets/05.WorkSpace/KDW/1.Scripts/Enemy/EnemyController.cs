@@ -16,8 +16,8 @@ public class EnemyController : MonoBehaviour, IDamageable
     [Header("�̵�/ȸ��")]
     [SerializeField] private float moveSpeed = 3.0f;    //Enemy �̵��ӵ�
     [SerializeField] private float rotateSpeed = 8.0f;
-    [SerializeField] private float maxHp = 450;
-    private float currentHp;
+    public float maxHp = 450;
+    public float currentHp;
 
 
     [Header("�ٰŸ� ���� �Ÿ�/��Ÿ��/���� �ӵ�")]

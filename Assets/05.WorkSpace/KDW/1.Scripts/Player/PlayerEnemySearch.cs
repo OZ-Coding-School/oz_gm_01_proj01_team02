@@ -19,8 +19,8 @@ public class PlayerEnemySearch : MonoBehaviour
     void Awake()
     {
         // 원을 하나만 생성해서 미리 꺼둠
-        indicatorInstance = Instantiate(indicatorPrefab).transform;
-        indicatorInstance.gameObject.SetActive(false);
+        // indicatorInstance = Instantiate(indicatorPrefab).transform;
+        // indicatorInstance.gameObject.SetActive(false);
     }
 
     void Update()
@@ -74,7 +74,7 @@ public class PlayerEnemySearch : MonoBehaviour
             }
         }
         closeEnemy = nearEnemy;
-        indicatorInstance.gameObject.SetActive(true);
+        // indicatorInstance.gameObject.SetActive(true);
     }
     private void OnDrawGizmosSelected()
     {
