@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 998372300074536037}
   - component: {fileID: 6569686386326660912}
+  - component: {fileID: 2366600989043866480}
   m_Layer: 0
-  m_Name: EpicBraveArrow
+  m_Name: EpicBraveBow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,14 +74,28 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 253b393c643dc7a4c8bd1c4b58969adc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 467b69b820f22ed42bda85147d7ff63c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.02, y: 1.23}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2366600989043866480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373168356470793179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f17637f3add2a344b57e369ced998c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1.8
+  equipmentData: {fileID: 11400000, guid: 93198fd829983cf4183c768401751b0a, type: 2}

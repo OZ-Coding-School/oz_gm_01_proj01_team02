@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5434609168047225736}
   - component: {fileID: 3199452695243873259}
+  - component: {fileID: 8779995418593336158}
   m_Layer: 0
   m_Name: BrightSpear
   m_TagString: Untagged
@@ -84,3 +85,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8779995418593336158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7852963092586793850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f17637f3add2a344b57e369ced998c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1.8
+  equipmentData: {fileID: 11400000, guid: 84f724e69d8cd3541a81245de87e27f9, type: 2}

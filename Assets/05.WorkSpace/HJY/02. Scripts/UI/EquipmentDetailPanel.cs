@@ -8,15 +8,17 @@ public class EquipmentDetailPanel : MonoBehaviour
     public static EquipmentDetailPanel Instance;
 
     [Header("UI References")]
-    public TextMeshProUGUI nameText;                // 장비 이름
-    public TextMeshProUGUI descriptionText;         // 장비 설명
-    public TextMeshProUGUI abilityDescriptionText;  // 효과 설명
+    [SerializeField] private TextMeshProUGUI nameText;                // 장비 이름
+    [SerializeField] private TextMeshProUGUI descriptionText;         // 장비 설명
+    [SerializeField] private TextMeshProUGUI abilityDescriptionText;  // 효과 설명
 
-    public Button actionButton;
-    public TextMeshProUGUI buttonText;
+    [SerializeField] private Button actionButton;
+    [SerializeField] private TextMeshProUGUI buttonText;
 
-    // 장비 설명 패널 닫기
-    public Button closeBtn;
+    [SerializeField] private Button closeBtn;
+
+    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private PlayerStatUI playerStatUI;
 
     private EquipmentData current;
 
@@ -25,26 +27,24 @@ public class EquipmentDetailPanel : MonoBehaviour
         Instance = this;
         gameObject.SetActive(false);
 
-        // X버튼을 누르면
+        // X 버튼을 누르면 닫아라
         closeBtn.onClick.AddListener(Close);
     }
 
-    // 설명 패널을 닫아라
+    // 설명 패널 닫기
     public void Close()
     {
         gameObject.SetActive(false);
     }
 
+    // 설명 패널 열기
     public void Show(EquipmentData data)
     {
         current = data;
 
-        // 한글로 된 장비 이름
-        nameText.text = data.displayName;
-
-        // 설명 텍스트
-        descriptionText.text = data.description;
-        abilityDescriptionText.text = data.abilityDescription;
+        nameText.text = data.displayName; // 한글로 된 장비 설명
+        descriptionText.text = data.description; // 장비 설명 텍스트
+        abilityDescriptionText.text = data.abilityDescription; // 장비 효과 텍스트
 
         RefreshButton();
         gameObject.SetActive(true);
@@ -56,12 +56,12 @@ public class EquipmentDetailPanel : MonoBehaviour
 
         if (InventoryManager.Instance.IsEquipped(current))
         {
-            buttonText.text = "해제"; // 혹은 장비 해제로 단어 대체
+            buttonText.text = "해제";
             actionButton.onClick.AddListener(Unequip);
         }
         else
         {
-            buttonText.text = "착용"; // 혹은 장비로 단어 대체
+            buttonText.text = "착용";
             actionButton.onClick.AddListener(Equip);
         }
     }
@@ -80,14 +80,13 @@ public class EquipmentDetailPanel : MonoBehaviour
 
     private void AfterChange()
     {
-        // 플레이어 스탯 갱신
-        //FindObjectOfType<PlayerStatUI>()?.Refresh();
+        // 플레이어 스탯 UI 갱신
+        playerStatUI?.Refresh();
 
         // 내 컬렉션 UI 갱신
-        FindObjectOfType<InventoryUI>()?.RefreshAll();
+        inventoryUI?.RefreshAll();
 
-        // 버튼 갱신
+        // 버튼 상태 갱신
         RefreshButton();
     }
 }
-

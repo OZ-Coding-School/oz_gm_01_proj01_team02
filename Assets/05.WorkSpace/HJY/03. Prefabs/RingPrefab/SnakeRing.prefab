@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3566975708814258180}
   - component: {fileID: 7141933151909237539}
+  - component: {fileID: -3182096151629270205}
   m_Layer: 0
   m_Name: SnakeRing
   m_TagString: Untagged
@@ -73,14 +74,28 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 339b673ae5bec854d83aa6f3b3c638a7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: de0455ec36182724b856b412d38905d6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.9, y: 1.15}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-3182096151629270205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4291597961777744912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f17637f3add2a344b57e369ced998c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1.8
+  equipmentData: {fileID: 11400000, guid: 5c5aa1222ab1ac245baa52eb5890f688, type: 2}

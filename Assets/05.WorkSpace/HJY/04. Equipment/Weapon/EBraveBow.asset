@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
-  m_Name: EBraveArrow
+  m_Name: EBraveBow
   m_EditorClassIdentifier: 
-  equipmentName: EpicBraveArrow
+  equipmentName: EpicBraveBow
   displayName: "\uC5D0\uD53D \uC6A9\uAC10\uD55C \uD65C"
   type: 0
   icon: {fileID: 21300000, guid: 467b69b820f22ed42bda85147d7ff63c, type: 3}

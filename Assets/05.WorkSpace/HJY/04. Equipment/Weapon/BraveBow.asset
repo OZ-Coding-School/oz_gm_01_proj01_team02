@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 29b8f864fd689954e8fa9a6f2b7d43e1, type: 3}
-  m_Name: BraveArrow
+  m_Name: BraveBow
   m_EditorClassIdentifier: 
-  equipmentName: BraveArrow
+  equipmentName: BraveBow
   displayName: "\uC6A9\uAC10\uD55C \uD65C"
   type: 0
   icon: {fileID: 21300000, guid: 4a47ccce6eb4c8e4ca188b9cc35f42e9, type: 3}
