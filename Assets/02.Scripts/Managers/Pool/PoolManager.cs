@@ -77,6 +77,7 @@ public class PoolManager : MonoBehaviour
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
     {
         ClearPool();
+        GameManager.Stage.InitStageClearCount();
     }
 
     public void ClearPool()
