@@ -23,6 +23,15 @@ public class PoolManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void OnEnable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
     public void CreatePool<T>(T prefab, int initCount, Transform parent = null) where T : MonoBehaviour
     {
@@ -30,6 +39,8 @@ public class PoolManager : MonoBehaviour
 
         string key = prefab.name;
         if (pools.ContainsKey(key)) return;
+        if (parent == null) parent = this.transform;
+
         pools.Add(key, new ObjectPool<T>(prefab, initCount, parent));
     }
 
@@ -63,12 +74,16 @@ public class PoolManager : MonoBehaviour
         else return;
     }
 
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
+    {
+        ClearPool();
+    }
+
     public void ClearPool()
     {
-        pools.Clear();
-        foreach(Transform child in transform)
+        foreach(var entry in pools)
         {
-            Destroy(child.gameObject);
+            if (entry.Value is IObjectPool pool) pool.ReturnAllObjects();
         }
 
         Debug.Log("모든 풀이 초기화 되었음.");

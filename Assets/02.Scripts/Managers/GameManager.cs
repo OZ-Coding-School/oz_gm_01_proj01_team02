@@ -77,7 +77,6 @@ public class GameManager
     {
         GameOver();
         _stage.InitStageClearCount();
-        if (_pool != null) _pool.ClearPool();
         SceneManager.LoadScene("TitleScene");
     }
 
@@ -85,7 +84,6 @@ public class GameManager
     {
         GameOver();
         _stage.InitStageClearCount();
-        if (_pool != null) _pool.ClearPool();
     }
 
     public static void GameOver()
