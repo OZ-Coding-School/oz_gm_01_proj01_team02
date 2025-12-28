@@ -7,10 +7,16 @@ public class Angel : MonoBehaviour
     AngelUIManagers angelPanel;
     bool gotIt;
 
-    private void Awake()
+    //private void Awake()
+    //{
+    //    angelPanel = FindObjectOfType<AngelUIManagers>(true);
+    //}
+
+    private void OnEnable()
     {
         angelPanel = FindObjectOfType<AngelUIManagers>(true);
     }
+
     public void ReturnPool()
     {
         gotIt = false;

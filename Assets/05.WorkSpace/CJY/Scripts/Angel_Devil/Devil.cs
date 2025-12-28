@@ -7,7 +7,7 @@ public class Devil : MonoBehaviour
     DevilUIManager devilPanel;
     bool gotIt;
 
-    private void Awake()
+    private void OnEnable()
     {
         devilPanel = FindObjectOfType<DevilUIManager>(true);
     }

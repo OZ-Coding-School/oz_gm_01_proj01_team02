@@ -12,8 +12,6 @@ public class TestGameManager : MonoBehaviour
     public static TestGameManager Instance;
     
 
-    
-
     [Header("UI")]
     
     public SlotMachineManager slotMachine;
@@ -43,7 +41,7 @@ public class TestGameManager : MonoBehaviour
  
     public void GetExp(int amount)
     {
-
+        Debug.Log("GETEXP 실행");
         exp+=amount;
 
         if ( exp == nextExp[Mathf.Min(level, nextExp.Length-1 )])
@@ -62,6 +60,5 @@ public class TestGameManager : MonoBehaviour
 
     
     
-
 
 }
