@@ -67,11 +67,6 @@ public class DataManager : MonoBehaviour
         return result;
     }
 
-    public void InitData(int chapter)
-    {
-        AddData(0, 0, 1, chapter);
-        Save();
-    }
 
     public void AddData(int coin, int exp, int stage, int chapter)
     {

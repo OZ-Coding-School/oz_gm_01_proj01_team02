@@ -24,16 +24,14 @@ public class TestGameManager : MonoBehaviour
     public int coin { get; private set; }
     
 
-   
     private void Awake()
     {
         if(Instance == null) Instance = this;
-        else 
-        { 
-            Destroy(gameObject);
-            return;
-                
-        }
+        //else 
+        //{ 
+        //    Destroy(gameObject);
+        //    return;    
+        //}
 
 
         Time.timeScale = 1.0f;
@@ -60,5 +58,11 @@ public class TestGameManager : MonoBehaviour
     public void GetCoin(int amount)
     {
         coin += amount;
+    }
+
+    public void InitCoinExp()
+    {
+        coin = 0;
+        exp = 0;
     }
 }

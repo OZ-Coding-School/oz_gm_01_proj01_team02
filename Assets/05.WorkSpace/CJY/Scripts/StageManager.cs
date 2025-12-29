@@ -66,14 +66,9 @@ public class StageManager : MonoBehaviour
         InitUI();
         if (scene.name != "TitleScene(kms)")
         {
-            if(clearPanel != null)
-            {
-                ClearPanel cp = clearPanel.GetComponent<ClearPanel>();
-                cp.InitLootingBox();
-            }
-            
             InitStageClearCount();
             ForceReturnEnemyPool();
+            StartCoroutine(DelayInitClearPanel());
         }
         
     }
@@ -100,6 +95,8 @@ public class StageManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Y))
         {
             Debug.Log(chapter);
+            Debug.Log(TGM.coin);
+            Debug.Log(TGM.exp);
            GameManager.GameOver();
         }
     }
@@ -128,7 +125,7 @@ public class StageManager : MonoBehaviour
     public void InitStageClearCount()
     {
         currentStage = 1;
-        GameManager.Data.InitData(int.Parse(chapter[7].ToString()));
+        StartCoroutine(DelayInit());
         Debug.Log("스테이지 1로 초기화 완료");
     }
 
@@ -148,7 +145,6 @@ public class StageManager : MonoBehaviour
 
     }
 
-
     private void InitUI()
     {
         if (StageUIManager.Instance != null)
@@ -161,5 +157,21 @@ public class StageManager : MonoBehaviour
 
         TGM = FindObjectOfType<TestGameManager>();
         Debug.Log("현재 스테이지 : " + currentStage);
+    }
+
+    IEnumerator DelayInitClearPanel()
+    {
+        yield return null;
+        if (clearPanel != null)
+        {
+            ClearPanel cp = clearPanel.GetComponent<ClearPanel>();
+            cp.InitLootingBox();
+        }
+    }
+
+    IEnumerator DelayInit()
+    {
+        yield return null;
+        TGM.InitCoinExp();
     }
 }
