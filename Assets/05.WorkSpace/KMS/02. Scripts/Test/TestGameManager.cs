@@ -27,12 +27,6 @@ public class TestGameManager : MonoBehaviour
     private void Awake()
     {
         if(Instance == null) Instance = this;
-        //else 
-        //{ 
-        //    Destroy(gameObject);
-        //    return;    
-        //}
-
 
         Time.timeScale = 1.0f;
         exp = 0;

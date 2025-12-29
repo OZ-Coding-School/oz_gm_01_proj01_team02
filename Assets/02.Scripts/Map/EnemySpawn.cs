@@ -112,7 +112,6 @@ public class EnemySpawn : MonoBehaviour
                 GetEnemy(pos, EnemyType.Boss, ref count, 1);
             }
         }
-
     }
 
     private void GetEnemy(Vector3 pos, EnemyType type, ref int count, int max)
@@ -139,6 +138,8 @@ public class EnemySpawn : MonoBehaviour
             case EnemyType.Boss:
                 Debug.Log("보스소환");
                 int currentChapter = GameManager.Data.playData._chapter;
+                var targetPrefab = bossPrefab[currentChapter - 1].gameObject;
+                //Debug.Log($"요청하는 보스 프리팹이름 : {targetPrefab.name");
                 boss = GameManager.Pool.GetFromPool(bossPrefab[currentChapter - 1]);
                 break;
         }
