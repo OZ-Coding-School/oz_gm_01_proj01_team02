@@ -47,8 +47,8 @@ public class ClearPanel : MonoBehaviour
                 int count = countDict[itemName];
                 CreateLootingBox(itemName, count);
             }
-
         }
+        if (GameManager.Stage.currentStage <= 1) InitLootingBox();
     }
 
     private void OnDisable()
@@ -62,8 +62,8 @@ public class ClearPanel : MonoBehaviour
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             SceneManager.LoadScene("TitleScene(kms)");
-            
         }
+
     }
 
     private void CreateLootingBox(string name, int count)
@@ -106,5 +106,17 @@ public class ClearPanel : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2);
         canSkip = true;
+    }
+
+    public void InitLootingBox()
+    {
+        lootingItemBoxes.Clear();
+        if (lootingItemZone != null)
+        {
+            foreach (Transform child in lootingItemZone)
+            {
+                Destroy(child.gameObject);
+            }
+        }
     }
 }

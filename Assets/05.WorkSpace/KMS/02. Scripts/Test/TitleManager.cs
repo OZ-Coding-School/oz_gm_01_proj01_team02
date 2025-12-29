@@ -10,8 +10,14 @@ public class TitleManager : MonoBehaviour
 
     [Header("UI")]
     public Text coinText;
+
+    public Slider expSlider;
     public Text levelText;
+    public Text expText;
     public MapPanel mapPanel;
+
+
+    
 
     void Start()
     {
@@ -43,7 +49,30 @@ public class TitleManager : MonoBehaviour
         coinText.text = playerData.totalCoin.ToString();
         
         if (levelText != null)
-        levelText.text = "Level " + playerData.level;
+        levelText.text = playerData.adventureLevel.ToString();
+
+        if (expSlider != null)
+        {
+            if (playerData.adventureLevel >= playerData.maxAdventureLevel)
+            {
+                expSlider.maxValue = 1;
+                expSlider.value = 1;
+
+                if (expText != null)
+                expText.text = "MAX";
+            }
+            else
+            {
+                int needExp = playerData.nextAdventureExp[playerData.adventureLevel - 1];
+
+                expSlider.maxValue = needExp;
+                expSlider.value = playerData.adventureExp;
+
+                if (expText != null)
+                expText.text = $"{playerData.adventureExp} / {needExp}";
+            }
+        }
+        
     }
 
     

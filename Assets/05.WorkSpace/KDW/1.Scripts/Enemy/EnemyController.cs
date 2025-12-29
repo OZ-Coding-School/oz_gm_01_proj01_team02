@@ -207,7 +207,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (!isAttack || nvAgent.enabled == true)
         {
             nvAgent.speed = moveSpeed;
-            nvAgent.SetDestination(target.transform.position);
+            // nvAgent.SetDestination(target.transform.position);
         }
     }
     public void MeleeAttack()

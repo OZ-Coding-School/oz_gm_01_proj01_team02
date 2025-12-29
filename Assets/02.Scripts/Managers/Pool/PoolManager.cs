@@ -15,38 +15,51 @@ public class PoolManager : MonoBehaviour
     {
         if(pool_instance == null)
         {
+            
             pool_instance = this;
             DontDestroyOnLoad(gameObject);
+            
         }
         else
         {
+            
             Destroy(gameObject);
         }
     }
     private void OnEnable()
     {
+        
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDisable()
     {
+        
         UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     public void CreatePool<T>(T prefab, int initCount, Transform parent = null) where T : MonoBehaviour
     {
-        if (prefab == null) return;
+        if (prefab == null) 
+        {
+            return; 
+        }
 
+        
         string key = prefab.name;
         if (pools.ContainsKey(key)) return;
         if (parent == null) parent = this.transform;
 
         pools.Add(key, new ObjectPool<T>(prefab, initCount, parent));
+        
     }
 
     public T GetFromPool<T>(T prefab) where T : MonoBehaviour
     {
-        if (prefab == null) return null;
+        if (prefab == null)
+        {
+            return null; 
+        }
 
         if (!pools.TryGetValue(prefab.name, out var box))
         {
@@ -55,14 +68,20 @@ public class PoolManager : MonoBehaviour
 
         var pool = box as ObjectPool<T>;
 
-        if (pool != null) return pool.Dequeue();
+        if (pool != null) 
+        {
+            return pool.Dequeue(); 
+        }
         else return null;
 
     }
 
     public void ReturnPool<T>(T instance) where T : MonoBehaviour
     {
-        if(instance == null) return;
+        if (instance == null) 
+        {
+            return; 
+        }
         if(!pools.TryGetValue(instance.gameObject.name, out var box))
         {
             Destroy(instance.gameObject);
@@ -70,21 +89,27 @@ public class PoolManager : MonoBehaviour
         }
 
         var pool = box as ObjectPool<T>;
-        if (pool != null) pool.Enqueue(instance);
+        if (pool != null) 
+        {
+            pool.Enqueue(instance); 
+        }
         else return;
     }
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
     {
         ClearPool();
-        GameManager.Stage.InitStageClearCount();
     }
 
     public void ClearPool()
     {
-        foreach(var entry in pools)
+        foreach (var entry in pools)
         {
-            if (entry.Value is IObjectPool pool) pool.ReturnAllObjects();
+
+            if (entry.Value is IObjectPool pool) 
+            {
+                pool.ReturnAllObjects(); 
+            }
         }
 
         Debug.Log("모든 풀이 초기화 되었음.");

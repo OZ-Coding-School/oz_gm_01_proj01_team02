@@ -73,17 +73,14 @@ public class GameManager
         }
     }
 
-    public static void PlayerisDead() // �÷��̾� ��� �� ������ �޼���
+    public static void PlayerisDead() 
     {
         GameOver();
-        _stage.InitStageClearCount();
-        SceneManager.LoadScene("TitleScene(kms)");
     }
 
-    public static void ClearChapter() // é�� Ŭ����� ������ �޼���
+    public static void ClearChapter() 
     {
         GameOver();
-        _stage.InitStageClearCount();
     }
 
     public static void GameOver()
