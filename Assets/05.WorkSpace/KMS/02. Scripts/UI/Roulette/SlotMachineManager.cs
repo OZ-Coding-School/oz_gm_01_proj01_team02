@@ -9,6 +9,7 @@ public class SlotMachineManager : MonoBehaviour
 {
     [Header("Skill Data")]
     public List<SkillData> skillDataList;
+    private List<SkillData> skillDeck;
 
 
     [Header("UI")]
@@ -33,7 +34,7 @@ public class SlotMachineManager : MonoBehaviour
     private int itemCnt = 3;
 
 
-    private float imageHeight = 50.0f;
+    private float imageHeight = 100.0f;
 
 
     void OnEnable()
@@ -42,6 +43,8 @@ public class SlotMachineManager : MonoBehaviour
         displayResultImage.sprite = null;
 
         resultSkills = new SkillData[slotColumns.Length];
+        skillDeck = new List<SkillData>(skillDataList);
+        Shuffle(skillDeck);
 
         PlaySlotMachine();
     }
@@ -58,14 +61,35 @@ public class SlotMachineManager : MonoBehaviour
         }
     }
 
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int rand = Random.Range(i, list.Count);
+            (list[i], list[rand]) = (list[rand], list[i]);
+        }
+    }
+
     private void SetRandomIcons(int columnIndex)
     {
         Image[] images = slotImages[columnIndex].images;
 
         for (int i = 0; i < images.Length; i++)
         {
-            int randomIndex = Random.Range(0, skillDataList.Count);
-            images[i].sprite = skillDataList[randomIndex].icon;
+
+            if (skillDeck.Count == 0)
+            {
+                Debug.Log("SkillDeck이 부족");
+                return;
+            }
+
+            SkillData skill = skillDeck[0];
+            skillDeck.RemoveAt(0);
+
+            images[i].sprite = skill.icon;
+            images[i].name = skill.name;
+            // int randomIndex = Random.Range(0, skillDataList.Count);
+            // images[i].sprite = skillDataList[randomIndex].icon;
         }
     }
 
@@ -75,9 +99,9 @@ public class SlotMachineManager : MonoBehaviour
 
         for (int i = 0; i < repeatCount; i++)
         {
-            column.localPosition -= new Vector3(0, 50f, 0);
+            column.localPosition -= new Vector3(0, imageHeight, 0);
 
-        if (column.localPosition.y < -imageHeight) // 맨 아래 도달하면
+        if (column.localPosition.y < 0.0f) // 맨 아래 도달하면
               column.localPosition += new Vector3(0, imageHeight * slotImages[index].images.Length, 0);
 
           yield return new WaitForSecondsRealtime(0.02f);
