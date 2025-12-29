@@ -12,17 +12,21 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
     public ObjectPool(T prefab, int initCount, Transform parent = null)
     {
         this.prefab = prefab;
-        if (parent != null) Root = parent;
+        if (parent != null) 
+        {
+            Root = parent; 
+        }
         else Root = new GameObject($"{prefab.name}_pool").transform;
 
         Root.SetParent(parent,false);
         for (int i = 0; i < initCount; i++)
-            {
-                var inst = Object.Instantiate(prefab, Root);
-                inst.name = prefab.name;
-                inst.gameObject.SetActive(false);
-                pool.Enqueue(inst);
-            }
+        {
+            var inst = Object.Instantiate(prefab, Root);
+            inst.name = prefab.name;
+            inst.gameObject.SetActive(false);
+            pool.Enqueue(inst);
+        }
+
     }
 
     public T Dequeue()
@@ -32,7 +36,10 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
             Root.gameObject.SetActive(true);
         }
 
-        if (pool.Count == 0) return null;
+        if (pool.Count == 0) 
+        {
+            return null; 
+        }
         var inst = pool.Dequeue();
         inst.gameObject.SetActive(true);
         return inst;
@@ -41,22 +48,23 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
 
     public void Enqueue(T instance)
     {
-        if(instance == null) return;
+        if (instance == null) 
+        {
+            return; 
+        }
         instance.gameObject.SetActive(false);
         pool.Enqueue(instance);
+
     }
 
     public void ReturnAllObjects()
     {
-        if(Root == null)
+        if (Root == null)
         {
             pool.Clear();
             return;
         }
-        if (!Root.gameObject.activeSelf)
-        {
-            Root.gameObject.SetActive(true);
-        }
+        
         foreach (Transform child in Root)
         {
             child.gameObject.SetActive(false);
@@ -64,6 +72,11 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
             T component = child.GetComponent<T>();
             if(component != null) pool.Enqueue(component);
         }
+        if (!Root.gameObject.activeSelf)
+        {
+            Root.gameObject.SetActive(true);
+        }
+
     }
     
 }

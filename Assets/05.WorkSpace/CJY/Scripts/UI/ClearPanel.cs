@@ -107,4 +107,12 @@ public class ClearPanel : MonoBehaviour
         yield return new WaitForSecondsRealtime(2);
         canSkip = true;
     }
+
+    public void InitLootingBox()
+    {
+        foreach(GameObject go in lootingItemBoxes)
+        {
+            if (go != null) Destroy(go);
+        }
+    }
 }
