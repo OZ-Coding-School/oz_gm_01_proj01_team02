@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75f2164ddc772b54486d23142e1cebfd, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  totalCoin: 0
-  totalExp: 0
-  level: 1
-  nextExp: 0a000000140000001e0000002800000032000000
-  selectedMap: {fileID: 0}
+  totalCoin: 10000
+  adventureExp: 123
+  adventureLevel: 4
+  maxAdventureLevel: 20
+  nextAdventureExp: 6400000096000000c80000002c010000900100005802000020030000e80300001405000040060000d007000060090000f00a0000800c0000100e000068100000c01200001815000070170000
+  _selectedMap: {fileID: 11400000, guid: 10afcc18e16b4984faa7743c1db326a9, type: 2}

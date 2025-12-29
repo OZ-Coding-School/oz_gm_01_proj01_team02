@@ -10,17 +10,20 @@ using UnityEngine.UI;
 public class TestGameManager : MonoBehaviour
 {
     public static TestGameManager Instance;
+
+    [Header("Player Data (ScriptableObject)")]
+    public PlayerData playerData;
     
 
     [Header("UI")]
-    
     public SlotMachineManager slotMachine;
     
 
     [Header("게임씬 전용 데이터")]
     public int exp;
-    public int[] nextExp = { 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+    public int[] nextExp = { 100, 100, 100, 150, 150, 150, 150, 200, 200};
     public int level = 1;
+    public int maxLevel = 10;
     public int coin { get; private set; }
     
 
@@ -28,12 +31,7 @@ public class TestGameManager : MonoBehaviour
     private void Awake()
     {
         if(Instance == null) Instance = this;
-        else 
-        { 
-            Destroy(gameObject);
-            return;
-                
-        }
+        
 
 
         Time.timeScale = 1.0f;
@@ -45,6 +43,9 @@ public class TestGameManager : MonoBehaviour
  
     public void GetExp(int amount)
     {
+        if (level >= maxLevel)
+        return;
+
         Debug.Log("GETEXP 실행");
         exp+=amount;
 
@@ -60,8 +61,26 @@ public class TestGameManager : MonoBehaviour
     public void GetCoin(int amount)
     {
         coin += amount;
+
+        if (playerData != null)
+        {
+            playerData.AddCoin(amount);
+        }
+
+        int adventureExp = Mathf.FloorToInt(amount * 0.1f);
+        if (adventureExp > 0)
+        {
+            playerData.AddadventrueExp(adventureExp);
+        }
     }
 
+    public void InitCoinExp()
+    {
+        coin = 0;
+        exp = 0;
+    }
+
+    
     
     
 
