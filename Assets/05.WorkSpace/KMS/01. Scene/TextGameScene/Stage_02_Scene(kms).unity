@@ -968,10 +968,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ad66c623fc69942a19cd45fb4249c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playData:
+    _coin: 0
+    _exp: 0
+    _stage: 0
+    _chapter: 0
   slotMachine: {fileID: 837891918}
   exp: 0
-  nextExp: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
+  nextExp: 64000000640000006400000096000000960000009600000096000000960000009600000096000000
   level: 1
+  maxLevel: 10
 --- !u!4 &141004556
 Transform:
   m_ObjectHideFlags: 0
@@ -2489,10 +2495,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44ad66c623fc69942a19cd45fb4249c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playData:
+    _coin: 0
+    _exp: 0
+    _stage: 0
+    _chapter: 0
   slotMachine: {fileID: 0}
   exp: 0
   nextExp: 0a000000140000001e00000028000000320000003c00000046000000500000005a00000064000000
   level: 1
+  maxLevel: 10
 --- !u!4 &350686910
 Transform:
   m_ObjectHideFlags: 0
@@ -11894,6 +11906,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hpSlider: {fileID: 1369077898}
   enemy: {fileID: 1891950371}
+  mainCamera: {fileID: 0}
+  offset: {x: 0, y: 0, z: 2}
 --- !u!4 &1891950371 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3840071025092287168, guid: 75197e9c5818544a7a919d29d362d9be, type: 3}
