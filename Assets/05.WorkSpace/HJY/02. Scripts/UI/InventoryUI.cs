@@ -9,14 +9,25 @@ public class InventoryUI : MonoBehaviour
     public EquipmentSlotUI slotPrefab;
     public Transform content;
 
-    private List<EquipmentSlotUI> slots = new List<EquipmentSlotUI>();
+    private List<EquipmentSlotUI> slots = new();
 
-  
+
     private void OnEnable()
     {
         if (InventoryManager.Instance != null)
         {
+            // 이벤트 구독
+            InventoryManager.Instance.OnEquipmentChanged += Refresh;
             Refresh();
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (InventoryManager.Instance != null)
+        {
+            // 이벤트 해제
+            InventoryManager.Instance.OnEquipmentChanged -= Refresh;
         }
     }
 
@@ -42,7 +53,7 @@ public class InventoryUI : MonoBehaviour
         foreach (var slot in slots)
         {
             slot.RefreshUI();
-        } 
+        }
     }
 }
 

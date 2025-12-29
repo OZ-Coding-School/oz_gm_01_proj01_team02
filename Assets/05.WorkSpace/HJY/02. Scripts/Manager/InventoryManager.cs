@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,17 +8,30 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     [Header("Equipment")]
-    public List<EquipmentData> ownedEquipments = new List<EquipmentData>();  // 플레이어가 소유한 장비 모든 목록
-    public EquipmentData[] equippedItems = new EquipmentData[4];             // 플레이어가 착용한 장비 목록 4개
+    public List<EquipmentData> ownedEquipments = new();          // 플레이어가 소유한 장비 모든 목록
+    public EquipmentData[] equippedItems = new EquipmentData[4]; // 플레이어가 착용한 장비 목록 4개
 
     [Header("Talent")]
-    public List<TalentData> talentPool;          // 게임 안에 존재하는 전체 재능 풀
-    public List<TalentState> ownedTalents;       // 플레이어가 현재 가진 재능 상태
+    public List<TalentData> talentPool = new();          // 게임 안에 존재하는 전체 재능 풀
+    public List<TalentState> ownedTalents = new();       // 플레이어가 현재 가진 재능 상태
+
+    // 이벤트 처리 -> UI 패널들이 구독해서 갱신
+    public event Action OnEquipmentChanged;
+    public event Action OnTalentChanged;
 
     private void Awake()
     {
-        Instance = this;
+        // 싱글톤 초기화
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
+
 
     // 장비 획득
     public void AddEquipment(EquipmentData item)
@@ -25,15 +39,10 @@ public class InventoryManager : MonoBehaviour
         if (!ownedEquipments.Contains(item))
         {
             ownedEquipments.Add(item);
-        }
-
-        // UI 갱신
-         InventoryUI inventoryUI = FindObjectOfType<InventoryUI>();
-        if (inventoryUI != null)
-        {
-            inventoryUI.Refresh();
+            OnEquipmentChanged?.Invoke(); // UI 갱신 이벤트 호출
         }
     }
+
 
 
     // ===================== 장비 =====================
@@ -45,6 +54,7 @@ public class InventoryManager : MonoBehaviour
         int index = (int)item.type;
         equippedItems[index] = item;
         PlayerStatManager.Instance.RecalculateStats();
+        OnEquipmentChanged?.Invoke();
     }
 
     // 장비 해제
@@ -55,6 +65,7 @@ public class InventoryManager : MonoBehaviour
         {
             equippedItems[index] = null;
             PlayerStatManager.Instance.RecalculateStats();
+            OnEquipmentChanged?.Invoke();
         }
     }
 
@@ -93,6 +104,7 @@ public class InventoryManager : MonoBehaviour
         }
 
         PlayerStatManager.Instance.RecalculateStats(); // 스탯 재계산
+        OnTalentChanged?.Invoke(); // UI 갱신 이벤트 호출
     }
 
     // 재능 랜덤 선택 기능
@@ -109,6 +121,6 @@ public class InventoryManager : MonoBehaviour
         }
 
         if (list.Count == 0) return null; // 없으면 null 반환
-        return list[Random.Range(0, list.Count)];
+        return list[UnityEngine.Random.Range(0, list.Count)];
     }
 }
