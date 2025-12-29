@@ -23,14 +23,12 @@ public class MeleeIdle : IdleState
 
         if (dist > enemy.MeleeIdleRange && Time.time < enemy.NextAttackTime)
         {
-            Debug.Log("대기 -> 추적");
             enemy.ChangeState(enemy.ChaseState);
             return;
         }
-        
-        if(Time.time >= enemy.NextAttackTime)
+
+        if (Time.time >= enemy.NextAttackTime)
         {
-            Debug.Log("대기 -> 공격");
             enemy.ChangeState(enemy.AttackState);
             return;
         }

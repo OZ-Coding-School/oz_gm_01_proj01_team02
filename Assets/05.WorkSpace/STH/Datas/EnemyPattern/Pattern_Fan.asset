@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Pattern_Fan
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6497575979653811519, guid: 9b6230ae39c5a4d31b91d09cf139bd80, type: 3}
-  count: 5
-  angle: 90
+  count: 3
+  angle: 60

@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using STH.Core;
 using STH.Characters.Player;
-using STH.Characters.Enemy;
 
 namespace STH.Combat.Projectiles
 {
@@ -102,10 +101,18 @@ namespace STH.Combat.Projectiles
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.CompareTag("Wall"))
+            {
+                // 벽에 부딪히면 파괴
+                StopAllCoroutines();
+                GameManager.Pool.ReturnPool(this);
+                return;
+            }
+
             IDamageable target = other.GetComponent<IDamageable>();
             if (target == null) return;
             if (bulletOwner == TypeEnums.Player && other.GetComponent<PlayerController>()) return;
-            if (bulletOwner == TypeEnums.Enemy && other.GetComponent<Characters.Enemy.EnemyController>()) return;
+            if (bulletOwner == TypeEnums.Enemy && other.GetComponent<EnemyController>()) return;
 
             // 기본 데미지 적용
 

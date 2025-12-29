@@ -1,4 +1,5 @@
 using UnityEngine;
+using STH.Characters.Player;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private JoyStick joystick;
 
     private Rigidbody rb;
+    private PlayerController playerController;
     private Animator anim;
     private PlayerEnemySearch enemySearch;
 
@@ -13,7 +15,7 @@ public class PlayerMove : MonoBehaviour
 
     public Vector3 EnemyDir => enemyDir;
 
-    //¾Ö´Ï¸ÞÀÌ¼Ç
+    //ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½
     private static readonly int moveHash = Animator.StringToHash("IsMoving");
 
     private void Awake()
@@ -21,12 +23,19 @@ public class PlayerMove : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         enemySearch = GetComponent<PlayerEnemySearch>();
+        playerController = GetComponent<PlayerController>();
+
+        if (joystick == null)
+        {
+            joystick = FindObjectOfType<JoyStick>();
+        }
     }
 
     private void FixedUpdate()
     {
-        if (joystick.JoyVector.x != 0 || joystick.JoyVector.y != 0)
+        if (!playerController.IsDead && (joystick.JoyVector.x != 0 || joystick.JoyVector.y != 0))
         {
+            Debug.Log($"playerController.IsDead {playerController.IsDead}");
             rb.velocity = new Vector3(joystick.JoyVector.x * moveSpeed, rb.velocity.y, joystick.JoyVector.y * moveSpeed);
             rb.rotation = Quaternion.LookRotation(new Vector3(0, joystick.JoyVector.y, 0));
 
@@ -34,7 +43,7 @@ public class PlayerMove : MonoBehaviour
 
             anim.SetBool(moveHash, true);
         }
-        else 
+        else
         {
             rb.velocity = Vector3.zero;
 

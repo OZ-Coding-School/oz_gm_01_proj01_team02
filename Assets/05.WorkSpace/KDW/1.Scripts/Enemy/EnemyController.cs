@@ -1,10 +1,12 @@
-﻿using STH.Characters.Enemy;
-using STH.Combat.Projectiles;
+﻿using STH.Combat.Projectiles;
 using STH.Core;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
+using STH.ScriptableObjects.Base;
+using STH.Characters.Player;
+using System.Collections.Generic;
 
 public class EnemyController : MonoBehaviour, IDamageable
 {
@@ -33,20 +35,24 @@ public class EnemyController : MonoBehaviour, IDamageable
     private float rangedTimer = 0.0f; //��Ÿ�� ���� �帣�� �ð�
 
     [Header("Ÿ��")]
-    [SerializeField] private Transform target;  //Ÿ��(�÷��̾�)
+    [SerializeField] private PlayerController target;  //Ÿ(÷̾)
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private float damage = 200;
+    private Vector3 targetDir;
 
     [Header("bullet")]
     [SerializeField] private Bullet enemyBullet;
     [SerializeField] protected Transform bulletPos;
+    [SerializeField] private List<AttackPatternSO> bulletPatterns;
+    private List<IFireStrategy> fireStrategies = new List<IFireStrategy>();
+    private Bullet patternBulletPrefab;
 
     [SerializeField] private PoolableParticle deathEffect;
 
     private Rigidbody rb;
     private NavMeshAgent nvAgent;
     private Animator animator;
-    private EnemyHitEffect hitEffect;
+    private HitEffect hitEffect;
 
     private float nextAttackTime = 0.0f; //���� ���� �ð� ��Ÿ�� �����
     private bool isDead;
@@ -68,7 +74,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     public float MeleeAttackRange => meleeAttackRange;
     public float RangedAttackRange => rangedAttackRange;
     public float NextAttackTime => nextAttackTime;
-    public Transform Target => target;
+    public PlayerController Target => target;
     public TypeEnums Type => type;
     public bool IsAttack => isAttack;
 
@@ -92,18 +98,23 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (target == null)
         {
             GameObject go = GameObject.FindGameObjectWithTag("Player");
-            if (go != null) target = go.transform;
+            if (go != null) target = go.transform.GetComponent<PlayerController>();
+
+            if (target == null)
+            {
+                Debug.LogError("EnemyController: Target (Player) not found!");
+            }
         }
 
         if (rb != null)
         {
             rb.velocity = Vector3.zero;
-            rb.angularVelocity  = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
             rb.isKinematic = true;
         }
 
         Collider col = GetComponent<Collider>();
-        if(col != null)
+        if (col != null)
         {
             col.enabled = true;
         }
@@ -115,9 +126,9 @@ public class EnemyController : MonoBehaviour, IDamageable
         rb = GetComponent<Rigidbody>();
         nvAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        hitEffect = GetComponent<EnemyHitEffect>();
+        hitEffect = GetComponent<HitEffect>();
 
-        
+
 
         nvAgent.speed = moveSpeed;
 
@@ -136,7 +147,14 @@ public class EnemyController : MonoBehaviour, IDamageable
             GameManager.Pool.CreatePool(enemyBullet, 50);
         }
         GameManager.Pool.CreatePool(deathEffect, 20);
-        //currentHp = maxHp;
+        currentHp = maxHp;
+
+        bulletPatterns.ForEach(pattern =>
+        {
+            IFireStrategy strategy = pattern.CreateStrategy();
+            fireStrategies.Add(strategy);
+            GameManager.Pool.CreatePool(pattern.BulletPrefab, 50);
+        });
     }
 
     void Update()
@@ -188,7 +206,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         if (target == null) return Mathf.Infinity;
 
-        return Vector3.Distance(transform.position, target.position);
+        return Vector3.Distance(transform.position, target.transform.position);
     }
     public void Idle()
     {
@@ -226,6 +244,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
 
     }
+
     public void RangedAttack()
     {
         nvAgent.enabled = false;
@@ -237,9 +256,20 @@ public class EnemyController : MonoBehaviour, IDamageable
         //���� ��Ÿ���� �Ǹ� ������ �߻�
         if (rangedTimer >= spawnTime)
         {
-            Bullet enemyBullet = GameManager.Pool.GetFromPool(this.enemyBullet);
-            enemyBullet.transform.SetLocalPositionAndRotation(bulletPos.position, bulletPos.rotation);
-            enemyBullet.Initialize(damage);
+            if (fireStrategies.Count == 0)
+            {
+                patternBulletPrefab = enemyBullet;
+                // 기본 공격
+                SpawnBulletCallback(bulletPos.position, bulletPos.rotation);
+            }
+            else
+            {
+                for (int i = 0; i < fireStrategies.Count; i++)
+                {
+                    patternBulletPrefab = bulletPatterns[i].BulletPrefab;
+                    fireStrategies[i].Fire(bulletPos, SpawnBulletCallback);
+                }
+            }
 
             rangedTimer = 0.0f; //Ÿ�̸� �ʱ�ȭ
             animator.SetTrigger("DoAttack");
@@ -248,12 +278,23 @@ public class EnemyController : MonoBehaviour, IDamageable
         nvAgent.enabled = true;
         nvAgent.Warp(transform.position);
     }
+
+    private void SpawnBulletCallback(Vector3 position, Quaternion rotation)
+    {
+        Bullet bullet = GameManager.Pool.GetFromPool(patternBulletPrefab);
+        if (bullet != null)
+        {
+            bullet.transform.SetLocalPositionAndRotation(position, rotation);
+            bullet.Initialize(damage);
+        }
+    }
+
     //���� ȸ��
     public void LookTo()
     {
-        Vector3 dir = (target.position - transform.position).normalized;
+        targetDir = (target.transform.position - transform.position).normalized;
 
-        Quaternion targetRot = Quaternion.LookRotation(dir);
+        Quaternion targetRot = Quaternion.LookRotation(targetDir);
 
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, rotateSpeed * Time.deltaTime);
     }
@@ -318,30 +359,31 @@ public class EnemyController : MonoBehaviour, IDamageable
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.root.CompareTag("Player"))
+        {
+            IDamageable player = other.GetComponent<IDamageable>();
+            if (player != null)
+            {
+                player.TakeDamage(damage, false);
+            }
+        }
+    }
+
     public void ReturnPool()
     {
         GameManager.Pool.ReturnPool(this);
-        bool hasBoss = gameObject.TryGetComponent<Boss>(out _);
-        if (hasBoss)
-        {
-            if (GameManager.Stage.currentStage >= GameManager.Stage.Select("finish"))
-            {
-                GameManager.ClearChapter();
-            }
-        }
     }
 
     IEnumerator DieCo()
     {
         yield return new WaitForSeconds(1);
-        // 사라지는 이펙트
-        if (deathEffect != null )
-        {
-            PoolableParticle ga = GameManager.Pool.GetFromPool(deathEffect);
-            if(ga != null) ga.transform.position = transform.position;
-        }
-
         ReturnPool();
+
+        // 사라지는 이펙트
+        PoolableParticle ga = GameManager.Pool.GetFromPool(deathEffect);
+        ga.transform.position = transform.position;
     }
 
     public void TakeDamage(float amount, bool isCritical = false)
@@ -351,7 +393,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         Debug.Log($"Enemy take damage {amount}");
         currentHp -= amount;
 
-        if (hitEffect != null) hitEffect.PlayHitEffect();
+        if (hitEffect != null) hitEffect.PlayHitEffect(isCritical);
 
         if (currentHp <= 0)
         {
@@ -367,6 +409,11 @@ public class EnemyController : MonoBehaviour, IDamageable
         animator.SetTrigger("Die");
         StartCoroutine(DieCo());
 
+    }
+
+    public void TargetLost()
+    {
+        target = null;
     }
 }
 

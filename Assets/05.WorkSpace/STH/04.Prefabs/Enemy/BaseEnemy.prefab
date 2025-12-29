@@ -374,7 +374,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -406,7 +406,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 84
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!195 &9065915326168383926
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -460,6 +460,7 @@ MonoBehaviour:
   damage: 200
   enemyBullet: {fileID: 6497575979653811519, guid: 9b6230ae39c5a4d31b91d09cf139bd80, type: 3}
   bulletPos: {fileID: 6897086995795439627}
+  bulletPatterns: []
   deathEffect: {fileID: 3586704179617227404, guid: b372826dde6f04a1385d868d3cced398, type: 3}
 --- !u!114 &1017804098816513003
 MonoBehaviour:

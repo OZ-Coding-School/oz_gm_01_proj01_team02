@@ -11,10 +11,10 @@ public abstract class ChaseState : EnemyState
     }
     public override void FixedUpdateState()
     {
-        //Å¸°ÙÀÌ Á¸ÀçÇÏ¸é
+        //Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
         if (enemy.Target != null)
         {
-            //Å¸°ÙÀ» ÃßÀû
+            //Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             enemy.Chase();
         }
     }
@@ -29,16 +29,16 @@ public class MeleeChase : ChaseState
 
         float dist = enemy.DistToPlayer();
 
-        //±Ù°Å¸® ÀûÀÇ °ø°Ý °¡´ÉÇÑ °Å¸® ¾È¿¡ µé¾î¿ÔÀ¸¸é °ø°Ý »óÅÂ·Î ÀüÈ¯
+        //ï¿½Ù°Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½È¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
         if (dist <= enemy.MeleeAttackRange && Time.time >= enemy.NextAttackTime)
         {
             enemy.ChangeState(enemy.AttackState);
-            Debug.Log("±Ù°Å¸®°ø°Ý");
+            Debug.Log("ï¿½Ù°Å¸ï¿½ï¿½ï¿½ï¿½ï¿½");
             return;
         }
         else if (dist <= enemy.MeleeIdleRange && Time.time < enemy.NextAttackTime && !enemy.IsAttack)
         {
-            Debug.Log("¸ØÃç");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½");
             Debug.Log(enemy.IsAttack);
             enemy.ChangeState(enemy.IdleState);
             return;
@@ -55,11 +55,11 @@ public class RangedChase : ChaseState
 
         float dist = enemy.DistToPlayer();
 
-        //¿ø°Å¸® ÀûÀÇ °ø°Ý °¡´ÉÇÑ °Å¸® ¾È¿¡ µé¾î¿ÔÀ¸¸é °ø°Ý »óÅÂ·Î ÀüÈ¯
+        //ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½È¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½È¯
         if (dist <= enemy.RangedAttackRange)
         {
             enemy.ChangeState(enemy.AttackState);
-            Debug.Log("¿ø°Å¸®°ø°Ý");
+            Debug.Log("ï¿½ï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½");
             return;
         }
     }
