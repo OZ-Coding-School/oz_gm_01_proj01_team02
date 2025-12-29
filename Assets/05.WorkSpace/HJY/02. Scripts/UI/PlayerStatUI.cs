@@ -1,30 +1,37 @@
 
-//using UnityEngine;
-//using TMPro;
+using UnityEngine;
+using TMPro;
 
-//public class PlayerStatUI : MonoBehaviour
-//{
-//    [Header("Stat Texts")]
-//    public TextMeshProUGUI hpText;
-//    public TextMeshProUGUI attackText;
+public class PlayerStatUI : MonoBehaviour
+{
+    [Header("Stat Texts")]
+    public TextMeshProUGUI hpText;
+    public TextMeshProUGUI attackText;
 
-//    private void OnEnable()
-//    {
-//        PlayerStatManager.OnStatChanged += Refresh;
-//        Refresh();
-//    }
+    private void OnEnable()
+    {
+        PlayerStatManager.OnStatChanged += Refresh;
+    }
 
-//    private void OnDisable()
-//    {
-//        PlayerStatManager.OnStatChanged -= Refresh;
-//    }
+    private void Start()
+    {
+        Refresh(); // 기본값을 우선 직접 불러옴
+    }
 
-//    public void Refresh()
-//    {
-//        var stat = PlayerStatManager.Instance;
+    private void OnDisable()
+    {
+        PlayerStatManager.OnStatChanged -= Refresh;
+    }
 
-//        hpText.text = $"HP : {stat.maxHp}";
-//        attackText.text = $"ATK : {stat.attack}";
-//    }
-//}
+    public void Refresh()
+    {
+        var stat = PlayerStatManager.Instance;
 
+        if (stat == null) return; 
+
+        hpText.text = stat.maxHp.ToString();
+        attackText.text = stat.attack.ToString();
+
+
+    }
+}

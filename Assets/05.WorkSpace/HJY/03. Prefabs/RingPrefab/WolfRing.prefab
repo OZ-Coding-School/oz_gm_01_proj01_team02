@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8590048910073377391}
   - component: {fileID: 6071817946002271231}
+  - component: {fileID: 7393459593271143676}
   m_Layer: 0
   m_Name: WolfRing
   m_TagString: Untagged
@@ -84,3 +85,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7393459593271143676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3896823823651580597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f17637f3add2a344b57e369ced998c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1.8
+  equipmentData: {fileID: 11400000, guid: 93313fea3d75461478f7fd3e1bc89059, type: 2}

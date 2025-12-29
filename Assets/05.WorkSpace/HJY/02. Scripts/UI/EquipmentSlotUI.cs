@@ -29,7 +29,7 @@ public class EquipmentSlotUI: MonoBehaviour
     {
         if (equipment == null) return;
 
-        nameText.text = equipment.equipmentName;
+        nameText.text = equipment.displayName;
         statText.text = GetStatText();
 
         int index = (int)equipment.type;

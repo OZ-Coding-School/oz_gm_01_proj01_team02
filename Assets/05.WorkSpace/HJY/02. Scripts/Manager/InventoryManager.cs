@@ -7,8 +7,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance;
 
     [Header("Equipment")]
-    public List<EquipmentData> ownedEquipments;                    // 플레이어가 소유한 장비 모든 목록
-    public EquipmentData[] equippedItems = new EquipmentData[4];   // 플레이어가 착용한 장비 목록 4개
+    public List<EquipmentData> ownedEquipments = new List<EquipmentData>();  // 플레이어가 소유한 장비 모든 목록
+    public EquipmentData[] equippedItems = new EquipmentData[4];             // 플레이어가 착용한 장비 목록 4개
 
     [Header("Talent")]
     public List<TalentData> talentPool;          // 게임 안에 존재하는 전체 재능 풀
@@ -17,6 +17,22 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+
+    // 장비 획득
+    public void AddEquipment(EquipmentData item)
+    {
+        if (!ownedEquipments.Contains(item))
+        {
+            ownedEquipments.Add(item);
+        }
+
+        // UI 갱신
+         InventoryUI inventoryUI = FindObjectOfType<InventoryUI>();
+        if (inventoryUI != null)
+        {
+            inventoryUI.Refresh();
+        }
     }
 
 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5636520316317547451}
   - component: {fileID: 1694215738768232292}
+  - component: {fileID: 6563743383091619157}
   m_Layer: 0
   m_Name: EpicStalkerStaff
   m_TagString: Untagged
@@ -84,3 +85,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6563743383091619157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8230978150945102699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f17637f3add2a344b57e369ced998c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1.8
+  equipmentData: {fileID: 11400000, guid: 9f29a3dbd174a9740ab4b09277673f83, type: 2}

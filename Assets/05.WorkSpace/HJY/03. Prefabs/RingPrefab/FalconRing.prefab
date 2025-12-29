@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4058468197255277930}
   - component: {fileID: 4404337116615011366}
+  - component: {fileID: -7580208577674301147}
   m_Layer: 0
   m_Name: FalconRing
   m_TagString: Untagged
@@ -84,3 +85,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-7580208577674301147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3067327491863979277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f17637f3add2a344b57e369ced998c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 1.8
+  equipmentData: {fileID: 11400000, guid: a6633be9268a8e34cb9d3c4703f889d6, type: 2}
