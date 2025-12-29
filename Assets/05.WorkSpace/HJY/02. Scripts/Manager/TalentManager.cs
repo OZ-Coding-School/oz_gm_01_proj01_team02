@@ -32,13 +32,13 @@ public class TalentManager : MonoBehaviour
         }
     }
 
-    // ���׷��̵� ���
+    // 업그레이드 비용 계산
     public int GetUpgradeCost(PermanentTalent talent)
     {
         return talent.baseCost + talent.level * talent.costIncrease;
     }
 
-    // ��� ���׷��̵�
+    // 재능 업그레이드
     public bool UpgradeTalent(string talentId)
     {
         PermanentTalent talent = talents.Find(t => t.talentId == talentId);
@@ -57,26 +57,24 @@ public class TalentManager : MonoBehaviour
         return true;
     }
 
-    // ��� ȿ�� ����
+    // 재능 효과 적용
     private void ApplyTalentEffect(PermanentTalent talent)
     {
         switch (talent.talentId)
         {
             case "Attack":
-                PlayerStatManager.Instance.permanentAttackBonus =
-                    talent.level * 2;
+                PlayerStatManager.Instance.permanentAttackBonus = talent.level * 2;
                 break;
 
             case "HP":
-                // // PlayerStatManager.Instance.permanentHpBonus =
-                //     talent.level * 20;
+                // PlayerStatManager.Instance.permanentHpBonus = talent.level * 20;
                 break;
         }
 
         PlayerStatManager.Instance.RecalculateStats();
     }
 
-    // ����
+    // 저장
     private void SaveTalents()
     {
         foreach (var t in talents)
@@ -86,7 +84,7 @@ public class TalentManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    // �ε�
+    // 실행
     private void LoadTalents()
     {
         foreach (var t in talents)
