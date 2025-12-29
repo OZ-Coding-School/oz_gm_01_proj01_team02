@@ -11,7 +11,7 @@ namespace STH.Characters.Player
     /// <summary>
     /// 플레이어 컨트롤러 - 전략 리스트와 능력 리스트를 관리
     /// </summary>
-    public class PlayerController : MonoBehaviour, IDamageable
+    public class PlayerController : MonoBehaviour
     {
         [Header("Stats")]
         [SerializeField] private PlayerStatManager stats;
@@ -24,19 +24,25 @@ namespace STH.Characters.Player
         private List<IFireStrategy> strategies = new List<IFireStrategy>();
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
 
-        private PlayerShoot playerShoot;
+        private PlayerHealth playerHealth;
+        private Animator animator;
 
         private float attackTimer;
-        private bool isDead;
+        public bool IsDead;
 
         public List<SkillData> Skills => skills;
         public List<IFireStrategy> Strategies => strategies;
         public List<IBulletModifier> Modifiers => modifiers;
         public PlayerStatManager Stats => stats;
+        public Animator Animator => animator;
 
         private void Awake()
         {
-            playerShoot = GetComponent<PlayerShoot>();
+            playerHealth = GetComponent<PlayerHealth>();
+            animator = GetComponent<Animator>();
+
+            if (stats == null)
+                stats = FindObjectOfType<PlayerStatManager>();
         }
 
 
@@ -53,7 +59,7 @@ namespace STH.Characters.Player
 
         private void Update()
         {
-            if (isDead) return;
+            if (IsDead) return;
             // attackTimer += Time.deltaTime;
             // if (attackTimer >= 1 / stats.attackSpeed)
             // {
@@ -80,14 +86,6 @@ namespace STH.Characters.Player
             skills.Add(newSkill);
         }
 
-        public void TakeDamage(float amount, bool isCritical = false)
-        {
-            Debug.Log($"Player Take Damage: {amount}, Critical: {isCritical}");
-        }
 
-        public void Die()
-        {
-
-        }
     }
 }

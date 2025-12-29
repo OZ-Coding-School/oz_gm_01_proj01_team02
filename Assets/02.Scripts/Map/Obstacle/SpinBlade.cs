@@ -8,10 +8,12 @@ public class SpinBlade : MonoBehaviour
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] int damage = 50;
 
-    // ·ÎÄÃ ÁÂÇ¥ ±âÁØÀÇ ½ÃÀÛÁ¡°ú ³¡Á¡
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private Vector3 startPos;
     private Vector3 endPos;
     private Vector3 currentTarget;
+
+    private PlayerHealth player;
 
     void Start()
     {
@@ -21,8 +23,8 @@ public class SpinBlade : MonoBehaviour
         startPos = new Vector3(-halfLength, -0.5f, 0);
         endPos = new Vector3(halfLength, -0.5f, 0);
 
-        transform.localPosition = startPos; 
-        currentTarget = endPos;            
+        transform.localPosition = startPos;
+        currentTarget = endPos;
     }
 
     void Update()
@@ -33,10 +35,10 @@ public class SpinBlade : MonoBehaviour
     private void MoveBlade()
     {
         transform.localPosition = Vector3.MoveTowards(transform.localPosition, currentTarget, moveSpeed * Time.deltaTime);
-        
+
         if (Vector3.Distance(transform.localPosition, currentTarget) < 0.01f)
         {
-            
+
             if (currentTarget == endPos) currentTarget = startPos;
             else currentTarget = endPos;
         }
@@ -46,24 +48,11 @@ public class SpinBlade : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player player = other.GetComponent<Player>();
-            if (player != null) 
+            player = other.GetComponent<PlayerHealth>();
+            if (player != null)
             {
                 player.TakeDamage(damage);
-
-                MeshRenderer mr = player.GetComponent<MeshRenderer>();
-                if (mr != null)
-                {
-                    mr.material.color = Color.red;
-                    StartCoroutine(ResetColor(mr));
-                }
             }
         }
-    }
-
-    IEnumerator ResetColor(MeshRenderer mr)
-    {
-        yield return new WaitForSeconds(0.2f);
-        if (mr != null) mr.material.color = Color.white;
     }
 }

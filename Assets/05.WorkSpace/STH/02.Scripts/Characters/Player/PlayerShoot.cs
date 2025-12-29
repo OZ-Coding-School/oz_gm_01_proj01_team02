@@ -27,7 +27,7 @@ namespace STH.Characters.Player
         private PlayerController playerController;
 
         private Rigidbody rb;
-        private Animator anim;
+
 
         private AnimatorStateInfo stateInfo;
 
@@ -45,7 +45,7 @@ namespace STH.Characters.Player
             playerController = GetComponent<PlayerController>();
 
             rb = GetComponent<Rigidbody>();
-            anim = GetComponent<Animator>();
+
         }
 
         private void Start()
@@ -55,15 +55,17 @@ namespace STH.Characters.Player
 
         private void Update()
         {
-            stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+            if (playerController.IsDead) return;
+
+            stateInfo = playerController.Animator.GetCurrentAnimatorStateInfo(0);
 
             if (stateInfo.IsName("Standing Draw Arrow") || stateInfo.IsName("Standing Aim Recoil"))
             {
-                anim.speed = playerController.Stats.attackSpeed;
+                playerController.Animator.speed = playerController.Stats.attackSpeed;
             }
             else
             {
-                anim.speed = playerController.Stats.attackSpeed;
+                playerController.Animator.speed = playerController.Stats.attackSpeed;
             }
             ShootBullet();
         }
@@ -76,12 +78,16 @@ namespace STH.Characters.Player
                 //bullet.transform.localPosition = bulletPos.position;
                 //bullet.transform.forward = player.EnemyDir;
 
-                //anim.SetBool(attackaHash, true);
-                //anim.SetTrigger(attackaHash);
+                //playerController.Animator.SetBool(attackaHash, true);
+                //playerController.Animator.SetTrigger(attackaHash);
 
                 //Debug.Log("sss");
 
                 StartCoroutine(ShootAnimation());
+            }
+            else
+            {
+                StopCoroutine(ShootAnimation());
             }
         }
 
@@ -109,9 +115,6 @@ namespace STH.Characters.Player
             if (bullet != null)
             {
                 bullet.transform.SetLocalPositionAndRotation(position, rotation);
-                Vector3 direction = playerMove.EnemyDir;
-                direction.y = 0;
-                bullet.transform.forward = direction;
                 bullet.Initialize(playerController.Stats, playerController.Modifiers);
             }
         }
@@ -122,13 +125,13 @@ namespace STH.Characters.Player
             if (isSpawning) yield break;
             isSpawning = true;
 
-            anim.SetTrigger(attackaHash);
+            playerController.Animator.SetTrigger(attackaHash);
 
             yield return null;
 
             if (stateInfo.IsName("Standing Draw Arrow"))
             {
-                yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
+                yield return new WaitForSeconds(playerController.Animator.GetCurrentAnimatorStateInfo(0).length);
 
                 CreateBullet();
             }

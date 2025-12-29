@@ -146,10 +146,10 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!136 &2550791110831852854
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -185,8 +185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c787865a1076d4bfeb270f27991cf759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  lifeTime: 10
+  speed: 20
+  lifeTime: 7
   bulletOwner: 0
   targetLayer:
     serializedVersion: 2

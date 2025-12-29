@@ -11,7 +11,7 @@ public abstract class AttackState : EnemyState
         get { return StateEnums.Attack; }
     }
 }
-//±Ù°Å¸® Àû °ø°Ý »óÅÂ
+//ï¿½Ù°Å¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 public class MeleeAttack : AttackState
 {
     public MeleeAttack(EnemyController enemy) : base(enemy) { }
@@ -20,12 +20,18 @@ public class MeleeAttack : AttackState
     {
         if (enemy.Target == null) return;
 
-        float dist = enemy.DistToPlayer();
+        if (enemy.Target.IsDead)
+        {
+            Debug.Log("Target is dead, losing target");
+            enemy.TargetLost();
+            return;
+        }
 
+        float dist = enemy.DistToPlayer();
         if (dist > enemy.MeleeAttackRange || Time.time < enemy.NextAttackTime)
         {
             enemy.ChangeState(enemy.ChaseState);
-            //Debug.Log("±Ù°Å¸®ÃßÀû");
+            return;
         }
     }
 
@@ -34,7 +40,7 @@ public class MeleeAttack : AttackState
         enemy.MeleeAttack();
     }
 }
-//¿ø°Å¸® Àû °ø°Ý »óÅÂ
+//ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 public class RangedAttack : AttackState
 {
     public RangedAttack(EnemyController enemy) : base(enemy) { }
@@ -43,12 +49,18 @@ public class RangedAttack : AttackState
     {
         if (enemy.Target == null) return;
 
-        float dist = enemy.DistToPlayer();
+        if (enemy.Target.IsDead)
+        {
+            Debug.Log("Target is dead, losing target");
+            enemy.TargetLost();
+            return;
+        }
 
+        float dist = enemy.DistToPlayer();
         if (dist > enemy.RangedAttackRange)
         {
             enemy.ChangeState(enemy.ChaseState);
-            Debug.Log("¿ø°Å¸®ÃßÀû");
+            return;
         }
 
         enemy.LookTo();
