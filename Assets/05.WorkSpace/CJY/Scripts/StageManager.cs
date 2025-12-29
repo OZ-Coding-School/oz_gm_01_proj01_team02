@@ -28,42 +28,75 @@ public class StageManager : MonoBehaviour
     public int currentStage { get; private set; } = 1;
     public bool onObstacle { get; private set; } = true;
 
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+    private void Start()
+    {
+        chapter = SceneManager.GetActiveScene().name;
+        InitStageClearCount();
+        InitUI();
+    }
+
     private void OnEnable()
     {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
-        if (instance == null) instance = this;
-        //else
-        //{
-        //    Destroy(gameObject);
-        //    return;
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
 
-        //}
-        ////if (instance != null && instance != this)
-        ////{
-        ////    Destroy(gameObject); 
-        ////    return; 
-        ////}
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        chapter = scene.name;
 
-        //instance = this;
 
-        if (StageUIManager.Instance != null) 
+        InitUI();
+        if (scene.name != "TitleScene(kms)")
         {
-            this.clearPanel = StageUIManager.Instance.clearPanel;
-            this.joyStick = StageUIManager.Instance.joyStick;
-            this.chapterTxt = StageUIManager.Instance.chapter;
-            this.stageNumTxt = StageUIManager.Instance.stageNum;
+            InitStageClearCount();
+            ForceReturnEnemyPool();
+            StartCoroutine(DelayInitClearPanel());
         }
+        
+    }
 
-        chapter = SceneManager.GetActiveScene().name;
-        TGM = FindObjectOfType<TestGameManager>();
-        Debug.Log("현재 스테이지 : " + currentStage);
+    private void ForceReturnEnemyPool()
+    {
+        GameObject enemyPoolGroup = GameObject.Find("Enemy_Pool");
 
+        if (enemyPoolGroup != null) 
+        {
+            EnemyController[] allEnemies = enemyPoolGroup.GetComponentsInChildren<EnemyController>(true);
+            foreach (var enemy in allEnemies) 
+            {
+                if(GameManager.Pool != null)
+                {
+                    GameManager.Pool.ReturnPool(enemy);
+                }
+            }
+        }
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
+            Debug.Log(chapter);
+            Debug.Log(TGM.coin);
+            Debug.Log(TGM.exp);
            GameManager.GameOver();
         }
     }
@@ -92,17 +125,53 @@ public class StageManager : MonoBehaviour
     public void InitStageClearCount()
     {
         currentStage = 1;
+        StartCoroutine(DelayInit());
+        Debug.Log("스테이지 1로 초기화 완료");
     }
 
     public void OnClearPanel(int coin, int exp, int stage, int chapter)
     {
-        chapterTxt.text = "Chapter "+ chapter.ToString();
-        stageNumTxt.text = stage.ToString();
-        Debug.Log(clearPanel is null);
+        if (clearPanel == null) InitUI();
 
-        onClearPanel = !onClearPanel;
-        clearPanel.SetActive(onClearPanel);
-        joyStick.SetActive(!onClearPanel);
+        if (clearPanel != null) 
+        {
+            chapterTxt.text = "Chapter " + chapter.ToString();
+            stageNumTxt.text = stage.ToString();
+
+            onClearPanel = !onClearPanel;
+            clearPanel.SetActive(onClearPanel);
+            joyStick.SetActive(!onClearPanel);
+        }
+
     }
 
+    private void InitUI()
+    {
+        if (StageUIManager.Instance != null)
+        {
+            this.clearPanel = StageUIManager.Instance.clearPanel;
+            this.joyStick = StageUIManager.Instance.joyStick;
+            this.chapterTxt = StageUIManager.Instance.chapter;
+            this.stageNumTxt = StageUIManager.Instance.stageNum;
+        }
+
+        TGM = FindObjectOfType<TestGameManager>();
+        Debug.Log("현재 스테이지 : " + currentStage);
+    }
+
+    IEnumerator DelayInitClearPanel()
+    {
+        yield return null;
+        if (clearPanel != null)
+        {
+            ClearPanel cp = clearPanel.GetComponent<ClearPanel>();
+            cp.InitLootingBox();
+        }
+    }
+
+    IEnumerator DelayInit()
+    {
+        yield return null;
+        TGM.InitCoinExp();
+    }
 }

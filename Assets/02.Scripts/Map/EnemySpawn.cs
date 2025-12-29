@@ -17,7 +17,6 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] private List<EnemyController> meleeEnemyPrefab;
     [SerializeField] private List<EnemyController> rangedEnemyPrefab;
     [SerializeField] private List<EnemyController> bossPrefab;
-    //[SerializeField] private Boss bossPrefab;
     [SerializeField] LayerMask[] layerMasks;
 
     [Header("Enemy Spawn Point Explore Setting")]
@@ -60,6 +59,7 @@ public class EnemySpawn : MonoBehaviour
 
     public void Spawn(bool boss)
     {
+        Debug.Log($"Spawn()의 boss값 : {boss}");
         StartCoroutine(DelaySpawn(boss));
     }
 
@@ -82,6 +82,7 @@ public class EnemySpawn : MonoBehaviour
 
     private void GoEnemySpawn(Vector3 pos, bool boss)
     {
+        Debug.Log($"Spawn()의 boss값 : {boss}");
         Collider[] longSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[0]);
         Collider[] shortSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[1]);
         Collider[] randomSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[2]);
@@ -111,7 +112,6 @@ public class EnemySpawn : MonoBehaviour
                 GetEnemy(pos, EnemyType.Boss, ref count, 1);
             }
         }
-
     }
 
     private void GetEnemy(Vector3 pos, EnemyType type, ref int count, int max)
@@ -136,7 +136,10 @@ public class EnemySpawn : MonoBehaviour
                 enemy = Random.value > 0.5f ? GameManager.Pool.GetFromPool(meleeEnemyPrefab[randMon1]) : GameManager.Pool.GetFromPool(rangedEnemyPrefab[randMon2]);
                 break;
             case EnemyType.Boss:
+                Debug.Log("보스소환");
                 int currentChapter = GameManager.Data.playData._chapter;
+                var targetPrefab = bossPrefab[currentChapter - 1].gameObject;
+                //Debug.Log($"요청하는 보스 프리팹이름 : {targetPrefab.name");
                 boss = GameManager.Pool.GetFromPool(bossPrefab[currentChapter - 1]);
                 break;
         }
@@ -145,11 +148,13 @@ public class EnemySpawn : MonoBehaviour
         if (boss != null && enemy == null) EnemyInit(type, pos, null, boss);
 
         count++;
+        Debug.Log(count);
     }
 
     IEnumerator DelaySpawn(bool boss)
     {
         yield return new WaitForSeconds(0.1f);
+        Debug.Log($"Spawn()의 boss값 : {boss}");
         GoEnemySpawn(DetectStandardPoint(), boss);
     }
 

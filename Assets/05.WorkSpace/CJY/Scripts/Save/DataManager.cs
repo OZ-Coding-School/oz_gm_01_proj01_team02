@@ -67,13 +67,6 @@ public class DataManager : MonoBehaviour
         return result;
     }
 
-    public void InitData()
-    {
-        playData._coin = 0;
-        playData._exp = 0;
-        playData._stage = 1;
-        playData._chapter = 1;
-    }
 
     public void AddData(int coin, int exp, int stage, int chapter)
     {

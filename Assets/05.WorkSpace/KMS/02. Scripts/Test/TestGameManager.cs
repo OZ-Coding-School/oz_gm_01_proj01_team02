@@ -27,7 +27,6 @@ public class TestGameManager : MonoBehaviour
     public int coin { get; private set; }
     
 
-   
     private void Awake()
     {
         if(Instance == null) Instance = this;
