@@ -30,6 +30,7 @@ public class SegmentedHpBar : MonoBehaviour
     private Coroutine hpAnimCoroutine;
 
     public PlayerHealth playerHp;
+    private bool isFirstUpdate = true;
 
 
     private bool isInitialized = false; 
@@ -38,11 +39,12 @@ public class SegmentedHpBar : MonoBehaviour
     {
         if (playerHp == null)
         playerHp = FindObjectOfType<PlayerHealth>();
+        
     }
 
     private void Start()
     {
-
+        Debug.Log($"[SegmentedHpBar] playerHp InstanceID: {playerHp.GetInstanceID()}");
 
         fillUnits = new Image[segmentCount];
         backUnits = new Image[segmentCount];
@@ -60,7 +62,15 @@ public class SegmentedHpBar : MonoBehaviour
         if (playerHp != null)
         {
             
-            OnHpChanged(playerHp.CurrentHp, playerHp.MaxHp, true);
+            targetHp = playerHp.CurrentHp;
+            targetMaxHp = playerHp.MaxHp;
+
+            displayHp = targetHp;
+            displayBackHp = targetHp;
+
+            UpdateUIWithValue(displayHp, displayBackHp);
+
+            isFirstUpdate = false;
 
             playerHp.OnHpChanged += OnHpChangedEvent;
         }
@@ -75,21 +85,26 @@ public class SegmentedHpBar : MonoBehaviour
         playerHp.OnHpChanged -= OnHpChangedEvent;
     }
 
-    private void OnHpChanged(float current, float max, bool instant = false)
+    private void OnHpChanged(float current, float max)
     {
         if (!isInitialized) return;
 
         targetHp = current;
         targetMaxHp = max;
 
+        Debug.Log($"displayHp: {displayHp}, targetHp: {targetHp}");
+
+
         if (hpAnimCoroutine != null)
         StopCoroutine(hpAnimCoroutine);
 
-        if (instant)
+        if (isFirstUpdate)
         {
             displayHp = targetHp;
             displayBackHp = targetHp;
             UpdateUIWithValue(displayHp, displayBackHp);
+
+            isFirstUpdate = false;
         }
         else
         {
@@ -99,7 +114,8 @@ public class SegmentedHpBar : MonoBehaviour
 
     private void OnHpChangedEvent(float current, float max)
     {
-        OnHpChanged(current, max, false);
+        OnHpChanged(current, max);
+        
     }
 
     
@@ -124,6 +140,13 @@ public class SegmentedHpBar : MonoBehaviour
 
     void UpdateUIWithValue(float frontamount, float backAmount)
     {
+        if (targetMaxHp <= 0)
+        {
+            Debug.LogWarning("targetMaxHp가 0 이하입니다. UI 업데이트 중단");
+            return;
+        }
+
+
         float frontRatio = frontamount / targetMaxHp;
         float backRatio = backAmount / targetMaxHp;
 
