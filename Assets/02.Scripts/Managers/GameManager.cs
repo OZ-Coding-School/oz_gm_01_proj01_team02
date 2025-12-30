@@ -10,7 +10,6 @@ public class GameManager
     private static StageManager _stage;
     private static DataManager _data;
     private static TestGameManager _testgamemanager;
-    private static PlayerStatManager _playerstat;
 
     private static void Init()
     {
@@ -74,14 +73,6 @@ public class GameManager
         }
     }
 
-    public static PlayerStatManager PlayerStatManager
-    {
-        get
-        {
-            CreateManager(ref _playerstat, "PlayerStatManager");
-            return _playerstat;
-        }
-    }
 
     public static void PlayerisDead()
     {
