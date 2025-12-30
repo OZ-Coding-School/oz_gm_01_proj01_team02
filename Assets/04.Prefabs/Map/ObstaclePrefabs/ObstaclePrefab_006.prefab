@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 3904531998342887916}
   - component: {fileID: 1920436433737233743}
   - component: {fileID: 4412826483945884892}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1775,6 +1775,14 @@ PrefabInstance:
     - target: {fileID: 8263560130331315326, guid: 8de8ceead497241adbd1c8ea3c2f50d1, type: 3}
       propertyPath: m_Name
       value: obstacle spikewall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263560130331315326, guid: 8de8ceead497241adbd1c8ea3c2f50d1, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8263560130331315326, guid: 8de8ceead497241adbd1c8ea3c2f50d1, type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 8783638324088329924, guid: 8de8ceead497241adbd1c8ea3c2f50d1, type: 3}
       propertyPath: m_LocalPosition.x

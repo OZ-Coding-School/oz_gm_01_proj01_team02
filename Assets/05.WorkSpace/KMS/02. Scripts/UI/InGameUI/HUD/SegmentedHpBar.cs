@@ -61,7 +61,6 @@ public class SegmentedHpBar : MonoBehaviour
 
         if (playerHp != null)
         {
-
             targetHp = playerHp.CurrentHp;
             targetMaxHp = playerHp.MaxHp;
 
@@ -102,7 +101,6 @@ public class SegmentedHpBar : MonoBehaviour
 
         if (hpAnimCoroutine != null)
             StopCoroutine(hpAnimCoroutine);
-
         if (isFirstUpdate)
         {
             displayHp = targetHp;
@@ -120,7 +118,6 @@ public class SegmentedHpBar : MonoBehaviour
     private void OnHpChangedEvent(float current, float max)
     {
         OnHpChanged(current, max);
-
     }
 
 
