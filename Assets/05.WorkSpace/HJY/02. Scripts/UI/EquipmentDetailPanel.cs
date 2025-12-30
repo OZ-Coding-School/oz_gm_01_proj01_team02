@@ -84,7 +84,7 @@ public class EquipmentDetailPanel : MonoBehaviour
         playerStatUI?.Refresh();
 
         // 내 컬렉션 UI 갱신
-        inventoryUI?.RefreshAll();
+        //inventoryUI?.RefreshAll();
 
         // 버튼 상태 갱신
         RefreshButton();

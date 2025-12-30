@@ -21,7 +21,12 @@ public class TitleManager : MonoBehaviour
 
     void Start()
     {
- 
+        // 추가한 코드
+        if (CoinManager.Instance != null && playerData != null)
+        {
+            CoinManager.Instance.LoadCoin(playerData);
+        }
+
         if (playerData.selectedMap != null)
         {
             playerData.OnSelectedMapChanged += OnMapSelected;
@@ -43,7 +48,7 @@ public class TitleManager : MonoBehaviour
         }
     }
 
-    private void UpdateUI()
+    public void UpdateUI() // public으로 보호 수준 변경
     {
         if (coinText != null)
         coinText.text = playerData.totalCoin.ToString();

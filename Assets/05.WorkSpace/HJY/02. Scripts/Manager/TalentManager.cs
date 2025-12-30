@@ -6,6 +6,9 @@ public class TalentManager : MonoBehaviour
 {
     public static TalentManager Instance;
 
+    [Header("Data")]
+    public PlayerData playerData; // PlayerData 참조 추가
+
     [System.Serializable]
     public class PermanentTalent
     {
@@ -47,14 +50,25 @@ public class TalentManager : MonoBehaviour
 
         int cost = GetUpgradeCost(talent);
 
-        if (!CoinManager.Instance.UseCoin(cost))
+        // PlayerData에서 코인 차감
+        if (playerData == null) return false;
+        if (!playerData.UseCoin(cost))
             return false;
+
+        // 차감된 코인 저장
+        if (CoinManager.Instance != null)
+            CoinManager.Instance.SaveCoin(playerData);
 
         talent.level++;
         SaveTalents();
 
         ApplyTalentEffect(talent);
+
+        // 필요 시 UI 갱신 (타이틀 씬 한정)
+        FindObjectOfType<TitleManager>()?.UpdateUI();
+
         return true;
+
     }
 
     // 재능 효과 적용
