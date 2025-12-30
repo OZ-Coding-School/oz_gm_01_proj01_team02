@@ -163,7 +163,6 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         //���� ���¿� �´� UpdateState�� ����
         currentState.UpdateState();
-        Debug.Log($"Update {currentState.StateType}");
     }
     private void FixedUpdate()
     {

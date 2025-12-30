@@ -35,7 +35,6 @@ public class PlayerMove : MonoBehaviour
     {
         if (!playerController.IsDead && (joystick.JoyVector.x != 0 || joystick.JoyVector.y != 0))
         {
-            Debug.Log($"playerController.IsDead {playerController.IsDead}");
             rb.velocity = new Vector3(joystick.JoyVector.x * moveSpeed, rb.velocity.y, joystick.JoyVector.y * moveSpeed);
             rb.rotation = Quaternion.LookRotation(new Vector3(0, joystick.JoyVector.y, 0));
 
