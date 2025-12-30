@@ -33,13 +33,13 @@ public class SegmentedHpBar : MonoBehaviour
     private bool isFirstUpdate = true;
 
 
-    private bool isInitialized = false; 
+    private bool isInitialized = false;
 
     private void Awake()
     {
         if (playerHp == null)
-        playerHp = FindObjectOfType<PlayerHealth>();
-        
+            playerHp = FindObjectOfType<PlayerHealth>();
+
     }
 
     private void Start()
@@ -57,11 +57,10 @@ public class SegmentedHpBar : MonoBehaviour
         }
 
         isInitialized = true;
-    
+
 
         if (playerHp != null)
         {
-            
             targetHp = playerHp.CurrentHp;
             targetMaxHp = playerHp.MaxHp;
 
@@ -74,10 +73,10 @@ public class SegmentedHpBar : MonoBehaviour
 
             playerHp.OnHpChanged += OnHpChangedEvent;
         }
-    
+
     }
 
-    
+
 
     private void OnDisable()
     {
@@ -91,13 +90,22 @@ public class SegmentedHpBar : MonoBehaviour
 
         targetHp = current;
         targetMaxHp = max;
+        
+        if (hpText != null)
+            {
+                hpText.text = $"{Mathf.CeilToInt(targetHp)}";
+            }
+
+        if (hpText != null)
+        {
+            hpText.text = $"{Mathf.CeilToInt(targetHp)}";
+        }
 
         Debug.Log($"displayHp: {displayHp}, targetHp: {targetHp}");
 
 
         if (hpAnimCoroutine != null)
-        StopCoroutine(hpAnimCoroutine);
-
+            StopCoroutine(hpAnimCoroutine);
         if (isFirstUpdate)
         {
             displayHp = targetHp;
@@ -115,10 +123,9 @@ public class SegmentedHpBar : MonoBehaviour
     private void OnHpChangedEvent(float current, float max)
     {
         OnHpChanged(current, max);
-        
     }
 
-    
+
     IEnumerator AnimateHp()
     {
         while (!Mathf.Approximately(displayHp, targetHp) || !Mathf.Approximately(displayBackHp, displayHp))
@@ -126,7 +133,7 @@ public class SegmentedHpBar : MonoBehaviour
             displayHp = Mathf.MoveTowards(displayHp, targetHp, hpAnimSpeed * Time.deltaTime);
 
             displayBackHp = Mathf.MoveTowards(displayBackHp, displayHp, backAnimSpeed * Time.deltaTime);
-        
+
 
             UpdateUIWithValue(displayHp, displayBackHp);
             yield return null;
@@ -142,7 +149,7 @@ public class SegmentedHpBar : MonoBehaviour
     {
         if (targetMaxHp <= 0)
         {
-            Debug.LogWarning("targetMaxHp가 0 이하입니다. UI 업데이트 중단");
+            Debug.LogWarning("targetMaxHp�� 0 �����Դϴ�. UI ������Ʈ �ߴ�");
             return;
         }
 
@@ -154,7 +161,7 @@ public class SegmentedHpBar : MonoBehaviour
         for (int i = 0; i < segmentCount; i++)
         {
             int index = segmentCount - 1 - i;
-            
+
 
             float unitStart = (float)index / segmentCount;
             float unitEnd = (float)(index + 1) / segmentCount;
@@ -165,10 +172,7 @@ public class SegmentedHpBar : MonoBehaviour
             float backScale = Mathf.Clamp01((backRatio - unitStart) / (unitEnd - unitStart));
             backUnits[index].transform.localScale = new Vector3(backScale, 1.0f, 1.0f);
 
-            if (hpText != null)
-            {
-                hpText.text = $"{Mathf.CeilToInt(frontamount)}";
-            }
+
         }
     }
 }

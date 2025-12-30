@@ -25,6 +25,7 @@ public class TestGameManager : MonoBehaviour
     public int level = 1;
     public int maxLevel = 10;
     public int coin { get; private set; }
+    [SerializeField] private DmgText dmgTextPrefab;
     
 
     private void Awake()
@@ -37,6 +38,11 @@ public class TestGameManager : MonoBehaviour
         exp = 0;
         coin = 0;
         
+    }
+
+    private void Start()
+    {
+        PoolManager.pool_instance.CreatePool(dmgTextPrefab, 30);
     }
 
  

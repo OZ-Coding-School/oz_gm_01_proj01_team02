@@ -21,6 +21,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private bool canTakeDamage = true;
 
+    [SerializeField] private DmgText dmgTextPrefab;
+
     private void Awake()
     {
 
@@ -43,16 +45,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.Q))
-        // {
-        //     TakeDamage(50);
-        // }
-
-        // if (Input.GetKeyDown(KeyCode.H))
-        // {
-        //     Heal(30);
-        // }
-
+        
     }
 
     private void OnEnable()
@@ -90,6 +83,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         currentHp -= amount;
         currentHp = Mathf.Clamp(currentHp, 0, MaxHp);
         NotifyHpChanged();
+
+        if (dmgTextPrefab != null)
+        {
+            DmgText dmgText = PoolManager.pool_instance.GetFromPool(dmgTextPrefab);
+            if (dmgText != null)
+            {
+                Vector3 worldPos = transform.position + Vector3.up * 2.0f;
+                dmgText.gameObject.SetActive(true);
+                dmgText.Play(worldPos, amount, isCritical);
+            }
+        }
 
         if (currentHp <= 0)
         {

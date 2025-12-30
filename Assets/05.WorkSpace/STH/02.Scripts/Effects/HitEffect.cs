@@ -38,6 +38,9 @@ public class HitEffect : MonoBehaviour
         renderers = GetComponentsInChildren<Renderer>();
         propBlock = new MaterialPropertyBlock();
 
+    }
+    private void OnEnable()
+    {
         if (cameraTransform == null)
         {
             cameraTransform = Camera.main.transform;

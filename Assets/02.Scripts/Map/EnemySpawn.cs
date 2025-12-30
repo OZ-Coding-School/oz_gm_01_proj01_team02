@@ -82,7 +82,7 @@ public class EnemySpawn : MonoBehaviour
 
     private void GoEnemySpawn(Vector3 pos, bool boss)
     {
-        Debug.Log($"Spawn()의 boss값 : {boss}");
+        
         Collider[] longSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[0]);
         Collider[] shortSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[1]);
         Collider[] randomSpawnPoint = Physics.OverlapSphere(pos, distanceToStandard, layerMasks[2]);
@@ -138,10 +138,35 @@ public class EnemySpawn : MonoBehaviour
             case EnemyType.Boss:
                 Debug.Log("보스소환");
                 int currentChapter = GameManager.Data.playData._chapter;
-                var targetPrefab = bossPrefab[currentChapter - 1].gameObject;
-                //Debug.Log($"요청하는 보스 프리팹이름 : {targetPrefab.name");
-                boss = GameManager.Pool.GetFromPool(bossPrefab[currentChapter - 1]);
+                var targetPrefab = bossPrefab[currentChapter - 1];
+                List<EnemyController> wrongPicks = new List<EnemyController>();
+
+                int attempts = 30;
+                while (attempts > 0) 
+                {
+                    EnemyController pick = GameManager.Pool.GetFromPool(targetPrefab);
+                    if (pick == null) break;
+                    if(pick.GetComponent<Boss>() != null)
+                    {
+                        boss = pick;
+                        Debug.Log("진짜 보스 소환 성공");
+                        break;
+                    }
+                    else
+                    {
+                        wrongPicks.Add(pick);
+                        attempts--;
+                    }
+                }
+
+                foreach(var wrong in wrongPicks)
+                {
+                    GameManager.Pool.ReturnPool(wrong);
+                }
                 break;
+                //Debug.Log($"요청하는 보스 프리팹이름 : {targetPrefab.name}");
+                //boss = GameManager.Pool.GetFromPool(bossPrefab[currentChapter - 1]);
+                //break;
         }
         if (enemy == null && boss == null) return;
         if (enemy != null && boss == null) EnemyInit(type, pos, enemy, null);

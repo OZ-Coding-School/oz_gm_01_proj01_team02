@@ -10,6 +10,7 @@ public class Devil : MonoBehaviour
     private void OnEnable()
     {
         devilPanel = FindObjectOfType<DevilUIManager>(true);
+        gotIt = false;
     }
     public void ReturnPool()
     {

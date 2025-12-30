@@ -85,6 +85,9 @@ public class EnemyController : MonoBehaviour, IDamageable
     private static readonly int isMovingHash = Animator.StringToHash("IsMoving");
     private AnimatorStateInfo stateInfo;
 
+    [SerializeField] private DmgText dmgTextPrefab;
+    [SerializeField] private Transform dmgTextPosition;
+
     public Vector3 BeforeTargetPos
     {
         get { return beforeTargetPos; }
@@ -409,7 +412,6 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     public void ReturnPool()
     {
-        GameManager.Pool.ReturnPool(this);
         bool hasBoss = gameObject.TryGetComponent<Boss>(out _);
         if (hasBoss)
         {
@@ -418,6 +420,7 @@ public class EnemyController : MonoBehaviour, IDamageable
                 GameManager.ClearChapter();
             }
         }
+        GameManager.Pool.ReturnPool(this);
     }
 
     IEnumerator DieCo()
@@ -469,6 +472,17 @@ public class EnemyController : MonoBehaviour, IDamageable
             }
         }
 
+        if (dmgTextPrefab != null)
+        {
+            DmgText dmgText = PoolManager.pool_instance.GetFromPool(dmgTextPrefab);
+
+            if (dmgText != null)
+            {
+                Vector3 worldPos = dmgTextPosition.position;
+                dmgText.gameObject.SetActive(true);
+                dmgText.Play(worldPos, amount, isCritical);
+            }
+        }
         if (currentHp <= 0)
         {
             currentHp = 0;

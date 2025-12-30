@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: MapCard
   m_EditorClassIdentifier: 
   mapName: "1. \uC2E0\uB85D\uC758 \uB300\uCD08\uC6D0"
-  sceneName: Stage_01_Scene(final)
+  sceneName: Stage_01_Scene
   mapSprite: {fileID: 21300000, guid: f6ff19a1c77b226408afaeffe0b84d61, type: 3}

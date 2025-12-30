@@ -8,6 +8,7 @@ public class EquipmentSlotUI : MonoBehaviour
 
     private EquipmentData equipment;
 
+
     // 장비 데이터 세팅
     public void SetEquipment(EquipmentData data)
     {
@@ -17,7 +18,7 @@ public class EquipmentSlotUI : MonoBehaviour
             iconImage.sprite = equipment.icon; // 장비 데이터의 아이콘 표시
         }
     }
-
+     
     // 슬롯 클릭 시 장비 설명 패널 열기
     public void OnClickSlot()
     {
@@ -26,4 +27,5 @@ public class EquipmentSlotUI : MonoBehaviour
             EquipmentDetailPanel.Instance.Show(equipment);
         }
     }
+
 }

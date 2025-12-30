@@ -41,7 +41,7 @@ public class SpecialLevelUp : MonoBehaviour
     public void ADSpawn(int nowStage)
     {
         canAngelSpawn = nowStage % GameManager.Stage.Select("stage") == GameManager.Stage.Select("angel");
-        canDevilSpawn = nowStage % GameManager.Stage.Select("stage") == 0;
+        canDevilSpawn = nowStage % GameManager.Stage.Select("stage") == 0 && nowStage < GameManager.Stage.Select("finish");
 
         foreach (var point in spawnPoints) //find -> update에서 사용 금지
         {
