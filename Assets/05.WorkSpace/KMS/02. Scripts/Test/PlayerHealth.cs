@@ -28,7 +28,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             player = GetComponent<PlayerController>();
         hitEffect = GetComponent<HitEffect>();
 
-        MaxHp = PlayerStatManager.Instance.maxHp;
+        MaxHp = GameManager.PlayerStatManager.maxHp;
         currentHp = MaxHp;
     }
 
