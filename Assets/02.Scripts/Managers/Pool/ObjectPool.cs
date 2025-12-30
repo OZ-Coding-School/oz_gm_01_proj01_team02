@@ -67,7 +67,8 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
         
         foreach (Transform child in Root)
         {
-            child.gameObject.SetActive(false);
+            //child.gameObject.SetActive(false);
+            Object.Destroy(child.gameObject);
 
             T component = child.GetComponent<T>();
             if(component != null) pool.Enqueue(component);

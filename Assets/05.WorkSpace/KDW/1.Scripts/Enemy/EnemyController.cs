@@ -373,7 +373,6 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     public void ReturnPool()
     {
-        GameManager.Pool.ReturnPool(this);
         bool hasBoss = gameObject.TryGetComponent<Boss>(out _);
         if (hasBoss)
         {
@@ -382,6 +381,7 @@ public class EnemyController : MonoBehaviour, IDamageable
                 GameManager.ClearChapter();
             }
         }
+        GameManager.Pool.ReturnPool(this);
     }
 
     IEnumerator DieCo()
