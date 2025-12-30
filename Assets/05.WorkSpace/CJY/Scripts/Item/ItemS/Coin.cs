@@ -34,7 +34,7 @@ public class Coin : ItemBase
         }
 
         GameManager.Data.collectedItem[cleanName] = TestGameManager.Instance.coin;
-        GameManager.Data.collectedItem["exp"] = TestGameManager.Instance.exp;
+        GameManager.Data.collectedItem["exp"] = Mathf.FloorToInt(TestGameManager.Instance.coin*0.1f);
 
         Vector3 playPosition = Camera.main.transform.position;
 

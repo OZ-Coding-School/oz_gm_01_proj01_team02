@@ -66,6 +66,7 @@ public class StageManager : MonoBehaviour
         InitUI();
         if (scene.name != "TitleScene(kms)")
         {
+            onObstacle = true;
             InitStageClearCount();
             ForceReturnEnemyPool();
             StartCoroutine(DelayInitClearPanel());

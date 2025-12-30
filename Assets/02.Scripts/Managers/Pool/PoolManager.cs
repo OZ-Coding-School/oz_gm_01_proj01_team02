@@ -98,20 +98,27 @@ public class PoolManager : MonoBehaviour
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
     {
-        ClearPool();
+        //ClearPool(); // 원래 코드
+        if (scene.name == "TitleScene(kms)")
+        {
+            ClearPool();
+        }
     }
 
     public void ClearPool()
     {
         foreach (var entry in pools)
         {
-
             if (entry.Value is IObjectPool pool) 
             {
-                pool.ReturnAllObjects(); 
+                pool.ReturnAllObjects();
             }
         }
+        // 추가
+        pools.Clear();
+        // 추가 
 
         Debug.Log("모든 풀이 초기화 되었음.");
     }
+
 }
