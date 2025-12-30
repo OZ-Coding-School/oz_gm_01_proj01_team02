@@ -95,9 +95,6 @@ public class StageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            Debug.Log(chapter);
-            Debug.Log(TGM.coin);
-            Debug.Log(TGM.exp);
            GameManager.GameOver();
         }
     }

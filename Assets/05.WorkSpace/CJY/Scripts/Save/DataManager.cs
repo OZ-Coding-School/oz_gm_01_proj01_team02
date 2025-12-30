@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 [System.Serializable]
@@ -14,16 +15,26 @@ public class PlayData
     public int _exp;
     public int _stage;
     public int _chapter;
+
+    // ↓↓↓사용 안하고 있었던듯?↓↓↓
     public Dictionary<int, object> _equipment = new Dictionary<int, object>(); //-> 장비가 완성되야 추가가능
+}
+
+public class EquipmentsData
+{
+    public Dictionary<string, int> equipmentsData = new Dictionary<string, int>();
 }
 
 public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
     public PlayData playData = new();
+    public EquipmentsData equipmentData = new();
 
     private string path;
     private string fileName = "/save";
+    private string path_equip;
+    private string fileName_equip = "/save_equipments";
     private string keyWord = "evzxkjnv158ezxcvf^%2agasdf687gb3%g7nbvauoi3@8g8fabn^%zxncvkg18aaetx";
 
     public Dictionary<string, int> collectedItem = new Dictionary<string, int>(); // 획득한 아이템 이름과 갯수.(코인, 경험치 포함)
@@ -35,8 +46,10 @@ public class DataManager : MonoBehaviour
         instance = this;
 
         path = Application.persistentDataPath + fileName;
+        path_equip = Application.persistentDataPath + fileName_equip;
         Debug.Log(path);
     }
+    
 
     public void Save()
     {
@@ -76,6 +89,7 @@ public class DataManager : MonoBehaviour
         playData._chapter = chapter;
 
         Save();
+        SaveEquipments();
         Load();
     }
 
@@ -85,5 +99,30 @@ public class DataManager : MonoBehaviour
         count += playData._equipment.Count;
 
         return count;
+    }
+
+    public void SaveEquipments()
+    {
+        string data = JsonUtility.ToJson(equipmentData);
+
+        File.WriteAllText(path_equip, EncryptAndDecrypt(data));
+    }
+
+    public void LoadEquipments() // 장비데이터 CSV Load 해오는 메서드
+    {
+        if (!File.Exists(path_equip))
+        {
+            Save();
+        }
+
+        string data = File.ReadAllText(path_equip);
+        equipmentData = JsonUtility.FromJson<EquipmentsData>(EncryptAndDecrypt(data));
+    }
+
+    public void GetInGameEquipmentInfo()
+    {
+        SaveEquipments();
+        LoadEquipments();
+        
     }
 }
