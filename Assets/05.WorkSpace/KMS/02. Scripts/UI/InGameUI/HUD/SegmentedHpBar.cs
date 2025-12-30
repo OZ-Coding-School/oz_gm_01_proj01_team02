@@ -132,7 +132,6 @@ public class SegmentedHpBar : MonoBehaviour
         {
             int index = segmentCount - 1 - i;
             
-
             float unitStart = (float)index / segmentCount;
             float unitEnd = (float)(index + 1) / segmentCount;
 
