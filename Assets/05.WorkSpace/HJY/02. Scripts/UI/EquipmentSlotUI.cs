@@ -1,54 +1,29 @@
 
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-public class EquipmentSlotUI: MonoBehaviour
+public class EquipmentSlotUI : MonoBehaviour
 {
-    public Image iconImage;
-    public TextMeshProUGUI nameText;
-    public TextMeshProUGUI statText;
-    public GameObject equippedMark;
-    
+    public Image iconImage;   // 장비 아이콘만 표시
+
     private EquipmentData equipment;
-    private InventoryUI inventoryUI;
 
-    private void Awake()
-    {
-        inventoryUI = GetComponentInParent<InventoryUI>();
-    }
-
+    // 장비 데이터 세팅
     public void SetEquipment(EquipmentData data)
     {
         equipment = data;
-        iconImage.sprite = equipment.icon;
-        RefreshUI();
-    }
-
-    public void RefreshUI()
-    {
-        if (equipment == null) return;
-
-        nameText.text = equipment.displayName;
-        statText.text = GetStatText();
-
-        int index = (int)equipment.type;
-        equippedMark.SetActive(InventoryManager.Instance.equippedItems[index] == equipment);
-    }
-
-    private string GetStatText()
-    {
-        string result = "";
-        foreach (var stat in equipment.stats)
+        if (iconImage != null && equipment != null)
         {
-            result += $"{stat.statType} +{stat.value}\n";
+            iconImage.sprite = equipment.icon; // 장비 데이터의 아이콘 표시
         }
-        return result;
     }
 
+    // 슬롯 클릭 시 장비 설명 패널 열기
     public void OnClickSlot()
     {
-        EquipmentDetailPanel.Instance.Show(equipment);
+        if (equipment != null)
+        {
+            EquipmentDetailPanel.Instance.Show(equipment);
+        }
     }
 }
-

@@ -47,13 +47,5 @@ public class InventoryUI : MonoBehaviour
             slots.Add(slot);
         }
     }
-
-    public void RefreshAll()
-    {
-        foreach (var slot in slots)
-        {
-            slot.RefreshUI();
-        }
-    }
 }
 

@@ -75,29 +75,39 @@ public class PlayerStatManager : MonoBehaviour
             return;
         }
 
+        var inv = InventoryManager.Instance;
+
         // 장비 스탯
-        if (InventoryManager.Instance.equippedItems != null)
+        if (inv.equippedWeapon != null)
+            ApplyStats(inv.equippedWeapon.stats);
+
+        if (inv.equippedArmor != null)
+            ApplyStats(inv.equippedArmor.stats);
+
+        if (inv.equippedRings != null)
         {
-            foreach (var item in InventoryManager.Instance.equippedItems)
+            foreach (var ring in inv.equippedRings)
             {
-                if (item == null) continue;
-                ApplyStats(item.stats);
+                if (ring == null) continue;
+                ApplyStats(ring.stats);
             }
         }
 
+
         // 인게임 재능 스탯
-        if (InventoryManager.Instance.ownedTalents != null)
+        if (inv.ownedTalents != null)
         {
-            foreach (var talent in InventoryManager.Instance.ownedTalents)
+            foreach (var talent in inv.ownedTalents)
             {
                 if (talent == null || talent.level <= 0) continue;
 
                 StatValue stat = talent.data.statPerLevel;
-                stat.value *= talent.level;
+                float totalValue = stat.value * talent.level;
 
-                ApplyStat(stat);
+                ApplyStat(new StatValue { statType = stat.statType, value = totalValue });
             }
         }
+
         // 스탯이 바뀐 걸 알림!
         OnStatChanged?.Invoke();
     }
