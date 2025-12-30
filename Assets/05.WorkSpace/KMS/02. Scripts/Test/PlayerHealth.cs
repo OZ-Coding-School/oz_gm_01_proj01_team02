@@ -28,13 +28,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             player = GetComponent<PlayerController>();
         hitEffect = GetComponent<HitEffect>();
 
+        MaxHp = PlayerStatManager.Instance.maxHp;
+        currentHp = MaxHp;
 
+        Debug.Log($"[PlayerHealth Awake] InstanceID: {GetInstanceID()}");
     }
 
     void Start()
     {
-        MaxHp = PlayerStatManager.Instance.maxHp;
-        currentHp = MaxHp;
+        
+
+        
     }
 
     private void Update()
@@ -63,6 +67,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void NotifyHpChanged()
     {
+        Debug.Log($"[PlayerHealth] NotifyHpChanged 호출됨 hp:{currentHp}/{MaxHp}");
         OnHpChanged?.Invoke(currentHp, MaxHp);
     }
 
