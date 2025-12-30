@@ -9,7 +9,12 @@ public class InventoryManager : MonoBehaviour
 
     [Header("Equipment")]
     public List<EquipmentData> ownedEquipments = new();          // 플레이어가 소유한 장비 모든 목록
-    public EquipmentData[] equippedItems = new EquipmentData[4]; // 플레이어가 착용한 장비 목록 4개
+
+    [Header("Equipped Items")]
+    // 장착 슬롯
+    public EquipmentData equippedWeapon;                          // 무기 1개
+    public EquipmentData equippedArmor;                           // 방어구 1개
+    public EquipmentData[] equippedRings = new EquipmentData[2];  // 반지 2개
 
     [Header("Talent")]
     public List<TalentData> talentPool = new();          // 게임 안에 존재하는 전체 재능 풀
@@ -25,12 +30,17 @@ public class InventoryManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
+
+    // ===================== 장비 =====================
+
 
 
     // 장비 획득
@@ -44,36 +54,77 @@ public class InventoryManager : MonoBehaviour
     }
 
 
-
-    // ===================== 장비 =====================
-
-
     // 장비 장착
     public void EquipItem(EquipmentData item) 
     {
-        int index = (int)item.type;
-        equippedItems[index] = item;
+        switch (item.type)
+        {
+            case EquipmentType.Weapon:
+                equippedWeapon = item;
+                break;
+
+            case EquipmentType.Armor:
+                equippedArmor = item;
+                break;
+
+            case EquipmentType.Ring:
+                // 이미 같은 반지가 장착되어 있으면 무시
+                if ((equippedRings[0] != null && equippedRings[0] == item) || (equippedRings[1] != null && equippedRings[1] == item))
+                return;
+                
+
+                // 빈 슬롯에 장착
+                if (equippedRings[0] == null)
+                    equippedRings[0] = item;
+                else if (equippedRings[1] == null)
+                    equippedRings[1] = item;
+                else
+                {
+                    // 두 슬롯 다 차 있으면 첫 번째를 교체
+                    equippedRings[0] = item;
+                }
+                break;
+        }
+
         PlayerStatManager.Instance.RecalculateStats();
         OnEquipmentChanged?.Invoke();
+
     }
 
     // 장비 해제
     public void UnequipItem(EquipmentData item)
     {
-        int index = (int)item.type;
-        if (equippedItems[index] == item)
+        switch (item.type)
         {
-            equippedItems[index] = null;
-            PlayerStatManager.Instance.RecalculateStats();
-            OnEquipmentChanged?.Invoke();
+            case EquipmentType.Weapon:
+                if (equippedWeapon == item) equippedWeapon = null;
+                break;
+
+            case EquipmentType.Armor:
+                if (equippedArmor == item) equippedArmor = null;
+                break;
+
+            case EquipmentType.Ring:
+                if (equippedRings[0] == item) equippedRings[0] = null;
+                else if (equippedRings[1] == item) equippedRings[1] = null;
+                break;
         }
+
+        PlayerStatManager.Instance.RecalculateStats();
+        OnEquipmentChanged?.Invoke();
+
     }
 
     // 장착 여부 확인
     public bool IsEquipped(EquipmentData item)
     {
-        int index = (int)item.type;
-        return equippedItems[index] == item; // 있으면 반환
+        switch (item.type)
+        {
+            case EquipmentType.Weapon: return equippedWeapon == item;
+            case EquipmentType.Armor: return equippedArmor == item;
+            case EquipmentType.Ring: return equippedRings[0] == item || equippedRings[1] == item;
+        }
+        return false;
     }
 
 

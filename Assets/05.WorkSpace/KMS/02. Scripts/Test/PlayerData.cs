@@ -27,6 +27,15 @@ public class PlayerData : ScriptableObject
     {
         totalCoin += amount;
     }
+
+    // 코인 사용 (추가한 코드)
+    public bool UseCoin(int amount)
+    {
+        if (totalCoin < amount) return false;
+        totalCoin -= amount;
+        return true;
+    }
+
     public void SetSelectedMap(MapData data)
     {
         if (_selectedMap == data) return;

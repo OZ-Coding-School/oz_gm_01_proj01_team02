@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 public class TalentUI : MonoBehaviour
 {
+    // 재능 버튼들
+    [Header("Talent Buttons")]
+    public Button[] talentButtons; // 버튼 직접 연결하기
+
     // 재능 설명 말풍선
     [Header("Tooltip")]
     public TalentTooltip tooltip;
@@ -21,22 +25,42 @@ public class TalentUI : MonoBehaviour
     public ShortagePanel shortagePanel;      // 코인 부족 패널
     public TalentUpgradePanel upgradePanel;  // 업그레이드 결과 패널
 
+    [Header("Data")]
+    public PlayerData playerData;   // PlayerData 참조
+
     private int currentCost = 100;
     private int upgradeCount = 0;
     private int currentTooltipIndex = -1;
 
+
     private void OnEnable()
     {
-        InventoryManager.Instance.OnTalentChanged += RefreshTooltip;
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.OnTalentChanged += RefreshTooltip;
+        }
+            
     }
 
     private void OnDisable()
     {
-        InventoryManager.Instance.OnTalentChanged -= RefreshTooltip;
+        if (InventoryManager.Instance != null)
+        {
+            InventoryManager.Instance.OnTalentChanged -= RefreshTooltip;
+        }
+            
     }
 
     private void Start()
     {
+        // 버튼 클릭 이벤트 연결
+        for (int i = 0; i < talentButtons.Length; i++)
+        {
+            int index = i; // 안전 코드 
+            talentButtons[i].onClick.AddListener(() => OnClickTalent(index));
+        }
+
+        // 초기화
         tooltip.Hide();
         shortagePanel.Close();
         upgradePanel.Hide();
@@ -71,7 +95,14 @@ public class TalentUI : MonoBehaviour
         TalentState talent = InventoryManager.Instance.ownedTalents[index];
         TalentData data = talent.data;
 
-        tooltip.Show($"{data.talentName}\n" + $"레벨 {talent.level}/{data.maxLevel}\n\n" + $"{data.description}\n" + GetStatText(data, talent.level));
+        tooltip.Show(
+            data.talentName,              // 재능 이름
+            talent.level,                 // 현재 레벨
+            data.maxLevel,                // 최대 레벨
+            data.talentType,              // 재능 타입 
+            data.description,             // 재능 설명
+            GetStatText(data, talent.level) // 스탯 텍스트
+        );
 
         currentTooltipIndex = index;
     }
@@ -86,13 +117,19 @@ public class TalentUI : MonoBehaviour
 
     private void OnClickUpgrade()
     {
-        // 코인 체크
         int cost = currentCost;
-        if (!CoinManager.Instance.UseCoin(currentCost))
+
+        // 코인 사용 시도
+        if (!playerData.UseCoin(cost))
         {
             shortagePanel.Open();
             return;
         }
+
+
+        CoinManager.Instance.SaveCoin(playerData); // 저장
+        FindObjectOfType<TitleManager>()?.UpdateUI();
+
 
 
         // 업그레이드 가능한 재능 필터
@@ -128,13 +165,17 @@ public class TalentUI : MonoBehaviour
         {
             ShowTooltip(currentTooltipIndex);
         }
+
+        // UI 갱신
+        FindObjectOfType<TitleManager>()?.UpdateUI();
+
     }
 
     // ===================== UI =====================
 
-    
 
-   private void RefreshUpgradeUI()
+
+    private void RefreshUpgradeUI()
    {
        costText.text = $"X {currentCost}";
        upgradeCountText.text = $"{upgradeCount}회 업그레이드";
