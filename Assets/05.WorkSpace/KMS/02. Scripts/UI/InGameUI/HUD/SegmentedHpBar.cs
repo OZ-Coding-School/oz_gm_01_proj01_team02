@@ -74,6 +74,11 @@ public class SegmentedHpBar : MonoBehaviour
 
             playerHp.OnHpChanged += OnHpChangedEvent;
         }
+
+        if (hpText != null)
+            {
+                hpText.text = $"{Mathf.CeilToInt(targetHp)}";
+            }
     
     }
 
@@ -91,6 +96,11 @@ public class SegmentedHpBar : MonoBehaviour
 
         targetHp = current;
         targetMaxHp = max;
+        
+        if (hpText != null)
+            {
+                hpText.text = $"{Mathf.CeilToInt(targetHp)}";
+            }
 
         Debug.Log($"displayHp: {displayHp}, targetHp: {targetHp}");
 
@@ -165,10 +175,7 @@ public class SegmentedHpBar : MonoBehaviour
             float backScale = Mathf.Clamp01((backRatio - unitStart) / (unitEnd - unitStart));
             backUnits[index].transform.localScale = new Vector3(backScale, 1.0f, 1.0f);
 
-            if (hpText != null)
-            {
-                hpText.text = $"{Mathf.CeilToInt(frontamount)}";
-            }
+            
         }
     }
 }
