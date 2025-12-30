@@ -53,6 +53,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     private NavMeshAgent nvAgent;
     private Animator animator;
     private HitEffect hitEffect;
+    private Boss bossComponent;
 
     private float nextAttackTime = 0.0f; //���� ���� �ð� ��Ÿ�� �����
     private bool isDead;
@@ -77,6 +78,12 @@ public class EnemyController : MonoBehaviour, IDamageable
     public PlayerController Target => target;
     public TypeEnums Type => type;
     public bool IsAttack => isAttack;
+    public Animator Animator => animator;
+
+    private static readonly int attackHash = Animator.StringToHash("DoAttack");
+    private static readonly int getHitHash = Animator.StringToHash("GetHit");
+    private static readonly int isMovingHash = Animator.StringToHash("IsMoving");
+    private AnimatorStateInfo stateInfo;
 
     public Vector3 BeforeTargetPos
     {
@@ -119,6 +126,10 @@ public class EnemyController : MonoBehaviour, IDamageable
             col.enabled = true;
         }
         if (ChaseState != null) ChangeState(ChaseState);
+
+        bossComponent = GetComponent<Boss>();
+
+        Debug.Log($"bossComponent {bossComponent}");
     }
 
     private void Awake()
@@ -176,6 +187,16 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         if (currentState == newState) return;
 
+        // move animation
+        if (newState == ChaseState && target != null)
+        {
+            animator.SetBool(isMovingHash, true);
+        }
+        else if (newState == IdleState || newState == AttackState)
+        {
+            animator.SetBool(isMovingHash, false);
+        }
+
         currentState?.Exit();
 
         currentState = newState;
@@ -219,8 +240,6 @@ public class EnemyController : MonoBehaviour, IDamageable
     //�÷��̾� ����
     public void Chase()
     {
-        if (!nvAgent.enabled) return;
-
         //nvAgent.speed = moveSpeed;
         if (!isAttack || nvAgent.enabled == true)
         {
@@ -254,25 +273,42 @@ public class EnemyController : MonoBehaviour, IDamageable
         rangedTimer += Time.deltaTime;
 
         //���� ��Ÿ���� �Ǹ� ������ �߻�
+        if (rangedTimer - 0.5f >= spawnTime)
+        {
+            animator.SetBool("IsAttacking", true);
+        }
+
         if (rangedTimer >= spawnTime)
         {
-            if (fireStrategies.Count == 0)
+
+
+            if (bossComponent != null && bossComponent.CanSpecialAttack && bossComponent.IsSpecialAttackReady)
             {
-                patternBulletPrefab = enemyBullet;
-                // 기본 공격
-                SpawnBulletCallback(bulletPos.position, bulletPos.rotation);
+                bossComponent.SpecialAttack();
             }
             else
             {
-                for (int i = 0; i < fireStrategies.Count; i++)
+                if (fireStrategies.Count == 0)
                 {
-                    patternBulletPrefab = bulletPatterns[i].BulletPrefab;
-                    fireStrategies[i].Fire(bulletPos, SpawnBulletCallback);
+                    patternBulletPrefab = enemyBullet;
+                    // 기본 공격
+                    SpawnBulletCallback(bulletPos.position, bulletPos.rotation);
+                }
+                else
+                {
+                    for (int i = 0; i < fireStrategies.Count; i++)
+                    {
+                        patternBulletPrefab = bulletPatterns[i].BulletPrefab;
+                        fireStrategies[i].Fire(bulletPos, SpawnBulletCallback);
+                    }
                 }
             }
 
-            rangedTimer = 0.0f; //Ÿ�̸� �ʱ�ȭ
-            animator.SetTrigger("DoAttack");
+
+            rangedTimer = 0.0f;
+
+            animator.ResetTrigger(getHitHash);
+            animator.SetTrigger(attackHash);
         }
 
         nvAgent.enabled = true;
@@ -405,6 +441,33 @@ public class EnemyController : MonoBehaviour, IDamageable
         currentHp -= amount;
 
         if (hitEffect != null) hitEffect.PlayHitEffect(isCritical);
+
+        if (!animator.GetBool("IsAttacking"))
+        {
+            animator.SetTrigger(getHitHash);
+            Debug.Log("trigger hit reaction");
+        }
+
+        // Boss HP 70% can use special attack
+        if (bossComponent != null)
+        {
+
+
+            if (currentHp / maxHp <= 0.7f && !bossComponent.CanSpecialAttack)
+            {
+                // Debug.Log("Boss can use special attack now");
+                animator.SetTrigger("ChangePhase");
+
+                // reset attack timer
+                nextAttackTime = Time.time + attackDelay;
+                rangedTimer = 0.0f;
+
+                animator.ResetTrigger(getHitHash);
+                animator.ResetTrigger(attackHash);
+
+                bossComponent.CanSpecialAttack = true;
+            }
+        }
 
         if (currentHp <= 0)
         {

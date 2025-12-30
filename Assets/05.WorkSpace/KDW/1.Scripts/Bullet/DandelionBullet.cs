@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
+using STH.Combat.Projectiles;
 
 public class DandelionBullet : MonoBehaviour
 {
-    [Header("¼Óµµ/»ý¼º ½Ã°£/»ì¾ÆÀÖ´Â ½Ã°£")]
+    [Header("ï¿½Óµï¿½/ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½/ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½Ã°ï¿½")]
     [SerializeField] private float bulletSpeed = 5.0f;
-    [SerializeField] private float lifeTime = 3.0f; //»ì¾Æ ÀÖ´Â ½Ã°£
+    [SerializeField] private float lifeTime = 3.0f; //ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½Ã°ï¿½
 
-    [Header("ÇÁ¸®ÆÕ/ÇÑ¹ø¿¡ ¹ß»ç ¼ö/ÇÁ¸®ÆÕ ÃÑ°¢µµ/°ø°Ýº¯È¯ ½Ã°£")]
-    [SerializeField] private TextEnemyBullet childBullet;
+    [Header("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½Ýºï¿½È¯ ï¿½Ã°ï¿½")]
+    [SerializeField] private Bullet childBullet;
     [SerializeField] private float childSpawnTime = 1.0f;
     [SerializeField] private float childSecondTime = 1.0f;
-    [SerializeField] private int bulletCount = 8;       //ÇÑ¹ø¿¡ ¹ß»çÇÒ ¼ö
-    [SerializeField] private float spreadAngle = 300.0f; //¹ß»ç ½Ã ÇÁ¸®ÆÕ°úÀÇ ÃÑ°¢µµ
+    [SerializeField] private int bulletCount = 8;       //ï¿½Ñ¹ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ï¿½ï¿½ ï¿½ï¿½
+    [SerializeField] private float spreadAngle = 300.0f; //ï¿½ß»ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ°ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½
     [SerializeField] private float dandelionTime = 3.0f;
     private float timer = 0.0f;
 
@@ -25,7 +26,7 @@ public class DandelionBullet : MonoBehaviour
 
     private void Awake()
     {
-        GameManager.Pool.CreatePool(childBullet, 50);
+        GameManager.Pool.CreatePool(childBullet, 100);
 
         waitForDandelion = new WaitForSeconds(dandelionTime);
     }
@@ -43,7 +44,7 @@ public class DandelionBullet : MonoBehaviour
 
         if (Time.time - childReturnTime >= lifeTime)
         {
-            ReturnPool();
+            PoolManager.pool_instance.ReturnPool(this);
         }
     }
 
@@ -51,10 +52,10 @@ public class DandelionBullet : MonoBehaviour
     {
         //yield return waitForDandelion;
         yield return null;
-    
+
         float angleStep = spreadAngle / (bulletCount - 1);
         float startAngle = -spreadAngle / 2;
-    
+
         timer += Time.deltaTime;
 
         if (timer >= childSpawnTime)
@@ -69,9 +70,9 @@ public class DandelionBullet : MonoBehaviour
     {
         for (int i = 0; i < bulletCount; i++)
         {
-            TextEnemyBullet childBullet = GameManager.Pool.GetFromPool(this.childBullet);
+            Bullet childBullet = GameManager.Pool.GetFromPool(this.childBullet);
 
-            float currentAngle = startAngle + (angleStep * i); //ÇöÀç ÇÁ¸®ÆÕ °£°Ý(¼ø¼­´ë·Î °£°Ý °è»ê)
+            float currentAngle = startAngle + (angleStep * i); //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½)
 
             Quaternion rotation = transform.rotation * Quaternion.Euler(0, currentAngle, 0);
 
@@ -83,19 +84,13 @@ public class DandelionBullet : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            ReturnPool();
+            PoolManager.pool_instance.ReturnPool(this);
         }
 
         if (other.CompareTag("Wall"))
-        {
-            ReturnPool();
-        }
-    }
-    private void ReturnPool()
-    {
-        if (PoolManager.pool_instance != null)
         {
             PoolManager.pool_instance.ReturnPool(this);
         }
     }
 }
+

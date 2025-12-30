@@ -33,13 +33,10 @@ public class MeleeChase : ChaseState
         if (dist <= enemy.MeleeAttackRange && Time.time >= enemy.NextAttackTime)
         {
             enemy.ChangeState(enemy.AttackState);
-            Debug.Log("�ٰŸ�����");
             return;
         }
         else if (dist <= enemy.MeleeIdleRange && Time.time < enemy.NextAttackTime && !enemy.IsAttack)
         {
-            Debug.Log("����");
-            Debug.Log(enemy.IsAttack);
             enemy.ChangeState(enemy.IdleState);
             return;
         }
@@ -59,7 +56,6 @@ public class RangedChase : ChaseState
         if (dist <= enemy.RangedAttackRange)
         {
             enemy.ChangeState(enemy.AttackState);
-            Debug.Log("���Ÿ�����");
             return;
         }
     }

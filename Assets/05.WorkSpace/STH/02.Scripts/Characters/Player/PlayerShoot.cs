@@ -32,6 +32,7 @@ namespace STH.Characters.Player
         private AnimatorStateInfo stateInfo;
 
         private bool isSpawning = false;
+        private Vector3 shootStartPosition;
 
         //private float spawnTime = 0.2f;
 
@@ -74,15 +75,7 @@ namespace STH.Characters.Player
 
             if (enemySearch.CloseEnemy != null && rb.velocity.sqrMagnitude < 0.0001f)
             {
-                //TestBullet bullet = GameManager.Pool.GetFromPool(bullet);
-                //bullet.transform.localPosition = bulletPos.position;
-                //bullet.transform.forward = player.EnemyDir;
-
-                //playerController.Animator.SetBool(attackaHash, true);
-                //playerController.Animator.SetTrigger(attackaHash);
-
-                //Debug.Log("sss");
-
+                shootStartPosition = transform.position;
                 StartCoroutine(ShootAnimation());
             }
             else
@@ -133,7 +126,11 @@ namespace STH.Characters.Player
             {
                 yield return new WaitForSeconds(playerController.Animator.GetCurrentAnimatorStateInfo(0).length);
 
-                CreateBullet();
+                // 위치가 변하지 않았을 때만 발사
+                if (transform.position == shootStartPosition)
+                {
+                    CreateBullet();
+                }
             }
 
 

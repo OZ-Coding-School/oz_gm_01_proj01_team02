@@ -36,9 +36,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     void Start()
     {
-        
 
-        
+
+
     }
 
     private void Update()
@@ -115,6 +115,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         player.Animator.SetTrigger("Die");
         player.IsDead = true;
+
+        GameManager.PlayerisDead();
     }
 
 }
