@@ -163,6 +163,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         //���� ���¿� �´� UpdateState�� ����
         currentState.UpdateState();
+        Debug.Log($"Update {currentState.StateType}");
     }
     private void FixedUpdate()
     {
@@ -225,7 +226,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (!isAttack || nvAgent.enabled == true)
         {
             nvAgent.speed = moveSpeed;
-            // nvAgent.SetDestination(target.transform.position);
+            nvAgent.SetDestination(target.transform.position);
         }
     }
     public void MeleeAttack()
@@ -374,16 +375,27 @@ public class EnemyController : MonoBehaviour, IDamageable
     public void ReturnPool()
     {
         GameManager.Pool.ReturnPool(this);
+        bool hasBoss = gameObject.TryGetComponent<Boss>(out _);
+        if (hasBoss)
+        {
+            if (GameManager.Stage.currentStage >= GameManager.Stage.Select("finish"))
+            {
+                GameManager.ClearChapter();
+            }
+        }
     }
 
     IEnumerator DieCo()
     {
         yield return new WaitForSeconds(1);
-        ReturnPool();
-
         // 사라지는 이펙트
-        PoolableParticle ga = GameManager.Pool.GetFromPool(deathEffect);
-        ga.transform.position = transform.position;
+        if (deathEffect != null)
+        {
+            PoolableParticle ga = GameManager.Pool.GetFromPool(deathEffect);
+            if (ga != null) ga.transform.position = transform.position;
+        }
+
+        ReturnPool();
     }
 
     public void TakeDamage(float amount, bool isCritical = false)
