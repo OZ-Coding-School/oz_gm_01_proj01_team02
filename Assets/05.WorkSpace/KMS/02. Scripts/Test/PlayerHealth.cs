@@ -12,7 +12,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     [SerializeField] private PlayerController player;
 
     [SerializeField] private float currentHp;
-    public float MaxHp => PlayerStatManager.Instance.maxHp;
+    public float MaxHp;
     public float CurrentHp => currentHp;
 
     public event System.Action<float, float> OnHpChanged;
@@ -27,11 +27,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (player == null)
             player = GetComponent<PlayerController>();
         hitEffect = GetComponent<HitEffect>();
-    }
-    void Start()
-    {
+
+        MaxHp = PlayerStatManager.Instance.maxHp;
         currentHp = MaxHp;
     }
+
     private void Update()
     {
         // if (Input.GetKeyDown(KeyCode.Q))
