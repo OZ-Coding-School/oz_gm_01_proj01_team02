@@ -78,6 +78,9 @@ public class EnemyController : MonoBehaviour, IDamageable
     public TypeEnums Type => type;
     public bool IsAttack => isAttack;
 
+    [SerializeField] private DmgText dmgTextPrefab;
+    [SerializeField] private Transform dmgTextPosition;
+
     public Vector3 BeforeTargetPos
     {
         get { return beforeTargetPos; }
@@ -406,6 +409,17 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         if (hitEffect != null) hitEffect.PlayHitEffect(isCritical);
 
+        if (dmgTextPrefab != null)
+        {
+            DmgText dmgText = PoolManager.pool_instance.GetFromPool(dmgTextPrefab);
+
+            if (dmgText != null)
+            {
+                Vector3 worldPos = dmgTextPosition.position;
+                dmgText.gameObject.SetActive(true);
+                dmgText.Play(worldPos, amount, isCritical);
+            }
+        }
         if (currentHp <= 0)
         {
             currentHp = 0;

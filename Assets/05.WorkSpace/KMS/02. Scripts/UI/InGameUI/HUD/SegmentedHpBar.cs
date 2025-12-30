@@ -90,6 +90,11 @@ public class SegmentedHpBar : MonoBehaviour
 
         targetHp = current;
         targetMaxHp = max;
+        
+        if (hpText != null)
+            {
+                hpText.text = $"{Mathf.CeilToInt(targetHp)}";
+            }
 
         if (hpText != null)
         {
@@ -144,7 +149,7 @@ public class SegmentedHpBar : MonoBehaviour
     {
         if (targetMaxHp <= 0)
         {
-            Debug.LogWarning("targetMaxHp°¡ 0 ÀÌÇÏÀÔ´Ï´Ù. UI ¾÷µ¥ÀÌÆ® Áß´Ü");
+            Debug.LogWarning("targetMaxHpï¿½ï¿½ 0 ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½. UI ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß´ï¿½");
             return;
         }
 
