@@ -100,9 +100,21 @@ public class TalentUI : MonoBehaviour
             talent.level,                 // 현재 레벨
             data.maxLevel,                // 최대 레벨
             data.talentType,              // 재능 타입 
-            data.description,             // 재능 설명
-            GetStatText(data, talent.level) // 스탯 텍스트
+            data.description             // 재능 설명
         );
+
+     
+        // 클릭한 버튼 기준으로 Tooltip 위치 설정
+        RectTransform buttonRect = talentButtons[index].GetComponent<RectTransform>();
+        RectTransform tooltipRect = tooltip.GetComponent<RectTransform>();
+
+        // 버튼의 로컬 위치 가져오기
+        Vector3 buttonLocalPos = buttonRect.localPosition;
+
+        // Tooltip을 버튼 아래로 배치
+        float yOffset = -buttonRect.rect.height / 2 - tooltipRect.rect.height / 2 - 10f; // 버튼과 말풍선 간격을 위한 여백
+        tooltipRect.localPosition = new Vector3(buttonLocalPos.x, buttonLocalPos.y + yOffset, 0);
+
 
         currentTooltipIndex = index;
     }
@@ -180,16 +192,5 @@ public class TalentUI : MonoBehaviour
        costText.text = $"X {currentCost}";
        upgradeCountText.text = $"{upgradeCount}회 업그레이드";
    }
-
-    private string GetStatText(TalentData data, int level)
-    {
-        StatValue stat = data.statPerLevel;
-
-        if (stat.statType == StatType.None)
-            return "특수 효과만 생김";
-
-        float value = stat.value * level;
-        return $"{stat.statType} +{value}";
-    }
 }
 

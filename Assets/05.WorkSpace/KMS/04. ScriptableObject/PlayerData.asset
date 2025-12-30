@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75f2164ddc772b54486d23142e1cebfd, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  totalCoin: 800
+  totalCoin: 300
   adventureExp: 123
   adventureLevel: 4
   maxAdventureLevel: 20
