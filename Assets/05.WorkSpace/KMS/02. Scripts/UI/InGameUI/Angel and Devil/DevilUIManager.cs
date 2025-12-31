@@ -51,8 +51,8 @@ public class DevilUIManager : MonoBehaviour
             Debug.Log("새로운 스킬이 없음");
             return;
         }
-        int randomIndex = Random.Range(0, skillData.Count);
-        selectedBuff = skillData[randomIndex];
+        int randomIndex = Random.Range(0, availableSkills.Count);
+        selectedBuff = availableSkills[randomIndex];
 
         buffIconImage.sprite = selectedBuff.icon;
         buffNameText.text = selectedBuff.skillName;
