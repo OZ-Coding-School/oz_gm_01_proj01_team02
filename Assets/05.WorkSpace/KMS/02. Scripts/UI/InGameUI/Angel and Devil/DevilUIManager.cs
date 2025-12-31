@@ -64,7 +64,7 @@ public class DevilUIManager : MonoBehaviour
         if (statManager != null)
         {
             statManager.permanentmaxHpBonus -= 200.0f;
-            statManager.RecalculateStats();
+            //statManager.RecalculateStats();
 
             selectedBuff.Apply(player);
             gameObject.SetActive(false);
