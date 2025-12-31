@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55da8463143b145b88768b8548237f72, type: 3}
   m_Name: Pattern_ParallelFire
   m_EditorClassIdentifier: 
-  skillName: 
-  icon: {fileID: 0}
+  skillName: "\uBA40\uD2F0\uC0F7"
+  icon: {fileID: 21300000, guid: e1c466cc0617f0e448b2a88a3ab21ba0, type: 3}
   count: 3
-  spacing: 0.3
+  spacing: 0.4

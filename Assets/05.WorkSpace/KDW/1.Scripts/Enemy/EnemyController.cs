@@ -52,6 +52,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     private Rigidbody rb;
     private NavMeshAgent nvAgent;
     private Animator animator;
+    private Collider col;
     private HitEffect hitEffect;
     private Boss bossComponent;
 
@@ -79,6 +80,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     public TypeEnums Type => type;
     public bool IsAttack => isAttack;
     public Animator Animator => animator;
+    public bool IsDead => isDead;
 
     private static readonly int attackHash = Animator.StringToHash("DoAttack");
     private static readonly int getHitHash = Animator.StringToHash("GetHit");
@@ -104,6 +106,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         isAttack = false;
         isWall = false;
         rangedTimer = 0.0f;
+        nvAgent.enabled = true;
 
         if (target == null)
         {
@@ -123,7 +126,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             rb.isKinematic = true;
         }
 
-        Collider col = GetComponent<Collider>();
+        col = GetComponent<Collider>();
         if (col != null)
         {
             col.enabled = true;
@@ -254,6 +257,13 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         if (Time.time < nextAttackTime) return;
 
+        if (bossComponent != null && bossComponent.CanSpecialAttack && bossComponent.IsSpecialAttackReady)
+        {
+            animator.ResetTrigger(getHitHash);
+            animator.SetTrigger(attackHash);
+            bossComponent.SpecialAttack();
+        }
+
         isAttack = true;
 
         nvAgent.enabled = false; //NebMesh�� �⺻������ �� �����Ӹ��� Ÿ���� ��ġ�� ������Ʈ�ϱ� ������, Enemy�� ���߰� Ÿ���� ������ġ�� �����Ͽ� �Ŀ� �װ����� �̵��ҷ��� .enable = false�� �ؾ��Ѵ�.
@@ -283,8 +293,6 @@ public class EnemyController : MonoBehaviour, IDamageable
 
         if (rangedTimer >= spawnTime)
         {
-
-
             if (bossComponent != null && bossComponent.CanSpecialAttack && bossComponent.IsSpecialAttackReady)
             {
                 bossComponent.SpecialAttack();
@@ -356,7 +364,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             timer += Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
 
-            if (isWall)
+            if (isWall || isDead)
             {
                 Debug.Log("���̴�");
                 break;
@@ -492,8 +500,11 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     public void Die()
     {
-        Debug.Log(this.name + " 사망");
+        // Debug.Log(this.name + " 사망");
         isDead = true;
+        col.enabled = false;
+        rb.velocity = Vector3.zero;
+        nvAgent.enabled = false;
         animator.SetTrigger("Die");
         StartCoroutine(DieCo());
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 584149161626a4dea8d3b0f0dfdcf5dc, type: 3}
   m_Name: Pattern_SideFire
   m_EditorClassIdentifier: 
-  skillName: SideFire
+  skillName: "\uCE21\uBA74 \uD654\uC0B4"
   icon: {fileID: 21300000, guid: 3a022ab6068e2a141917403c1bb5e486, type: 3}
   count: 3
   angle: 180
