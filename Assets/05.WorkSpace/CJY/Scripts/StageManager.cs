@@ -79,7 +79,6 @@ public class StageManager : MonoBehaviour
                 Debug.Log("인벤토리 장비 값 : "+keyvalue.ToString());
             }
         }
-        
     }
 
     private void ForceReturnEnemyPool()

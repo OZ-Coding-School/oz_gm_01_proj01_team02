@@ -138,7 +138,8 @@ public class EnemySpawn : MonoBehaviour
             case EnemyType.Boss:
                 Debug.Log("보스소환");
                 int currentChapter = GameManager.Data.playData._chapter;
-                var targetPrefab = bossPrefab[currentChapter - 1];
+                int randBoss = Random.Range(0, bossPrefab.Count);
+                var targetPrefab = bossPrefab[randBoss];
                 List<EnemyController> wrongPicks = new List<EnemyController>();
 
                 int attempts = 30;
@@ -164,9 +165,6 @@ public class EnemySpawn : MonoBehaviour
                     GameManager.Pool.ReturnPool(wrong);
                 }
                 break;
-                //Debug.Log($"요청하는 보스 프리팹이름 : {targetPrefab.name}");
-                //boss = GameManager.Pool.GetFromPool(bossPrefab[currentChapter - 1]);
-                //break;
         }
         if (enemy == null && boss == null) return;
         if (enemy != null && boss == null) EnemyInit(type, pos, enemy, null);

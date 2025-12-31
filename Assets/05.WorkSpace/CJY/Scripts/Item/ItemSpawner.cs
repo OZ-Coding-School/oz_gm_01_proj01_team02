@@ -78,9 +78,10 @@ public class ItemSpawner : MonoBehaviour
 
     public void SpawnItem(Vector3 pos, TypeEnums type, bool isBoss)
     {
-        //코인은 항상 드랍, Equipment, Health 는 랜덤드랍 / 보스에서는 필수드랍
-        bool randEquipmentDrop = Random.value > 0.9f ? true : false;
-        bool randHealthDrop = Random.value > 0.8f ? true : false;
+        //코인은 항상 드랍, Equipment, Health 는 랜덤드랍
+        bool randEquipmentDrop = Random.value > 0.97f ? true : false;
+        bool randHealthDrop = Random.value > 0.9f ? true : false;
+
 
         Coin coin = null;
         Equipment equipment = null;
@@ -108,7 +109,7 @@ public class ItemSpawner : MonoBehaviour
                             if (Random.value > 0.6f)
                             {
                                 equipment = GameManager.Pool.GetFromPool(equip);
-                                equipment.transform.position = pos;
+                                equipment.transform.SetPositionAndRotation(pos + new Vector3(0,0.5f,0), Quaternion.Euler(45,90,0));
                                 count++;
                             }
                         }
@@ -137,7 +138,7 @@ public class ItemSpawner : MonoBehaviour
                             if (Random.value > 0.5f)
                             {
                                 equipment = GameManager.Pool.GetFromPool(equip);
-                                equipment.transform.position = pos;
+                                equipment.transform.SetPositionAndRotation(pos + new Vector3(0, 0.5f, 0), Quaternion.Euler(45, 90, 0));
                                 count++;
                             }
                         }
@@ -168,7 +169,7 @@ public class ItemSpawner : MonoBehaviour
                     if (Random.value > 0.5f)
                     {
                         equipment = GameManager.Pool.GetFromPool(equip);
-                        equipment.transform.position = pos;
+                        equipment.transform.SetPositionAndRotation(pos + new Vector3(0, 0.5f, 0), Quaternion.Euler(45, 90, 0));
                         count++;
                     }
                 }
