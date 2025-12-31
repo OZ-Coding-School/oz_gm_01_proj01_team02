@@ -6,10 +6,18 @@ public class Angel : MonoBehaviour
 {
     AngelUIManagers angelPanel;
     bool gotIt;
-
+    bool isFirstEnable = true;
 
     private void OnEnable()
     {
+        if (isFirstEnable)
+        {
+            isFirstEnable = false;
+            return;
+        }
+
+        SoundManager.Instance.Play("Angel");
+
         angelPanel = FindObjectOfType<AngelUIManagers>(true);
         gotIt = false;
     }
@@ -22,11 +30,14 @@ public class Angel : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
+        // SoundManager.Instance.Stop();
+
         if (other.CompareTag("Player"))
         {
             if (gotIt) return;
-            // UIÂÊ Ãµ»ç Æ¯Àü ½ÇÇà ÄÚµå
-            Debug.Log("Ãµ»çÃæµ¹");
+            // UIï¿½ï¿½ Ãµï¿½ï¿½ Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
+            Debug.Log("Ãµï¿½ï¿½ï¿½æµ¹");
             angelPanel.gameObject.SetActive(true);
             gotIt = true;
         }

@@ -86,7 +86,7 @@ namespace STH.Characters.Player
 
         private void CreateBullet()
         {
-            Debug.Log("Create Bullet");
+            // Debug.Log("Create Bullet");
             if (playerController.Strategies.Count == 0)
             {
                 // 기본 단발 공격
@@ -129,6 +129,7 @@ namespace STH.Characters.Player
                 // 위치가 변하지 않았을 때만 발사
                 if (transform.position == shootStartPosition)
                 {
+                    SoundManager.Instance.Play("Shoot");
                     CreateBullet();
                 }
             }

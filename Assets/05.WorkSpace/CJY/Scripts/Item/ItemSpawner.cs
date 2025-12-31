@@ -18,7 +18,7 @@ public class ItemSpawner : MonoBehaviour
 
     int[] dropCoinCount = { 1, 2, 3 };
 
-    //¾ÆÀÌÅÛ ÈíÀÔ ½ÃÀÛ¿ë ÆÄ¶ó¹ÌÅÍ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Û¿ï¿½ ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½
     ItemBase[] itembase;
 
     private void OnEnable()
@@ -34,17 +34,17 @@ public class ItemSpawner : MonoBehaviour
 
     private void Start()
     {
-        
+
         var gmInit = GameManager.Pool.transform;
         var parent = gmInit.Find("Item_Pool");
-        if(parent == null)
+        if (parent == null)
         {
             parent = new GameObject("Item_Pool").transform;
             parent.SetParent(gmInit, false);
         }
         GameManager.Pool.CreatePool(coinPrefab, 30, parent);
         GameManager.Pool.CreatePool(healthPrefab, 10, parent);
-        foreach (var equipment in equipmentPrefab) 
+        foreach (var equipment in equipmentPrefab)
         {
             GameManager.Pool.CreatePool(equipment, 5);
         }
@@ -78,7 +78,7 @@ public class ItemSpawner : MonoBehaviour
 
     public void SpawnItem(Vector3 pos, TypeEnums type, bool isBoss)
     {
-        //ÄÚÀÎÀº Ç×»ó µå¶ø, Equipment, Health ´Â ·£´ýµå¶ø
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×»ï¿½ ï¿½ï¿½ï¿½, Equipment, Health ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         bool randEquipmentDrop = Random.value > 0.97f ? true : false;
         bool randHealthDrop = Random.value > 0.9f ? true : false;
 
@@ -87,10 +87,10 @@ public class ItemSpawner : MonoBehaviour
         Equipment equipment = null;
         Health health = null;
 
-        // enemyType(Melee, Ranged, Boss) º°·Î ÄÚÀÎ°¹¼ö 1, 2, 3À¸·Î µå·Ó
+        // enemyType(Melee, Ranged, Boss) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½ 1, 2, 3ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
-        #region ÄÚÀÎ,Àåºñ,Ã¼·Â Drop
-        if (!isBoss) //º¸½º¾Æ´Ô
+        #region ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½,Ã¼ï¿½ï¿½ Drop
+        if (!isBoss) //ï¿½ï¿½ï¿½ï¿½ï¿½Æ´ï¿½
         {
             switch (type)
             {
@@ -100,21 +100,21 @@ public class ItemSpawner : MonoBehaviour
                         coin = GameManager.Pool.GetFromPool(coinPrefab);
                         coin.transform.position = pos;
                     }
-                    if(randEquipmentDrop) 
+                    if (randEquipmentDrop)
                     {
                         int count = 0;
-                        foreach(var equip in equipmentPrefab)
+                        foreach (var equip in equipmentPrefab)
                         {
                             if (count > 0) return;
                             if (Random.value > 0.6f)
                             {
                                 equipment = GameManager.Pool.GetFromPool(equip);
-                                equipment.transform.SetPositionAndRotation(pos + new Vector3(0,0.5f,0), Quaternion.Euler(45,90,0));
+                                equipment.transform.SetPositionAndRotation(pos + new Vector3(0, 0.5f, 0), Quaternion.Euler(45, 90, 0));
                                 count++;
                             }
                         }
                     }
-                    if (randHealthDrop) 
+                    if (randHealthDrop)
                     {
                         float count = 0;
                         health = GameManager.Pool.GetFromPool(healthPrefab);
@@ -127,7 +127,7 @@ public class ItemSpawner : MonoBehaviour
                     for (int i = 1; i <= dropCoinCount[1]; i++)
                     {
                         coin = GameManager.Pool.GetFromPool(coinPrefab);
-                        coin.transform.position = pos + new Vector3(i-1, 0 ,i-1);
+                        coin.transform.position = pos + new Vector3(i - 1, 0, i - 1);
                     }
                     if (randEquipmentDrop)
                     {
@@ -153,14 +153,14 @@ public class ItemSpawner : MonoBehaviour
                     break;
             }
         }
-        else //º¸½ºÀÓ
+        else //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            for(int i = 1; i <= dropCoinCount[2]; i++)
+            for (int i = 1; i <= dropCoinCount[2]; i++)
             {
                 coin = GameManager.Pool.GetFromPool(coinPrefab);
                 coin.transform.position = pos;
             }
-            if (randEquipmentDrop) 
+            if (randEquipmentDrop)
             {
                 int count = 0;
                 foreach (var equip in equipmentPrefab)
@@ -182,12 +182,14 @@ public class ItemSpawner : MonoBehaviour
                 count += 0.5f;
             }
         }
-        
+
     }
     #endregion
 
     private void CollectAllItems()
     {
+        SoundManager.Instance.Play("Coin");
+
         ItemBase[] activeItems = FindObjectsOfType<ItemBase>();
 
         foreach (var item in activeItems)

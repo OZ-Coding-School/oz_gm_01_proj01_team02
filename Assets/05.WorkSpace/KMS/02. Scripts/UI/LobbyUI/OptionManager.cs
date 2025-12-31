@@ -25,11 +25,12 @@ public class OptionManager : MonoBehaviour
     private float prevBgmVolume = 1.0f;
     private float prevSfxVolume = 1.0f;
 
+    private SoundManager soundManager;
 
     private void Awake()
     {
 
-        
+
         if (Instance == null)
         {
             Instance = this;
@@ -38,20 +39,21 @@ public class OptionManager : MonoBehaviour
 
             bgmSource.volume = bgmVolume;
             sfxSource.volume = sfxVolume;
-            
+            soundManager = SoundManager.Instance;
+
         }
 
         else
         {
             Destroy(gameObject);
         }
-       
+
     }
 
     private void OnDestroy()
     {
         if (Instance == this)
-        SceneManager.sceneLoaded -= OnSceneLoaded;
+            SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -62,7 +64,7 @@ public class OptionManager : MonoBehaviour
     {
 
         yield return null;
-        
+
 
 
         Slider[] sliders = FindObjectsOfType<Slider>();
@@ -74,7 +76,7 @@ public class OptionManager : MonoBehaviour
                 sfxSlider = s;
             else
             {
-                
+
             }
         }
 
@@ -82,11 +84,11 @@ public class OptionManager : MonoBehaviour
         {
             bgmSlider.onValueChanged.RemoveAllListeners();
             bgmSlider.onValueChanged.AddListener(OnBGMSliderChanged);
-            bgmSlider.value = isBgmMuted ? 0f : bgmVolume; 
-            
-            
+            bgmSlider.value = isBgmMuted ? 0f : bgmVolume;
 
-        
+
+
+
         }
 
         if (sfxSlider != null)
@@ -94,11 +96,11 @@ public class OptionManager : MonoBehaviour
             sfxSlider.onValueChanged.RemoveAllListeners();
             sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
             sfxSlider.value = isSfxMuted ? 0f : sfxVolume;
-            
-            
+
+
         }
 
-        
+
 
     }
 
@@ -120,6 +122,8 @@ public class OptionManager : MonoBehaviour
 
         if (volume > 0f)
             isBgmMuted = false;
+
+        soundManager.SetBgmVolume(volume);
     }
 
     public void SetSfxVolume(float volume)
@@ -129,15 +133,17 @@ public class OptionManager : MonoBehaviour
 
         if (volume > 0f)
             isSfxMuted = false;
+
+        soundManager.SetSfxVolume(volume);
     }
 
     public void UpdateSliders()
     {
         if (bgmSlider != null)
-        bgmSlider.value = isBgmMuted ? 0f : bgmVolume;
+            bgmSlider.value = isBgmMuted ? 0f : bgmVolume;
 
         if (sfxSlider != null)
-        sfxSlider.value = isSfxMuted ? 0f : sfxVolume;
+            sfxSlider.value = isSfxMuted ? 0f : sfxVolume;
     }
     public void PlaySFX(AudioClip clip)
     {
@@ -153,14 +159,14 @@ public class OptionManager : MonoBehaviour
             prevBgmVolume = bgmVolume;
             SetBgmVolume(0.0f);
             if (bgmSlider != null)
-            bgmSlider.value = 0.0f;
+                bgmSlider.value = 0.0f;
         }
 
         else
         {
             SetBgmVolume(prevBgmVolume);
             if (bgmSlider != null)
-            bgmSlider.value = prevBgmVolume;
+                bgmSlider.value = prevBgmVolume;
         }
     }
 
@@ -173,14 +179,14 @@ public class OptionManager : MonoBehaviour
             prevSfxVolume = sfxVolume;
             SetSfxVolume(0.0f);
             if (sfxSlider != null)
-            sfxSlider.value = 0.0f;
+                sfxSlider.value = 0.0f;
         }
 
         else
         {
             SetSfxVolume(prevSfxVolume);
             if (sfxSlider != null)
-            sfxSlider.value = prevSfxVolume;
+                sfxSlider.value = prevSfxVolume;
         }
     }
 
