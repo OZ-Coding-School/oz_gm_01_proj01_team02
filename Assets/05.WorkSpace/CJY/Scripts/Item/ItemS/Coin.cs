@@ -7,8 +7,8 @@ public class Coin : ItemBase
     [SerializeField]
     float rotationSpeedX, rotationSpeedY, rotationSpeedZ;
 
-    public AudioClip coinSound;
-    
+    // public AudioClip coinSound;
+
 
     void Update()
     {
@@ -27,18 +27,18 @@ public class Coin : ItemBase
         {
             GameManager.Data.collectedItemName.Add(cleanName);
         }
-        
+
         if (!GameManager.Data.collectedItemName.Contains("exp"))
         {
             GameManager.Data.collectedItemName.Add("exp");
         }
 
         GameManager.Data.collectedItem[cleanName] = TestGameManager.Instance.coin;
-        GameManager.Data.collectedItem["exp"] = Mathf.FloorToInt(TestGameManager.Instance.coin*0.1f);
+        GameManager.Data.collectedItem["exp"] = Mathf.FloorToInt(TestGameManager.Instance.coin * 0.1f);
 
-        Vector3 playPosition = Camera.main.transform.position;
+        // Vector3 playPosition = Camera.main.transform.position;
 
-        AudioSource.PlayClipAtPoint(coinSound, playPosition);
+        // AudioSource.PlayClipAtPoint(coinSound, playPosition);
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
 }

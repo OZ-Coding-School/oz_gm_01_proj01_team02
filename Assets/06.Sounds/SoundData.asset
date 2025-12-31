@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f8f0cc3cee98461295abfd942166e7f, type: 3}
+  m_Name: SoundData
+  m_EditorClassIdentifier: 
+  bgmSounds: []
+  defaultBGMVolume: 0.3
+  sfxSounds:
+  - name: Angel
+    clip: {fileID: 8300000, guid: 0e43dd30a0d3b468182cb80675b3db27, type: 3}
+    volume: 1
+  - name: Devil
+    clip: {fileID: 8300000, guid: e4d9d4394ba654333a9c29b3226948a3, type: 3}
+    volume: 1
+  - name: EnemyHit
+    clip: {fileID: 8300000, guid: f293e7efeaae949b8925293fee2e4845, type: 3}
+    volume: 0.7
+  - name: Shoot
+    clip: {fileID: 8300000, guid: dcf67b4d2879745baa86d3f99e651dce, type: 3}
+    volume: 0.5
+  - name: Coin
+    clip: {fileID: 8300000, guid: a7d74daed517a4d259000f5441434a10, type: 3}
+    volume: 1
+  - name: EnemyShoot
+    clip: {fileID: 8300000, guid: 1a9eb02d5ddc04a15ab55e763f10e594, type: 3}
+    volume: 0.3
+  defaultSFXVolume: 0.7

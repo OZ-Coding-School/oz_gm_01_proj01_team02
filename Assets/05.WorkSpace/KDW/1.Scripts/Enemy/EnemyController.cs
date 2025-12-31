@@ -321,6 +321,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
             animator.ResetTrigger(getHitHash);
             animator.SetTrigger(attackHash);
+            SoundManager.Instance.Play("EnemyShoot");
         }
 
         nvAgent.enabled = true;
@@ -449,22 +450,20 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         if (currentHp <= 0) return;
 
-        Debug.Log($"Enemy take damage {amount}");
+        // Debug.Log($"Enemy take damage {amount}");
         currentHp -= amount;
+        SoundManager.Instance.Play("EnemyHit");
 
         if (hitEffect != null) hitEffect.PlayHitEffect(isCritical);
 
         if (!animator.GetBool("IsAttacking"))
         {
             animator.SetTrigger(getHitHash);
-            Debug.Log("trigger hit reaction");
         }
 
         // Boss HP 70% can use special attack
         if (bossComponent != null)
         {
-
-
             if (currentHp / maxHp <= 0.7f && !bossComponent.CanSpecialAttack)
             {
                 // Debug.Log("Boss can use special attack now");
@@ -484,11 +483,11 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (dmgTextPrefab != null)
         {
             DmgText dmgText = PoolManager.pool_instance.GetFromPool(dmgTextPrefab);
-            
+
             if (dmgText != null)
             {
                 dmgText.canvasTransform = damageCanvas;
-                
+
                 Vector3 headPos = transform.position + Vector3.up * 2.0f;
                 Vector3 screenPos = Camera.main.WorldToScreenPoint(headPos);
 
@@ -497,11 +496,11 @@ public class EnemyController : MonoBehaviour, IDamageable
                 screenPos,
                 null, // Overlay 모드라면 Camera는 null
                 out Vector2 localPos
-                
+
             );
 
 
-            Debug.Log($"localPos on Canvas: {localPos}");
+                Debug.Log($"localPos on Canvas: {localPos}");
                 dmgText.transform.SetParent(damageCanvas, false);
                 dmgText.GetComponent<RectTransform>().localPosition = localPos;
                 dmgText.gameObject.SetActive(true);
@@ -509,7 +508,7 @@ public class EnemyController : MonoBehaviour, IDamageable
                 Debug.Log($"Enemy headPos: {headPos}");
             }
         }
-        
+
         if (currentHp <= 0)
         {
             currentHp = 0;

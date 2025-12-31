@@ -6,9 +6,18 @@ public class Devil : MonoBehaviour
 {
     DevilUIManager devilPanel;
     bool gotIt;
+    bool isFirstEnable = true;
 
     private void OnEnable()
     {
+        if (isFirstEnable)
+        {
+            isFirstEnable = false;
+            return;
+        }
+
+        SoundManager.Instance.Play("Devil");
+
         devilPanel = FindObjectOfType<DevilUIManager>(true);
         gotIt = false;
     }
@@ -20,11 +29,13 @@ public class Devil : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // SoundManager.Instance.Stop();
+
         if (other.CompareTag("Player"))
         {
             if (gotIt) return;
-            Debug.Log("¾Ç¸¶ »óÈ£ÀÛ¿ë");
-            // UIÂÊ ¾Ç¸¶ Æ¯Àü ½ÇÇà ÄÚµå
+            Debug.Log("ï¿½Ç¸ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½");
+            // UIï¿½ï¿½ ï¿½Ç¸ï¿½ Æ¯ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
             devilPanel.gameObject.SetActive(true);
             gotIt = true;
         }
