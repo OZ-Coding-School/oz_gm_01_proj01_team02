@@ -123,7 +123,7 @@ Canvas:
   m_GameObject: {fileID: 2769968896688545966}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -496,6 +496,7 @@ MonoBehaviour:
   deathEffect: {fileID: 3586704179617227404, guid: b372826dde6f04a1385d868d3cced398, type: 3}
   dmgTextPrefab: {fileID: 1752808372529796488, guid: a0808348e0a650b49bfb3425b8c7188f, type: 3}
   dmgTextPosition: {fileID: 5379207485337293657}
+  damageCanvas: {fileID: 1875261653241016143}
 --- !u!114 &1017804098816513003
 MonoBehaviour:
   m_ObjectHideFlags: 0

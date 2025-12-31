@@ -87,6 +87,7 @@ public class EnemyController : MonoBehaviour, IDamageable
 
     [SerializeField] private DmgText dmgTextPrefab;
     [SerializeField] private Transform dmgTextPosition;
+    [SerializeField] private RectTransform damageCanvas;
 
     public Vector3 BeforeTargetPos
     {
@@ -475,14 +476,32 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (dmgTextPrefab != null)
         {
             DmgText dmgText = PoolManager.pool_instance.GetFromPool(dmgTextPrefab);
-
+            
             if (dmgText != null)
             {
-                Vector3 worldPos = dmgTextPosition.position;
+                dmgText.canvasTransform = damageCanvas;
+                
+                Vector3 headPos = transform.position + Vector3.up * 2.0f;
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(headPos);
+
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                damageCanvas,
+                screenPos,
+                null, // Overlay 모드라면 Camera는 null
+                out Vector2 localPos
+                
+            );
+
+
+            Debug.Log($"localPos on Canvas: {localPos}");
+                dmgText.transform.SetParent(damageCanvas, false);
+                dmgText.GetComponent<RectTransform>().localPosition = localPos;
                 dmgText.gameObject.SetActive(true);
-                dmgText.Play(worldPos, amount, isCritical);
+                dmgText.Play(amount, localPos, isCritical);
+                Debug.Log($"Enemy headPos: {headPos}");
             }
         }
+        
         if (currentHp <= 0)
         {
             currentHp = 0;

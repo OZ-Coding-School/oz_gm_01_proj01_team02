@@ -16,6 +16,9 @@ public class DevilUIManager : MonoBehaviour
 
     private SkillData selectedBuff;
     private PlayerController player;    
+
+    [Header("Player Skills (ReadOnly)")]
+    [SerializeField] private List<SkillData> playerSkills = new List<SkillData>();
     
 
     void OnEnable()
@@ -36,6 +39,18 @@ public class DevilUIManager : MonoBehaviour
 
     void SelectRandomBuff()
     {
+        List<SkillData> availableSkills = new List<SkillData>();
+        foreach (var skill in skillData)
+        {
+            if (!player.Skills.Contains(skill))
+            availableSkills.Add(skill);
+        }
+
+        if (availableSkills.Count == 0)
+        {
+            Debug.Log("새로운 스킬이 없음");
+            return;
+        }
         int randomIndex = Random.Range(0, skillData.Count);
         selectedBuff = skillData[randomIndex];
 

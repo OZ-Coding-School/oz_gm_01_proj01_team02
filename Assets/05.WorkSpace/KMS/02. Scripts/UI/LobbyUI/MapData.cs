@@ -9,4 +9,6 @@ public class MapData : ScriptableObject
     public string sceneName;
     public Sprite mapSprite;
    
+    [Header("Progress")]
+    public int clearStage = 0;
 }
