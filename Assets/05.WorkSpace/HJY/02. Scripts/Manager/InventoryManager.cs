@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -24,6 +25,12 @@ public class InventoryManager : MonoBehaviour
     public event Action OnEquipmentChanged;
     public event Action OnTalentChanged;
 
+
+    private void Start()
+    {
+        ImportDataManager(); // 게임 시작 시 DataManager 불러오기
+    }
+
     private void Awake()
     {
         // 싱글톤 초기화
@@ -31,6 +38,9 @@ public class InventoryManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // 씬 전환 이벤트 등록
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -38,8 +48,40 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬이 바뀔 때마다 DataManager에서 아이템 가져오기
+        ImportDataManager();
+    }
+
 
     // ===================== 장비 =====================
+
+    public void ImportDataManager()
+    {
+        if (DataManager.instance == null) return; // 안전장치
+
+        var collected = DataManager.instance.collectedItem;
+
+        foreach (var kvp in collected)
+        {
+            string itemName = kvp.Key;
+            int count = kvp.Value;
+
+            EquipmentData data = EquipmentDatabase.Instance.GetEquipmentByName(itemName);
+
+            if (data == null) continue;
+
+            for (int i = 0; i < count; i++)
+            {
+                AddEquipment(data);
+            }
+        }
+
+        OnEquipmentChanged?.Invoke();
+    }
+
+
 
 
 

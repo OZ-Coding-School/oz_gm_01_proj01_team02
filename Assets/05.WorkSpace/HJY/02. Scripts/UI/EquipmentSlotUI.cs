@@ -15,6 +15,7 @@ public class EquipmentSlotUI : MonoBehaviour
         equipment = data;
         if (iconImage != null && equipment != null)
         {
+            Debug.Log($"SetEquipment: {equipment.equipmentName}, icon={equipment.icon}");
             iconImage.sprite = equipment.icon; // 장비 데이터의 아이콘 표시
         }
     }

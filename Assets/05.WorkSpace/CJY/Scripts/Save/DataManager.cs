@@ -25,6 +25,14 @@ public class EquipmentsData
     public Dictionary<string, int> equipmentsData = new Dictionary<string, int>();
 }
 
+// 테스트용 (추가한 코드)
+[System.Serializable]
+public class CollectedItemEntry
+{
+    public string itemName;
+    public int count;
+}
+
 public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
@@ -34,6 +42,10 @@ public class DataManager : MonoBehaviour
     private string path;
     private string fileName = "/save";
     private string keyWord = "evzxkjnv158ezxcvf^%2agasdf687gb3%g7nbvauoi3@8g8fabn^%zxncvkg18aaetx";
+
+    // Inspector에서 직접 넣을 수 있는 리스트 (추가한 코드)
+    public List<CollectedItemEntry> collectedItemList = new();
+
 
     public Dictionary<string, int> collectedItem = new Dictionary<string, int>(); // 획득한 아이템 이름과 갯수.(코인, 경험치 포함)
     // 인벤토리와 연동하면 될듯.
@@ -45,8 +57,20 @@ public class DataManager : MonoBehaviour
 
         path = Application.persistentDataPath + fileName;
         Debug.Log(path);
+
+        // 리스트 → 딕셔너리 변환 (추가한 코드)
+        collectedItem.Clear();
+        foreach (var entry in collectedItemList)
+        {
+            if (!collectedItem.ContainsKey(entry.itemName))
+            {
+                collectedItem.Add(entry.itemName, entry.count);
+            }
+
+        }
     }
-    
+
+
 
     public void Save()
     {
@@ -97,7 +121,7 @@ public class DataManager : MonoBehaviour
         return count;
     }
 
-
+    // 인게임 획득 장비 데이터 가져가는 위치
     public Dictionary<string, int> GetInGameEquipmentInfo()
     {
         return collectedItem;
