@@ -2076,6 +2076,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6376532628179709103, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
   m_PrefabInstance: {fileID: 4819463208225531509}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &2113679524972631678 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6897086995795439627, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
+  m_PrefabInstance: {fileID: 4819463208225531509}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4315405457538857848 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8719331883189165325, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
@@ -2114,9 +2119,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa18a2cd9d8840d0a43c215f628c022, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  specialAttackCooldown: 10
+  specialAttackCooldown: 7
   CanSpecialAttack: 0
-  bulletCount: 3
-  spreadAngle: 90
+  bulletCount: 6
+  spreadAngle: 360
   dandelionBullet: {fileID: 8110258558021772269, guid: 0d2e22b1ebe204cf3a06ed30a82af780, type: 3}
-  bulletPos: {fileID: 0}
+  bulletPos: {fileID: 2113679524972631678}

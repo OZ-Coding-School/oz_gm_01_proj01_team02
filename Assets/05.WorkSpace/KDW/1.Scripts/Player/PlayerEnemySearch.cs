@@ -71,9 +71,10 @@ public class PlayerEnemySearch : MonoBehaviour
             enemyDir = collider.transform.position - transform.position;
             bool isHit = Physics.Raycast(transform.position, enemyDir, out hit, checkRange, enemyLayer);
 
-            if (isHit && hit.transform.CompareTag("Enemy"))
+            if (isHit && hit.transform.CompareTag("Enemy") && dis < minDis)
             {
-                if (dis < minDis)
+                EnemyController enemyController = hit.transform.GetComponent<EnemyController>();
+                if (enemyController != null && !enemyController.IsDead)
                 {
                     minDis = dis;
                     nearEnemy = collider.gameObject;

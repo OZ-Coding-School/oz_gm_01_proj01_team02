@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 584149161626a4dea8d3b0f0dfdcf5dc, type: 3}
   m_Name: Pattern_FanFire
   m_EditorClassIdentifier: 
-  skillName: FanFire
+  skillName: "\uC0AC\uC120 \uD654\uC0B4"
   icon: {fileID: 21300000, guid: e9182e1858ca6904e9757ea4fefe8005, type: 3}
   count: 3
   angle: 30
