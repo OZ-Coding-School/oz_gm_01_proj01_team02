@@ -22,6 +22,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private bool canTakeDamage = true;
 
     [SerializeField] private DmgText dmgTextPrefab;
+    [SerializeField] private RectTransform damageCanvas;
 
     private void Awake()
     {
@@ -89,9 +90,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             DmgText dmgText = PoolManager.pool_instance.GetFromPool(dmgTextPrefab);
             if (dmgText != null)
             {
+
+                dmgText.canvasTransform = damageCanvas;
+                dmgText.transform.SetParent(damageCanvas, false);
+
                 Vector3 worldPos = transform.position + Vector3.up * 2.0f;
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+                RectTransformUtility.ScreenPointToLocalPointInRectangle( damageCanvas, screenPos, null, out Vector2 localPos);
+
                 dmgText.gameObject.SetActive(true);
-                dmgText.Play(worldPos, amount, isCritical);
+                dmgText.Play(amount, localPos, isCritical);
             }
         }
 

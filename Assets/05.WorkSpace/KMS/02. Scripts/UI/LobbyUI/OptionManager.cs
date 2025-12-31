@@ -35,6 +35,9 @@ public class OptionManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            bgmSource.volume = bgmVolume;
+            sfxSource.volume = sfxVolume;
             
         }
 

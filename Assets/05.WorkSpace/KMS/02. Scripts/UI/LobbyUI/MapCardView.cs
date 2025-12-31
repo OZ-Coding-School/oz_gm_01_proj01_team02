@@ -7,6 +7,7 @@ public class MapCardView : MonoBehaviour
 {
     [SerializeField] private Image mapImage;
     [SerializeField] private Text mapNameText;
+    [SerializeField] private Text clearStageText;
     public MapData data;
 
 
@@ -30,6 +31,7 @@ public class MapCardView : MonoBehaviour
         data = mapData;
         mapImage.sprite = data.mapSprite;
         mapNameText.text = data.mapName;
+        clearStageText.text = $"최고 스테이지 : {data.clearStage}/15";
     }
 
 

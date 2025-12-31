@@ -1638,6 +1638,14 @@ PrefabInstance:
       propertyPath: bulletPatterns.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: ad1ca463cc4e54624bfa60ade1c65ea7, type: 2}
+    - target: {fileID: 1875261653241016143, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1875261653241016143, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3472652183054962509, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
       propertyPath: type
       value: 1

@@ -15,17 +15,14 @@ public class DmgText : MonoBehaviour
 
     public RectTransform canvasTransform;
 
+    private bool isCritical = false;
+    // private bool isPlaying = false;
+
 
     void Awake()
     {
-        cam = Camera.main;     
-        dmgText = GetComponent<TextMeshProUGUI>(); 
+        dmgText = GetComponent<TextMeshProUGUI>();
         rect = GetComponent<RectTransform>();
-        Canvas dmgCanvas = GameObject.Find("DmgTextCanvas")?.GetComponent<Canvas>();
-    if (dmgCanvas != null)
-        canvasTransform = dmgCanvas.transform as RectTransform;
-    else
-        Debug.LogError("씬에 'DmgTextCanvas'가 없습니다");
 
     }
     
@@ -35,7 +32,7 @@ public class DmgText : MonoBehaviour
         StopAllCoroutines();
 
         // LookCamera();
-        StartCoroutine(LifeRoutine());        
+          
     }
 
     private void Update()
@@ -44,13 +41,13 @@ public class DmgText : MonoBehaviour
     }
 
 
-
-    public void Play(Vector3 worldPos, float damage, bool isCritical = false)
+    public void Play(float dmg, Vector2 localPos, bool critical = false)
     {
-        if (dmgText == null) return; 
-        Debug.Log($"[DmgText] Play 호출됨 damage:{damage}");
+        // if (isPlaying) return;
+        // isPlaying = true;
 
-        dmgText.text = $"-{Mathf.RoundToInt(damage)}";
+        dmgText.text = $"-{Mathf.RoundToInt(dmg)}";
+        isCritical = critical;
 
         if (isCritical)
         {
@@ -62,33 +59,46 @@ public class DmgText : MonoBehaviour
             dmgText.color = Color.white;
         }
 
-        if (canvasTransform != null)
-        transform.SetParent(canvasTransform, false);
+        rect.localScale = Vector3.one;
+        rect.anchoredPosition = localPos;
 
-        rect.pivot = new Vector2(0.5f, 1f);
-
-        float fixedYOffset = 2.0f;
-        Vector3 fixedWorldPos = new Vector3(worldPos.x, worldPos.y + fixedYOffset, worldPos.z);
-
-        if (cam != null)
-        rect.position = cam.WorldToScreenPoint(fixedWorldPos);
         
-
-
-
-        gameObject.SetActive(true);
-
+        
+        lifeTime = 1.0f;
+        
+        StartCoroutine(PlayCoroutine());
     }
 
-    private IEnumerator LifeRoutine()
+    private IEnumerator PlayCoroutine()
     {
-        yield return new WaitForSeconds(lifeTime);
-
-        Debug.Log($"[DmgText] ReturnPool 호출됨 : {gameObject.name}");
-        PoolManager.pool_instance.ReturnPool(this);
-
+        yield return null;
+        gameObject.SetActive(true);
+        StartCoroutine(MoveUp());
     }
 
+    private System.Collections.IEnumerator MoveUp()
+    {
+        
+        yield return null;
+
+        float elapsed = 0.0f;
+        Color startColor = dmgText.color;
+
+        while (elapsed < lifeTime)
+        {
+            elapsed += Time.deltaTime;
+             rect.anchoredPosition += Vector2.up * moveSpeed * Time.deltaTime;
+
+            float alpha = Mathf.Lerp(1.0f, 0f, elapsed / lifeTime);
+            dmgText.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
+
+            yield return null;
+        }
+        transform.SetParent(PoolManager.pool_instance.transform, false);
+        gameObject.SetActive(false);
+        PoolManager.pool_instance.ReturnPool(this);
+        // isPlaying = false;
+    }
     
 
     
