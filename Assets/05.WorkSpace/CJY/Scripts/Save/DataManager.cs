@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 [System.Serializable]
@@ -14,13 +15,21 @@ public class PlayData
     public int _exp;
     public int _stage;
     public int _chapter;
+
+    // ↓↓↓사용 안하고 있었던듯?↓↓↓
     public Dictionary<int, object> _equipment = new Dictionary<int, object>(); //-> 장비가 완성되야 추가가능
+}
+
+public class EquipmentsData
+{
+    public Dictionary<string, int> equipmentsData = new Dictionary<string, int>();
 }
 
 public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
     public PlayData playData = new();
+    public EquipmentsData equipmentData = new();
 
     private string path;
     private string fileName = "/save";
@@ -37,6 +46,7 @@ public class DataManager : MonoBehaviour
         path = Application.persistentDataPath + fileName;
         Debug.Log(path);
     }
+    
 
     public void Save()
     {
@@ -85,5 +95,11 @@ public class DataManager : MonoBehaviour
         count += playData._equipment.Count;
 
         return count;
+    }
+
+
+    public Dictionary<string, int> GetInGameEquipmentInfo()
+    {
+        return collectedItem;
     }
 }

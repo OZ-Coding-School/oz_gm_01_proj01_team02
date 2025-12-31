@@ -61,7 +61,7 @@ public class StageManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         chapter = scene.name;
-
+        
 
         InitUI();
         if (scene.name != "TitleScene(kms)")
@@ -70,6 +70,14 @@ public class StageManager : MonoBehaviour
             InitStageClearCount();
             ForceReturnEnemyPool();
             StartCoroutine(DelayInitClearPanel());
+            GameManager.Data.collectedItem.Clear();
+        }
+        else
+        {
+            foreach(var keyvalue in GameManager.Data.collectedItem)
+            {
+                Debug.Log("인벤토리 장비 값 : "+keyvalue.ToString());
+            }
         }
         
     }
@@ -95,9 +103,6 @@ public class StageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            Debug.Log(chapter);
-            Debug.Log(TGM.coin);
-            Debug.Log(TGM.exp);
            GameManager.GameOver();
         }
     }

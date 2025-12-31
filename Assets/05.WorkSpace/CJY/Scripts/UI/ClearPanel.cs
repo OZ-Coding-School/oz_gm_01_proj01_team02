@@ -61,7 +61,13 @@ public class ClearPanel : MonoBehaviour
         if(!canSkip) return;
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
+            GameManager.Data.GetInGameEquipmentInfo();
             SceneManager.LoadScene("TitleScene(kms)");
+        }
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            foreach (var equipment in GameManager.Data.equipmentData.equipmentsData)
+                Debug.Log("저장된 인게임 장비 데이터 : " + equipment);
         }
 
     }
@@ -119,4 +125,5 @@ public class ClearPanel : MonoBehaviour
             }
         }
     }
+
 }

@@ -5,19 +5,19 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/05.WorkSpace/KMS/01. Scene/TitleScene(kms).unity
     guid: 0ba4ca550a6d83a478bc7a30b6faef3f
   - enabled: 1
     path: Assets/05.WorkSpace/CJY/Bulid_second/Scene/Stage_01_Scene.unity
-    guid: a80c78a3c0dece94f912bc9d556ac379
+    guid: a180c05a8002b6849b37c3f354aa3e2a
   - enabled: 1
     path: Assets/05.WorkSpace/CJY/Bulid_second/Scene/Stage_02_Scene.unity
-    guid: bf53d98796b1b1d4b8af7b2c353412d3
+    guid: 6e6e5c6ad892eb64b9cd34b937e972d8
   - enabled: 1
     path: Assets/05.WorkSpace/CJY/Bulid_second/Scene/Stage_03_Scene.unity
-    guid: d3519d4a772cf5447a62853c19730c74
-  - enabled: 1
+    guid: 5815f0391e134a241a63e5482a7cdeb1
+  - enabled: 0
     path: Assets/05.WorkSpace/HJY/01. Scene/TitleScene(HJY).unity
     guid: 89b4600f0a764304fb273a0dfdf69599
   m_configObjects: {}
