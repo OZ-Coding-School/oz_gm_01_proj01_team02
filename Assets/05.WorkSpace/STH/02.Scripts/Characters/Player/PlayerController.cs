@@ -20,7 +20,7 @@ namespace STH.Characters.Player
         [Header("Test")]
         [SerializeField] private List<SkillData> testSkills;
 
-        private List<SkillData> skills = new List<SkillData>();
+        [SerializeField] private List<SkillData> skills = new List<SkillData>();
         private List<IFireStrategy> strategies = new List<IFireStrategy>();
         private List<IBulletModifier> modifiers = new List<IBulletModifier>();
 
@@ -30,7 +30,9 @@ namespace STH.Characters.Player
         private float attackTimer;
         public bool IsDead;
 
+        
         public List<SkillData> Skills => skills;
+        
         public List<IFireStrategy> Strategies => strategies;
         public List<IBulletModifier> Modifiers => modifiers;
         public PlayerStatManager Stats => stats;
