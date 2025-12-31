@@ -33,8 +33,6 @@ public class DataManager : MonoBehaviour
 
     private string path;
     private string fileName = "/save";
-    private string path_equip;
-    private string fileName_equip = "/save_equipments";
     private string keyWord = "evzxkjnv158ezxcvf^%2agasdf687gb3%g7nbvauoi3@8g8fabn^%zxncvkg18aaetx";
 
     public Dictionary<string, int> collectedItem = new Dictionary<string, int>(); // 획득한 아이템 이름과 갯수.(코인, 경험치 포함)
@@ -46,7 +44,6 @@ public class DataManager : MonoBehaviour
         instance = this;
 
         path = Application.persistentDataPath + fileName;
-        path_equip = Application.persistentDataPath + fileName_equip;
         Debug.Log(path);
     }
     
@@ -89,7 +86,6 @@ public class DataManager : MonoBehaviour
         playData._chapter = chapter;
 
         Save();
-        SaveEquipments();
         Load();
     }
 
@@ -101,28 +97,9 @@ public class DataManager : MonoBehaviour
         return count;
     }
 
-    public void SaveEquipments()
+
+    public Dictionary<string, int> GetInGameEquipmentInfo()
     {
-        string data = JsonUtility.ToJson(equipmentData);
-
-        File.WriteAllText(path_equip, EncryptAndDecrypt(data));
-    }
-
-    public void LoadEquipments() // 장비데이터 CSV Load 해오는 메서드
-    {
-        if (!File.Exists(path_equip))
-        {
-            Save();
-        }
-
-        string data = File.ReadAllText(path_equip);
-        equipmentData = JsonUtility.FromJson<EquipmentsData>(EncryptAndDecrypt(data));
-    }
-
-    public void GetInGameEquipmentInfo()
-    {
-        SaveEquipments();
-        LoadEquipments();
-        
+        return collectedItem;
     }
 }
