@@ -479,41 +479,37 @@ public class EnemyController : MonoBehaviour, IDamageable
                 bossComponent.CanSpecialAttack = true;
             }
         }
-
+        
         if (dmgTextPrefab != null)
         {
-            DmgText dmgText = PoolManager.pool_instance.GetFromPool(dmgTextPrefab);
-
-            if (dmgText != null)
-            {
-                dmgText.canvasTransform = damageCanvas;
-
-                Vector3 headPos = transform.position + Vector3.up * 2.0f;
-                Vector3 screenPos = Camera.main.WorldToScreenPoint(headPos);
-
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                damageCanvas,
-                screenPos,
-                null, // Overlay 모드라면 Camera는 null
-                out Vector2 localPos
-
-            );
-
-
-                Debug.Log($"localPos on Canvas: {localPos}");
-                dmgText.transform.SetParent(damageCanvas, false);
-                dmgText.GetComponent<RectTransform>().localPosition = localPos;
-                dmgText.gameObject.SetActive(true);
-                dmgText.Play(amount, localPos, isCritical);
-                Debug.Log($"Enemy headPos: {headPos}");
-            }
+            StartCoroutine(ShowDamageText(amount, isCritical));
         }
+
+    
 
         if (currentHp <= 0)
         {
             currentHp = 0;
             Die();
         }
+    }
+
+    IEnumerator ShowDamageText(float amount, bool isCritical)
+    {
+    // ⭐ 카메라 쉐이크 적용 끝난 뒤
+        yield return new WaitForEndOfFrame();
+
+        DmgText dmgText = PoolManager.pool_instance.GetFromPool(dmgTextPrefab);
+        if (dmgText == null) yield break;
+
+        Vector3 worldPos = transform.position + Vector3.up * 2.0f;
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+        Vector2 canvasPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(damageCanvas, screenPos,null, out canvasPos);
+
+        dmgText.transform.SetParent(damageCanvas, false);
+        dmgText.Play(amount, canvasPos, isCritical);
     }
 
     public void Die()
