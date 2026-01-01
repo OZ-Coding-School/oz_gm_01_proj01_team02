@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using STH.Characters.Player;
 using STH.ScriptableObjects.Base;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
