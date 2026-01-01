@@ -15,14 +15,11 @@ public class PoolManager : MonoBehaviour
     {
         if(pool_instance == null)
         {
-            
             pool_instance = this;
             DontDestroyOnLoad(gameObject);
-            
         }
         else
         {
-            
             Destroy(gameObject);
         }
     }

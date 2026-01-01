@@ -26,7 +26,6 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
             inst.gameObject.SetActive(false);
             pool.Enqueue(inst);
         }
-
     }
 
     public T Dequeue()
@@ -76,7 +75,6 @@ public class ObjectPool<T> : IObjectPool where T : MonoBehaviour
         {
             Root.gameObject.SetActive(true);
         }
-
     }
     
 }

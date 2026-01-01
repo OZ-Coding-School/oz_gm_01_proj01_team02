@@ -15,5 +15,5 @@ MonoBehaviour:
   skillName: "HP \uBD80\uC2A4\uD2B8"
   icon: {fileID: 21300000, guid: 407a3de39fefad54386962d25af6d55d, type: 3}
   statValue:
-    statType: 15
+    statType: 0
     value: 0.2

@@ -117,7 +117,6 @@ public class StageManager : MonoBehaviour
 
     public void StageIncrease()
     {
-       
         onObstacle = true;
         if (currentStage % STAGE_BRANCH == ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == DEVIL_APPEARS-1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+DEVIL_APPEARS - 1) onObstacle = false;
         currentStage++;
