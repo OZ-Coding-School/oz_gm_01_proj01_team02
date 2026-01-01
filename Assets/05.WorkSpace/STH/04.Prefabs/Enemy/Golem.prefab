@@ -1977,6 +1977,10 @@ PrefabInstance:
       propertyPath: type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 553866206687059592, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
+      propertyPath: maxHp
+      value: 10000
+      objectReference: {fileID: 0}
     - target: {fileID: 6376532628179709103, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.3

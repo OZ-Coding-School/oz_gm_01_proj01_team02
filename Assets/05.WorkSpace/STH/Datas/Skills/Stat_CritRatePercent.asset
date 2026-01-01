@@ -15,5 +15,5 @@ MonoBehaviour:
   skillName: "\uD06C\uB9AC\uD2F0\uCEEC \uD655\uB960 \uBD80\uC2A4\uD2B8"
   icon: {fileID: 21300000, guid: 02f95e9fdc9b1e449896e31160e855f1, type: 3}
   statValue:
-    statType: 0
+    statType: 3
     value: 0.2
