@@ -16,6 +16,7 @@ public class DmgText : MonoBehaviour
     public RectTransform canvasTransform;
 
     private bool isCritical = false;
+    private Coroutine moveCoroutine;
     // private bool isPlaying = false;
 
 
@@ -29,22 +30,31 @@ public class DmgText : MonoBehaviour
     
     void OnEnable()
     {
-        StopAllCoroutines();
+        
 
         // LookCamera();
           
     }
 
+   
+
     private void Update()
     {
         // rect.position += Vector3.up * 30.0f * Time.deltaTime;
+        
+
     }
 
 
     public void Play(float dmg, Vector2 localPos, bool critical = false)
     {
-        // if (isPlaying) return;
-        // isPlaying = true;
+        
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+        
 
         dmgText.text = $"-{Mathf.RoundToInt(dmg)}";
         isCritical = critical;
@@ -64,19 +74,13 @@ public class DmgText : MonoBehaviour
 
         
         
-        lifeTime = 1.0f;
         
-        StartCoroutine(PlayCoroutine());
-    }
-
-    private IEnumerator PlayCoroutine()
-    {
-        yield return null;
         gameObject.SetActive(true);
-        StartCoroutine(MoveUp());
+        moveCoroutine = StartCoroutine(MoveUp());
     }
 
-    private System.Collections.IEnumerator MoveUp()
+    
+    private IEnumerator MoveUp()
     {
         
         yield return null;
@@ -94,12 +98,23 @@ public class DmgText : MonoBehaviour
 
             yield return null;
         }
-        transform.SetParent(PoolManager.pool_instance.transform, false);
-        gameObject.SetActive(false);
-        PoolManager.pool_instance.ReturnPool(this);
-        // isPlaying = false;
+        ReturnToPool();
+        moveCoroutine = null;
+
     }
     
+    public void ReturnToPool()
+    {
+        
+        transform.SetParent(PoolManager.pool_instance.transform, false);
+        PoolManager.pool_instance.ReturnPool(this);
+        gameObject.SetActive(false);  
+    }
+
+    private void OnDisable()
+    {
+        
+    }
 
     
 }

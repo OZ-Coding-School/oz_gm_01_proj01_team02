@@ -513,7 +513,17 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
 
     public void Die()
+    {   
+        foreach (Transform child in damageCanvas)
     {
+        DmgText dmgText = child.GetComponent<DmgText>();
+        if (dmgText != null)
+        {
+        // 풀 매니저 자식으로 이동 후 ReturnPool
+            dmgText.transform.SetParent(PoolManager.pool_instance.transform, false);
+            dmgText.ReturnToPool();
+        }
+    }
         // Debug.Log(this.name + " 사망");
         isDead = true;
         col.enabled = false;
