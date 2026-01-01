@@ -42,7 +42,7 @@ public class TestGameManager : MonoBehaviour
 
     private void Start()
     {
-        PoolManager.pool_instance.CreatePool(dmgTextPrefab, 30);
+        PoolManager.pool_instance.CreatePool(dmgTextPrefab, 100);
     }
 
  
