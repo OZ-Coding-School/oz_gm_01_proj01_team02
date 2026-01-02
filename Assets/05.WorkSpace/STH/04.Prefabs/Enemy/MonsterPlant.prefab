@@ -1801,6 +1801,10 @@ PrefabInstance:
       propertyPath: type
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 553866206687059592, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
+      propertyPath: maxHp
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 3472652183054962509, guid: 3d848fff806574662a7ab01e936c9f73, type: 3}
       propertyPath: type
       value: 1

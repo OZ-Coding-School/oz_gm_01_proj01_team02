@@ -18,7 +18,7 @@ public class StageManager : MonoBehaviour
     TestGameManager TGM;
     public string chapter;
 
-   [Header("Clear Panel Control")]
+    [Header("Clear Panel Control")]
     GameObject clearPanel, joyStick;
     TextMeshProUGUI chapterTxt, stageNumTxt;
     bool onClearPanel = false;
@@ -61,11 +61,11 @@ public class StageManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         chapter = scene.name;
-        
 
         InitUI();
         if (scene.name != "TitleScene(kms)")
         {
+            onClearPanel = false;
             onObstacle = true;
             InitStageClearCount();
             ForceReturnEnemyPool();
@@ -74,9 +74,9 @@ public class StageManager : MonoBehaviour
         }
         else
         {
-            foreach(var keyvalue in GameManager.Data.collectedItem)
+            foreach (var keyvalue in GameManager.Data.collectedItem)
             {
-                Debug.Log("인벤토리 장비 값 : "+keyvalue.ToString());
+                Debug.Log("인벤토리 장비 값 : " + keyvalue.ToString());
             }
         }
     }
@@ -85,12 +85,12 @@ public class StageManager : MonoBehaviour
     {
         GameObject enemyPoolGroup = GameObject.Find("Enemy_Pool");
 
-        if (enemyPoolGroup != null) 
+        if (enemyPoolGroup != null)
         {
             EnemyController[] allEnemies = enemyPoolGroup.GetComponentsInChildren<EnemyController>(true);
-            foreach (var enemy in allEnemies) 
+            foreach (var enemy in allEnemies)
             {
-                if(GameManager.Pool != null)
+                if (GameManager.Pool != null)
                 {
                     GameManager.Pool.ReturnPool(enemy);
                 }
@@ -102,13 +102,13 @@ public class StageManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Y))
         {
-           GameManager.GameOver();
+            GameManager.GameOver();
         }
     }
 
     public int Select(string name)
     {
-        if(name == "angel") return ANGEL_APPEARS;
+        if (name == "angel") return ANGEL_APPEARS;
         if (name == "devil") return DEVIL_APPEARS;
         if (name == "stage") return STAGE_BRANCH;
         if (name == "finish") return CHAPTER_FINISH;
@@ -117,8 +117,9 @@ public class StageManager : MonoBehaviour
 
     public void StageIncrease()
     {
+        BuffEnemyHp();
         onObstacle = true;
-        if (currentStage % STAGE_BRANCH == ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == DEVIL_APPEARS-1 || currentStage % STAGE_BRANCH == STAGE_BRANCH+DEVIL_APPEARS - 1) onObstacle = false;
+        if (currentStage % STAGE_BRANCH == ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == STAGE_BRANCH + ANGEL_APPEARS - 1 || currentStage % STAGE_BRANCH == DEVIL_APPEARS - 1 || currentStage % STAGE_BRANCH == STAGE_BRANCH + DEVIL_APPEARS - 1) onObstacle = false;
         currentStage++;
         Debug.Log("현재 스테이지 : " + currentStage);
         OnStageIncrease?.Invoke(currentStage);
@@ -137,7 +138,7 @@ public class StageManager : MonoBehaviour
     {
         if (clearPanel == null) InitUI();
 
-        if (clearPanel != null) 
+        if (clearPanel != null)
         {
             chapterTxt.text = "Chapter " + chapter.ToString();
             stageNumTxt.text = stage.ToString();
@@ -177,5 +178,24 @@ public class StageManager : MonoBehaviour
     {
         yield return null;
         TGM.InitCoinExp();
+    }
+
+    private void BuffEnemyHp()
+    {
+        Debug.Log("적 체력 증가");
+        GameObject enemyPoolGroup = GameObject.Find("Enemy_Pool");
+
+        if (enemyPoolGroup != null)
+        {
+            Debug.Log("적 체력 증가2");
+            EnemyController[] allEnemies = enemyPoolGroup.GetComponentsInChildren<EnemyController>(true);
+
+            foreach (var enemy in allEnemies)
+            {
+                Debug.Log("적 체력 증가 중(대상 : " + enemy.name + ")");
+                enemy.maxHp *= 1.35f;
+            }
+        }
+
     }
 }

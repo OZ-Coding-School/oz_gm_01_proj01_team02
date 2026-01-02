@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class ItemBase : MonoBehaviour
 {
-    PlayerMove player;
+    protected PlayerMove player;
     ItemSpawner spawner;
     [SerializeField] float duration = 1.8f; // 아이템이 빨려들어가는 시간
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         player = FindObjectOfType<PlayerMove>();
         spawner = FindObjectOfType<ItemSpawner>();
