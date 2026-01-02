@@ -8056,6 +8056,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3022338318115374490, guid: 855ebcdad0398454cab6c3b3492431b8, type: 3}
+      propertyPath: m_Name
+      value: Enviroment_Stage_2
+      objectReference: {fileID: 0}
     - target: {fileID: 8420400992196268424, guid: 855ebcdad0398454cab6c3b3492431b8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 40
@@ -8095,10 +8099,6 @@ PrefabInstance:
     - target: {fileID: 8420400992196268424, guid: 855ebcdad0398454cab6c3b3492431b8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3022338318115374490, guid: 855ebcdad0398454cab6c3b3492431b8, type: 3}
-      propertyPath: m_Name
-      value: Enviroment_Stage_2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8324,6 +8324,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8822136082435077316, guid: 3444c01965f9d3e4a87cda7e0123e44d, type: 3}
+      propertyPath: mapData
+      value: 
+      objectReference: {fileID: 11400000, guid: 10afcc18e16b4984faa7743c1db326a9, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

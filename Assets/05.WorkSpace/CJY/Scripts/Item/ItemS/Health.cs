@@ -13,7 +13,7 @@ public class Health : ItemBase
 
     public override void ReturnPool()
     {
-        playerHP.Heal(100);
+        playerHP.Heal(150);
         if (PoolManager.pool_instance != null) PoolManager.pool_instance.ReturnPool(this);
     }
 }
