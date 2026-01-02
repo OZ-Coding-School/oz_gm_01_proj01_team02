@@ -16,4 +16,4 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: c94a132e2eb699a4fb81183f911abebc, type: 3}
   statValue:
     statType: 1
-    value: 50
+    value: 100
